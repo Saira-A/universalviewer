@@ -76,13 +76,20 @@
                 float: left;
             }
 
+           /* Default label style */
             .thumbsView .thumbs .thumb .info .label {
                 float: left;
                 overflow-x: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
             }
-
+            
+            /* Extended label style when checkbox is checked */
+            .thumbsView .thumbs.extend-labels .thumb .info .label {
+                overflow-x: visible;
+                text-overflow: inherit;
+                white-space: break-spaces;
+            }
             .thumbsView .thumbs .thumb .info .searchResults {
                 float: right;
                 width: 35px;

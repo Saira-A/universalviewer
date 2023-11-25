@@ -121,6 +121,7 @@ const Thumbnails = ({
       <div
         ref={ref}
         className={cx("thumbs", {
+          "extend-labels": extendLabels,
           "left-to-right": viewingDirection === ViewingDirection.LEFT_TO_RIGHT,
           "right-to-left": viewingDirection === ViewingDirection.RIGHT_TO_LEFT,
           paged: paged,
@@ -147,4 +148,5 @@ const Thumbnails = ({
 };
 
 export default Thumbnails;
+
 
