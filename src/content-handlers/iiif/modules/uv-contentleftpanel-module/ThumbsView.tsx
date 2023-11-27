@@ -51,7 +51,7 @@ const ThumbImage = ({
       </div>
       <div className="info">
         <span className="label" title={thumb.label}>
-          Placeholder Text for Testing Purpose&nbsp;
+          Placeholder text for testing&nbsp;
         </span>
         {thumb.data.searchResults && (
           <span className="searchResults">{thumb.data.searchResults}</span>
@@ -60,6 +60,7 @@ const ThumbImage = ({
     </div>
   );
 };
+
 
 const Thumbnails = ({
   onClick,
