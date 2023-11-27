@@ -9,3 +9,4 @@ To help us merge your PR, make sure to follow the instructions below:
 -->
 
 #### Description of what you did:
+Add checkbox to show full labels for thumbnails 
