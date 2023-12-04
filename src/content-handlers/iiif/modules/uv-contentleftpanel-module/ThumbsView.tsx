@@ -51,7 +51,7 @@ const ThumbImage = ({
       </div>
       <div className="info">
         <span className="label" title={thumb.label}>
-          Placeholder text for testing&nbsp;
+        {thumb.label}&nbsp;
         </span>
         {thumb.data.searchResults && (
           <span className="searchResults">{thumb.data.searchResults}</span>
