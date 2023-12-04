@@ -51,7 +51,7 @@ const ThumbImage = ({
       </div>
       <div className="info">
         <span className="label" title={thumb.label}>
-        {thumb.label}&nbsp;
+          {thumb.label}&nbsp;
         </span>
         {thumb.data.searchResults && (
           <span className="searchResults">{thumb.data.searchResults}</span>
@@ -60,7 +60,6 @@ const ThumbImage = ({
     </div>
   );
 };
-
 
 const Thumbnails = ({
   onClick,
@@ -77,6 +76,15 @@ const Thumbnails = ({
 }) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [extendLabels, setExtendLabels] = useState(false);
+  const [shouldShowCheckbox, setShouldShowCheckbox] = useState(false);
+
+  useEffect(() => {
+    
+    const needsExtending = thumbs.some(
+      (thumb) => thumb.label.length > 18
+    );
+    setShouldShowCheckbox(needsExtending);
+  }, [thumbs]);
 
   useEffect(() => {
     const thumb: HTMLElement = ref.current?.querySelector(
@@ -112,13 +120,17 @@ const Thumbnails = ({
 
   return (
     <div>
-      <label htmlFor="extendLabelsCheckbox">Show full labels </label>
-      <input
-        type="checkbox"
-        id="extendLabelsCheckbox"
-        checked={extendLabels}
-        onChange={(e) => setExtendLabels(e.target.checked)}
-      />
+      {shouldShowCheckbox && (
+        <div>
+          <label htmlFor="extendLabelsCheckbox">Show full labels </label>
+          <input
+            type="checkbox"
+            id="extendLabelsCheckbox"
+            checked={extendLabels}
+            onChange={(e) => setExtendLabels(e.target.checked)}
+          />
+        </div>
+      )}
       <div
         ref={ref}
         className={cx("thumbs", {
@@ -149,5 +161,7 @@ const Thumbnails = ({
 };
 
 export default Thumbnails;
+
+
 
 
