@@ -1,4 +1,3 @@
-const $ = require("jquery");
 import { IIIFEvents } from "../../IIIFEvents";
 import { BaseView } from "../uv-shared-module/BaseView";
 import { GalleryComponent } from "@iiif/iiif-gallery-component";
@@ -8,7 +7,7 @@ export class GalleryView extends BaseView {
   galleryComponent: any;
   galleryData: any;
   $gallery: JQuery;
-
+  $extendLabelsCheckbox: JQuery; 
   constructor($element: JQuery) {
     super($element, true, true);
   }
@@ -18,7 +17,41 @@ export class GalleryView extends BaseView {
     super.create();
 
     this.$gallery = $('<div class="iiif-gallery-component"></div>');
+
+   
+    this.$extendLabelsCheckbox = $('<input type="checkbox" id="extendLabelsCheckbox">');
+    const $label = $('<label for="extendLabelsCheckbox">Show full labels</label>');
+
+    
+    this.$element.append(this.$extendLabelsCheckbox);
+    this.$element.append($label);
     this.$element.append(this.$gallery);
+    
+    
+    this.$extendLabelsCheckbox.on('change', () => {
+      const extendLabels = this.$extendLabelsCheckbox.prop('checked');
+      this.toggleLabelExtension(extendLabels);
+    });
+  }
+
+  toggleLabelExtension(extendLabels: boolean): void {
+    if (extendLabels) {
+      
+      this.$gallery.find('.info .label').css({
+        'overflow-x': 'visible',
+        'text-overflow': 'nowrap',
+        'white-space': 'break-spaces',
+        'max-width': '100%',
+      });
+    } else {
+      
+      this.$gallery.find('.info .label').css({
+        'overflow-x': 'hidden',
+        'text-overflow': 'ellipsis',
+        'white-space': 'nowrap',
+        'max-width': '100%',
+      });
+    }
   }
 
   public setup(): void {
