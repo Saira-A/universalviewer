@@ -79,12 +79,35 @@ const Thumbnails = ({
   const [shouldShowCheckbox, setShouldShowCheckbox] = useState(false);
 
   useEffect(() => {
+    const checkOverflow = () => {
+      if (ref.current) {
+        const thumbLabels = ref.current.querySelectorAll('.thumb .info .label');
+        let overflowDetected = false;
+  
+        thumbLabels.forEach((label) => {
+          if (label.scrollWidth > label.clientWidth) {
+            overflowDetected = true;
+            return;
+          }
+        });
+  
+        setShouldShowCheckbox(overflowDetected);
+      } else {
+        setShouldShowCheckbox(false);
+      }
+    };
+  
     
-    const needsExtending = thumbs.some(
-      (thumb) => thumb.label.length > 18
-    );
-    setShouldShowCheckbox(needsExtending);
-  }, [thumbs]);
+    checkOverflow();
+  
+    
+  
+    
+    return () => {
+      
+    };
+  }, [thumbs]);  
+  
 
   useEffect(() => {
     const thumb: HTMLElement = ref.current?.querySelector(
