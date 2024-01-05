@@ -1,13 +1,11 @@
 <p align="center">
 <img src="https://avatars0.githubusercontent.com/u/9430521" style="width: 150px;" />
-<h1 align="center" style="width: 60%; margin-left: auto; margin-right: auto;">Universal Viewer</h1>
-<p align="center">
-A community-developed open source project on a mission<br/> to help you share your 📚📜📰📽️📻🗿 with the 🌎
-</p>
+<h1 align="center">Universal Viewer</h1>
 </p>
 <br/>
 <p align="center">
-<a href="#-sponsors"><img src="https://camo.githubusercontent.com/db8439fd8526d52fbc36437f988d0d8d8dd6913a/68747470733a2f2f6f70656e636f6c6c6563746976652e636f6d2f756e6976657273616c7669657765722f73706f6e736f72732f62616467652e737667" alt="Sponsors on Open Collective" data-canonical-src="https://opencollective.com/universalviewer/sponsors/badge.svg" style="max-width:100%;" /></a>
+<a href="#backers"><img src="https://camo.githubusercontent.com/8f205f0459eaafbbcf78554ae3182da599b178b9/68747470733a2f2f6f70656e636f6c6c6563746976652e636f6d2f756e6976657273616c7669657765722f6261636b6572732f62616467652e737667" alt="Backers on Open Collective" data-canonical-src="https://opencollective.com/universalviewer/backers/badge.svg" style="max-width:100%;" /></a>
+<a href="#sponsors"><img src="https://camo.githubusercontent.com/db8439fd8526d52fbc36437f988d0d8d8dd6913a/68747470733a2f2f6f70656e636f6c6c6563746976652e636f6d2f756e6976657273616c7669657765722f73706f6e736f72732f62616467652e737667" alt="Sponsors on Open Collective" data-canonical-src="https://opencollective.com/universalviewer/sponsors/badge.svg" style="max-width:100%;" /></a>
 <a href="https://app.netlify.com/sites/uv/deploys">
 <img src="https://api.netlify.com/api/v1/badges/91dc58e8-49dd-495f-98bb-84570a0edb7c/deploy-status" />
 </a>
@@ -15,43 +13,33 @@ A community-developed open source project on a mission<br/> to help you share yo
 </p>
 
 <p align="center">
-    <a href="https://twitter.com/universalviewer"><strong>@</strong> twitter</a>&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="https://docs.google.com/forms/d/e/1FAIpQLSeHLD0kng5aXvGFsNN_tJGsZMTnp08Hv2F6kdGsJRb6bT0NWw/viewform" rel="nofollow"><strong>#</strong> slack</a>
+<a href="https://twitter.com/universalviewer">twitter</a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://docs.google.com/forms/d/e/1FAIpQLSeHLD0kng5aXvGFsNN_tJGsZMTnp08Hv2F6kdGsJRb6bT0NWw/viewform" rel="nofollow">#slack</a>
 </p>
 
 <br/>
 
     npm install universalviewer --save
 
-<br/>
-    
-> Please note that UV v4 is designed to work on [evergreen browsers](https://www.w3.org/2001/tag/doc/evergreen-web/). If you need IE11 support, please use [UV v3](https://github.com/UniversalViewer/universalviewer/tree/v3).
-> Microsoft no longer supports IE11, and it [reached end-of-life on June 15 2022](https://blogs.windows.com/windowsexperience/2021/05/19/the-future-of-internet-explorer-on-windows-10-is-in-microsoft-edge/).
+- [**Website**](#website)
+- [**Scope**](#scope)
+- [**Getting Started**](#getting-started)
+- [**Contributing**](#contributing)
+- [**Feedback**](#feedback)
+- [**Sponsors**](#sponsors)
+- [**License**](#license)
 
+## Website
 
+[Visit the UV demo page](https://uv-v3.netlify.app) to try it out.
 
-<br/>
-
-- [**Website**](#-website)
-- [**Scope**](#-scope)
-- [**Getting Started**](#-getting-started)
-- [**Contributing**](#-contributing)
-- [**Sponsors**](#-sponsors)
-- [**License**](#-license)
-- [**Accessibility Statement**](#-accessibility-statement)
-- [**Feedback**](#-feedback)
-
-## 🌐 Website
-
-[Visit the UV demo page](https://uv.netlify.app) to try it out.
-
-## 📖 Scope
+## Scope
 
 Read more [about the Universal Viewer](https://github.com/UniversalViewer/universalviewer/wiki/About)
 
 ## 💻 Getting Started
 
-See the [examples](https://github.com/UniversalViewer/universalviewer/wiki/UV-Examples) for how to use the UV in various scenarios.
+See [uv-hello-world](https://github.com/UniversalViewer/uv-hello-world) for how to set up the UV.
 
 ## 💻 Contributing
 
@@ -89,3 +77,15 @@ Read below how to engage with the UV [community](COMMUNITY_TEAM.md):
 - Join the discussion on [Slack](http://universalviewer.io/#contact).
 - Ask a question, request a new feature and file a bug with [GitHub issues](https://github.com/universalviewer/universalviewer/issues/new).
 - Star the repository to show your support ⭐
+
+## Sponsors
+
+[Become a sponsor](https://opencollective.com/universalviewer#sponsor) and join our [Steering Group](https://github.com/UniversalViewer/universalviewer/wiki/Steering-Group) to help guide how our sponsorship funds are allocated.
+
+## License
+
+The Universal Viewer is released under the [MIT license](https://github.com/UniversalViewer/universalviewer/blob/master/LICENSE.txt).
+
+## Accessibility Statement
+
+Read our [Accessibility Statement](https://github.com/UniversalViewer/universalviewer/wiki/Accessibility-Statement-for-the-Universal-Viewer)
