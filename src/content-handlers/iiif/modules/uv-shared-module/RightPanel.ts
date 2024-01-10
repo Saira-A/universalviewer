@@ -1,7 +1,7 @@
 import { ExpandPanel } from "../../extensions/config/ExpandPanel";
 import { IIIFEvents } from "../../IIIFEvents";
 import { BaseExpandPanel } from "./BaseExpandPanel";
-import { Bools } from "@edsilv/utils";
+ 
 
 export class RightPanel<T extends ExpandPanel> extends BaseExpandPanel<T> {
   constructor($element: JQuery) {
@@ -16,10 +16,8 @@ export class RightPanel<T extends ExpandPanel> extends BaseExpandPanel<T> {
   init(): void {
     super.init();
 
-    const shouldOpenPanel: boolean = Bools.getBool(
-      this.extension.getSettings().rightPanelOpen,
-      this.options.panelOpen
-    );
+    // Always set shouldOpenPanel to true to open the right panel by default
+    const shouldOpenPanel: boolean = true;
 
     if (shouldOpenPanel) {
       this.toggle(true);
