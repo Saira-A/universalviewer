@@ -13,16 +13,25 @@ export class RightPanel<T extends ExpandPanel> extends BaseExpandPanel<T> {
     this.$element.width(this.options.panelCollapsedWidth);
   }
 
+
   init(): void {
     super.init();
-
-    // Always set shouldOpenPanel to true to open the right panel by default
-    const shouldOpenPanel: boolean = true;
-
+  
+    let shouldOpenPanel: boolean = true;
+  
     if (shouldOpenPanel) {
       this.toggle(true);
     }
+  
+    // Set shouldOpenPanel to false after a delay so panel closes automatically
+    setTimeout(() => {
+      shouldOpenPanel = false;
 
+      this.toggle(false);
+  
+      
+    }, 4000); 
+    
     this.extensionHost.subscribe(IIIFEvents.TOGGLE_EXPAND_RIGHT_PANEL, () => {
       if (this.isFullyExpanded) {
         this.collapseFull();
