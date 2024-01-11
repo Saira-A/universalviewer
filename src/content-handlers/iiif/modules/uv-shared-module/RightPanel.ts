@@ -1,45 +1,59 @@
 import { ExpandPanel } from "../../extensions/config/ExpandPanel";
 import { IIIFEvents } from "../../IIIFEvents";
 import { BaseExpandPanel } from "./BaseExpandPanel";
- 
 
 export class RightPanel<T extends ExpandPanel> extends BaseExpandPanel<T> {
-  constructor($element: JQuery) {
+  private fullscreenEnabled: boolean;
+
+  constructor($element: JQuery, fullscreenEnabled: boolean) {
     super($element);
+    this.fullscreenEnabled = fullscreenEnabled;
   }
 
   create(): void {
     super.create();
     this.$element.width(this.options.panelCollapsedWidth);
-  }
 
+    if (this.fullscreenEnabled) {
+        // Always set shouldOpenPanel to true to open the right panel by default
+        const shouldOpenPanel: boolean = true;
+
+        if (shouldOpenPanel) {
+            this.toggle(true);
+        }
+    }
+
+    this.extensionHost.subscribe(IIIFEvents.TOGGLE_EXPAND_RIGHT_PANEL, () => {
+        if (this.isFullyExpanded) {
+            this.collapseFull();
+        } else {
+            this.expandFull();
+        }
+    });
+}
 
   init(): void {
     super.init();
-  
-    let shouldOpenPanel: boolean = true;
-  
-    if (shouldOpenPanel) {
-      this.toggle(true);
-    }
-  
-    // Set shouldOpenPanel to false after a delay so panel closes automatically
-    setTimeout(() => {
-      shouldOpenPanel = false;
 
-      this.toggle(false);
-  
-      
-    }, 4000); 
-    
+    const isLargeScreen = window.innerWidth >= 1000;
+
+    if (isLargeScreen) {
+        // Always set shouldOpenPanel to true to open the right panel by default on large screens
+        const shouldOpenPanel: boolean = true;
+
+        if (shouldOpenPanel) {
+            this.toggle(true);
+        }
+    }
+
     this.extensionHost.subscribe(IIIFEvents.TOGGLE_EXPAND_RIGHT_PANEL, () => {
-      if (this.isFullyExpanded) {
-        this.collapseFull();
-      } else {
-        this.expandFull();
-      }
+        if (this.isFullyExpanded) {
+            this.collapseFull();
+        } else {
+            this.expandFull();
+        }
     });
-  }
+}
 
   getTargetWidth(): number {
     return this.isExpanded
