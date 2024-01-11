@@ -17,36 +17,40 @@ export class RightPanel<T extends ExpandPanel> extends BaseExpandPanel<T> {
     let isLargeScreen: boolean = window.innerWidth >= 1200;
 
     const updatePanelBasedOnScreenWidth = () => {
-        const newIsLargeScreen = window.innerWidth >= 1200;
+      const newIsLargeScreen = window.innerWidth >= 1200;
 
-        if (newIsLargeScreen !== isLargeScreen) {
-            isLargeScreen = newIsLargeScreen;
+      if (newIsLargeScreen !== isLargeScreen) {
+        isLargeScreen = newIsLargeScreen;
 
-            if (this.fullscreenEnabled && isLargeScreen) {
-                
-                this.toggle(true);
-            } else {
-                
-                this.toggle(false);
-            }
+        if (this.fullscreenEnabled && isLargeScreen) {
+          this.toggle(true);
+        } else {
+          this.toggle(false);
         }
+      }
     };
 
-    
     updatePanelBasedOnScreenWidth();
 
-    
     window.addEventListener('resize', updatePanelBasedOnScreenWidth);
 
-    this.extensionHost.subscribe(IIIFEvents.TOGGLE_EXPAND_RIGHT_PANEL, () => {
-        if (this.isFullyExpanded) {
-            this.collapseFull();
-        } else {
-            this.expandFull();
-        }
-    });
-}
+    // Open the panel by default for small screens and close it after a few seconds
+    if (!isLargeScreen) {
+      this.toggle(true);
 
+      setTimeout(() => {
+        this.toggle(false);
+      }, 5000); 
+    }
+
+    this.extensionHost.subscribe(IIIFEvents.TOGGLE_EXPAND_RIGHT_PANEL, () => {
+      if (this.isFullyExpanded) {
+        this.collapseFull();
+      } else {
+        this.expandFull();
+      }
+    });
+  }
 
 
   init(): void {
