@@ -14,28 +14,28 @@ export class RightPanel<T extends ExpandPanel> extends BaseExpandPanel<T> {
     super.create();
     this.$element.width(this.options.panelCollapsedWidth);
 
+    let isLargeScreen: boolean = window.innerWidth >= 1200;
+
     const updatePanelBasedOnScreenWidth = () => {
-        const isLargeScreen = window.innerWidth >=  1200;
+        const newIsLargeScreen = window.innerWidth >= 1200;
 
-        if (this.fullscreenEnabled && isLargeScreen) {
-            // Always set shouldOpenPanel to true to open the right panel by default
-            const shouldOpenPanel: boolean = true;
+        if (newIsLargeScreen !== isLargeScreen) {
+            isLargeScreen = newIsLargeScreen;
 
-            if (shouldOpenPanel) {
+            if (this.fullscreenEnabled && isLargeScreen) {
+                
                 this.toggle(true);
-            }
-        } else {
-            // Close the panel if it's currently open and the screen is not large enough
-            if (this.isExpanded) {
+            } else {
+                
                 this.toggle(false);
             }
         }
     };
 
-    // Initial update
+    
     updatePanelBasedOnScreenWidth();
 
-    // Add a window resize event listener
+    
     window.addEventListener('resize', updatePanelBasedOnScreenWidth);
 
     this.extensionHost.subscribe(IIIFEvents.TOGGLE_EXPAND_RIGHT_PANEL, () => {
@@ -45,7 +45,8 @@ export class RightPanel<T extends ExpandPanel> extends BaseExpandPanel<T> {
             this.expandFull();
         }
     });
-  }
+}
+
 
 
   init(): void {
