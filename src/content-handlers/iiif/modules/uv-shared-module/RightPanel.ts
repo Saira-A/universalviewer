@@ -4,8 +4,7 @@ import { BaseExpandPanel } from "./BaseExpandPanel";
 import { Events } from "../../../../Events";
 
 export class RightPanel<T extends ExpandPanel> extends BaseExpandPanel<T> {
-  private manuallyToggled: boolean = false; // Flag to track if the panel state has been manually toggled
-
+  private manuallyToggled: boolean = false;
   constructor($element: JQuery) {
     super($element);
   }
@@ -14,24 +13,26 @@ export class RightPanel<T extends ExpandPanel> extends BaseExpandPanel<T> {
     super.init();
 
     const collapseButton = $('.collapseButton');
-    const expandButton = $('.expandButton'); // Change class to expandButton
+    const expandButton = $('.expandButton');
+    const title = $('.title');
 
     const setManualToggled = () => {
-      this.manuallyToggled = true; // Set manual toggling flag
-      console.log('Manual toggled:', this.manuallyToggled);
+      this.manuallyToggled = true;
     };
 
     collapseButton.on('click', () => {
-      setManualToggled(); // Set manual toggling flag when collapse button is clicked
+      setManualToggled();
     });
 
     expandButton.on('click', () => {
-      console.log('Expand button clicked.'); // Add logging to see if the event is triggered
-      setManualToggled(); // Set manual toggling flag when expand button is clicked
+      setManualToggled();
     });
 
+    title.on('click', () => {
+        this.toggle();
+        setManualToggled();
+    });
 
-    // Subscribe to events to toggle expand/collapse of the right panel
     this.extensionHost.subscribe(IIIFEvents.TOGGLE_EXPAND_RIGHT_PANEL, () => {
       if (this.isFullyExpanded) {
         this.collapseFull();
@@ -39,32 +40,24 @@ export class RightPanel<T extends ExpandPanel> extends BaseExpandPanel<T> {
         this.expandFull();
       }
 
-      setManualToggled(); // Set manual toggling flag
-      console.log('Event toggled.');
+      setManualToggled();
     });
 
-    // Listen for changes to the fullscreen mode and adjust panel state accordingly
     this.extensionHost.subscribe(Events.TOGGLE_FULLSCREEN, () => {
       const isInFullScreenMode = this.extension.isFullScreen();
       if (!this.manuallyToggled) {
-        // If the panel state is not manually toggled, toggle based on fullscreen mode
         this.toggle(isInFullScreenMode);
       }
 
       console.log('Fullscreen toggled.');
     });
 
-    // Initial check for fullscreen mode and adjust panel state accordingly
     if (this.extension.isFullScreen()) {
-      // Open the right panel if in fullscreen mode
       if (!this.isFullyExpanded) {
-        // Expand the panel only if it's not fully expanded
         this.expandFull();
       }
     }
-
-    console.log('Initial panel state:', this.isExpanded);
-  }
+}
 
   getTargetWidth(): number {
     return this.isExpanded
