@@ -29,7 +29,6 @@ export class RightPanel<T extends ExpandPanel> extends BaseExpandPanel<T> {
     });
 
     title.on('click', () => {
-        this.toggle();
         setManualToggled();
     });
 
