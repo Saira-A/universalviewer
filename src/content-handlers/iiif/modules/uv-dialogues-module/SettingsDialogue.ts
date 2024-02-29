@@ -3,7 +3,6 @@ import { BaseConfig } from "../../BaseConfig";
 import { IIIFEvents } from "../../IIIFEvents";
 import { Dialogue } from "../uv-shared-module/Dialogue";
 import { ILocale } from "../uv-shared-module/ILocale";
-import { Events } from "../../../../Events";
 
 export class SettingsDialogue extends Dialogue<
   BaseConfig["modules"]["settingsDialogue"]
@@ -139,8 +138,6 @@ export class SettingsDialogue extends Dialogue<
 
     this.$reducedAnimation.append(this.$reducedAnimationLabel);
 
-    let originalCheckboxState = false;
-
     this.$reducedAnimationCheckbox.change(() => {
       const settings: ISettings = {};
 
@@ -151,18 +148,6 @@ export class SettingsDialogue extends Dialogue<
       }
 
       this.updateSettings(settings);
-    });
-
-    this.extensionHost.subscribe(Events.TOGGLE_FULLSCREEN, () => {
-
-      originalCheckboxState = this.$reducedAnimationCheckbox.is(":checked");
-
-      this.$reducedAnimationCheckbox.prop('checked', true).trigger('change');
-      setTimeout(() => {
-        if (!originalCheckboxState) {
-          this.$reducedAnimationCheckbox.prop('checked', false).trigger('change');
-        }
-      }, 100);
     });
   }
 }
