@@ -47,8 +47,6 @@ export class RightPanel<T extends ExpandPanel> extends BaseExpandPanel<T> {
       if (!this.manuallyToggled) {
         this.toggle(isInFullScreenMode);
       }
-
-      console.log('Fullscreen toggled.');
     });
 
     if (this.extension.isFullScreen()) {
