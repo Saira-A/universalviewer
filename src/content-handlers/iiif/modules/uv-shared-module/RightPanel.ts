@@ -38,16 +38,18 @@ export class RightPanel<T extends ExpandPanel> extends BaseExpandPanel<T> {
       } else {
         this.expandFull();
       }
-
       setManualToggled();
     });
 
     this.extensionHost.subscribe(Events.TOGGLE_FULLSCREEN, () => {
       const isInFullScreenMode = this.extension.isFullScreen();
-      if (!this.manuallyToggled) {
-        this.toggle(isInFullScreenMode);
-      }
-    });
+      
+      setTimeout(() => {
+        if (!this.manuallyToggled) {
+          this.toggle(isInFullScreenMode);
+        }
+      }, 100); 
+    });    
 
     if (this.extension.isFullScreen()) {
       if (!this.isFullyExpanded) {
