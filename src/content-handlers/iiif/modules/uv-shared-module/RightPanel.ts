@@ -29,8 +29,16 @@ export class RightPanel<T extends ExpandPanel> extends BaseExpandPanel<T> {
     });
 
     title.on('click', () => {
-        setManualToggled();
+      setManualToggled();
     });
+
+    if (!this.extension.isFullScreen()) {
+      this.toggle(true);
+
+      setTimeout(() => {
+        this.toggle(false);
+      }, 1500); 
+    }
 
     this.extensionHost.subscribe(IIIFEvents.TOGGLE_EXPAND_RIGHT_PANEL, () => {
       if (this.isFullyExpanded) {
@@ -56,7 +64,7 @@ export class RightPanel<T extends ExpandPanel> extends BaseExpandPanel<T> {
         this.expandFull();
       }
     }
-}
+  }
 
   getTargetWidth(): number {
     return this.isExpanded
@@ -91,3 +99,4 @@ export class RightPanel<T extends ExpandPanel> extends BaseExpandPanel<T> {
     });
   }
 }
+
