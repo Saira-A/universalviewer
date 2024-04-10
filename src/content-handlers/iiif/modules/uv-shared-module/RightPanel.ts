@@ -2,70 +2,50 @@ import { ExpandPanel } from "../../extensions/config/ExpandPanel";
 import { IIIFEvents } from "../../IIIFEvents";
 import { BaseExpandPanel } from "./BaseExpandPanel";
 
-export class RightPanel<T extends ExpandPanel> extends BaseExpandPanel<T> {
-  private fullscreenEnabled: boolean;
 
-  constructor($element: JQuery, fullscreenEnabled: boolean) {
+export class RightPanel<T extends ExpandPanel> extends BaseExpandPanel<T> {
+  private manuallyToggled: boolean = false;
+  constructor($element: JQuery) {
     super($element);
-    this.fullscreenEnabled = fullscreenEnabled;
   }
 
   create(): void {
     super.create();
     this.$element.width(this.options.panelCollapsedWidth);
-
-    let isLargeScreen: boolean = window.innerWidth >= 1200;
-
-    const updatePanelBasedOnScreenWidth = () => {
-      const newIsLargeScreen = window.innerWidth >= 1200;
-
-      if (newIsLargeScreen !== isLargeScreen) {
-        isLargeScreen = newIsLargeScreen;
-
-        if (this.fullscreenEnabled && isLargeScreen) {
-          this.toggle(true);
-        } else {
-          this.toggle(false);
-        }
-      }
-    };
-
-    updatePanelBasedOnScreenWidth();
-
-    window.addEventListener('resize', updatePanelBasedOnScreenWidth);
-
-    // Open the panel by default for small screens and close it after a few seconds
-    if (!isLargeScreen) {
-      this.toggle(true);
-
-      setTimeout(() => {
-        this.toggle(false);
-      }, 5000); 
-    }
-
-    this.extensionHost.subscribe(IIIFEvents.TOGGLE_EXPAND_RIGHT_PANEL, () => {
-      if (this.isFullyExpanded) {
-        this.collapseFull();
-      } else {
-        this.expandFull();
-      }
-    });
   }
-
 
   init(): void {
     super.init();
 
-    const isLargeScreen = window.innerWidth >= 1200;
+    const collapseButton = $('.collapseButton');
+    const expandButton = $('.expandButton');
+    const title = $('.title');
 
-    if (isLargeScreen) {
-        // Always set shouldOpenPanel to true to open the right panel by default on large screens
-        const shouldOpenPanel: boolean = true;
+    const setManualToggled = () => {
+        this.manuallyToggled = true;
+    };
 
-        if (shouldOpenPanel) {
-            this.toggle(true);
+    collapseButton.on('click', () => {
+        setManualToggled();
+        this.toggle(false); 
+    });
+
+    expandButton.on('click', () => {
+        setManualToggled();
+        this.toggle(true); 
+    });
+
+    title.on('click', () => {
+        setManualToggled();
+    });
+
+    this.toggle(true);
+
+    setTimeout(() => {
+        if (!this.manuallyToggled) {
+            this.toggle(false);
         }
-    }
+    }, 3000); 
 
     this.extensionHost.subscribe(IIIFEvents.TOGGLE_EXPAND_RIGHT_PANEL, () => {
         if (this.isFullyExpanded) {

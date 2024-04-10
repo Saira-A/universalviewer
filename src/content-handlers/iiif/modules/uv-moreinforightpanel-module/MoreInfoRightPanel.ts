@@ -15,7 +15,7 @@ export class MoreInfoRightPanel extends RightPanel<MoreInfoRightPanelConfig> {
   limit: number;
 
   constructor($element: JQuery) {
-    super($element, false);
+    super($element);
   }
 
   create(): void {
