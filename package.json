@@ -106,6 +106,7 @@
     "@universalviewer/aleph": "0.0.21",
     "@universalviewer/uv-ebook-components": "1.0.2",
     "@webcomponents/webcomponentsjs": "^2.4.3",
+    "chokidar": "^4.0.3",
     "class-variance-authority": "^0.7.1",
     "classnames": "^2.3.1",
     "clean-css": "^5.2.2",
