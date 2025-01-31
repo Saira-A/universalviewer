@@ -10,9 +10,6 @@ import { Bools } from "@edsilv/utils";
 import { isVisible } from "../../../../Utils";
 import { BaseConfig } from "../../BaseConfig";
 import { Root, createRoot } from "react-dom/client";
-import { createElement } from "react";
-
-import ShadcnTest from "./ShadcnTest";
 
 export class HeaderPanel<
   T extends BaseConfig["modules"]["headerPanel"]
@@ -26,8 +23,9 @@ export class HeaderPanel<
   $settingsButton: JQuery;
   information: Information;
 
-  $shadcnTest: JQuery;
-  shadcnTestRoot: Root;
+  $leftOptions: JQuery;
+  leftOptionsRoot: Root;
+  rightOptionsRoot: Root;
 
   constructor($element: JQuery) {
     super($element, false, false);
@@ -52,19 +50,18 @@ export class HeaderPanel<
     this.$options = $('<div class="options"></div>');
     this.$element.append(this.$options);
 
-    this.$shadcnTest = $('<div class="shadcntest"></div>');
-    this.$element.prepend(this.$shadcnTest);
-    this.shadcnTestRoot = createRoot(this.$shadcnTest[0]);
-    this.shadcnTestRoot.render(
-      createElement(ShadcnTest, {}
-      )
-    )
+    this.$leftOptions = $('<div class="leftOptions"></div>');
+    this.$options.append(this.$leftOptions);
+    this.leftOptionsRoot = createRoot(this.$leftOptions[0]);
 
     this.$centerOptions = $('<div class="centerOptions"></div>');
     this.$options.append(this.$centerOptions);
+    //hide for now until all center options functions are transferred to left options container
+    this.$centerOptions.hide();
 
     this.$rightOptions = $('<div class="rightOptions"></div>');
     this.$options.append(this.$rightOptions);
+    this.rightOptionsRoot = createRoot(this.$rightOptions[0]);
 
     //this.$helpButton = $('<a href="#" class="action help">' + this.content.help + '</a>');
     //this.$rightOptions.append(this.$helpButton);
