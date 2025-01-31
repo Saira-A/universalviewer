@@ -461,14 +461,12 @@ export class PagingHeaderPanel extends HeaderPanel<
 
     //render react components in left and right roots
     this.leftOptionsRoot.render(
-      createElement(PagingHeaderPanelLeftOptions, {}
-      )
-    )
+      createElement(PagingHeaderPanelLeftOptions, {})
+    );
 
     this.rightOptionsRoot.render(
-      createElement(PagingHeaderPanelRightOptions, {}
-      )
-    )
+      createElement(PagingHeaderPanelRightOptions, {})
+    );
   }
 
   openGallery(): void {
