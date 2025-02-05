@@ -17,7 +17,7 @@ const PagingHeaderPanelRightOptions: React.FC<Props> = ({ extensionHost }) => {
 
   return (
     <div className="headerOptions">
-      <Button variant="outline" size="icon" onClick={handleDownloadClick}>
+      <Button variant="outline" size="icon" onClick={handleDownloadClick} tabIndex={0}>
         <Download />
       </Button>
     </div>
