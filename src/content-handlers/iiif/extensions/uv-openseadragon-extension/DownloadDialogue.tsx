@@ -86,37 +86,34 @@ const DownloadDialogue = ({
 
   useEffect(() => {
     if (open) {
-      const top: number =
-        parent.clientHeight -
-        ref.current!.clientHeight -
-        triggerButton.clientHeight;
+      const buttonRect = triggerButton?.getBoundingClientRect();
+      const parentRect = parent?.getBoundingClientRect();
+      const top: number = (buttonRect?.top || 0) - (parentRect?.top || 0) + 5;
 
+  
       let left: number =
-        triggerButton.getBoundingClientRect().left -
-        parent.getBoundingClientRect().left;
-
-      const normalisedPos: number = Maths.normalise(
-        left,
-        0,
-        parent.clientWidth
-      );
-
+        (triggerButton?.getBoundingClientRect().left || 0) -
+        (parent?.getBoundingClientRect().left || 0);
+  
+      const normalisedPos: number = Maths.normalise(left, 0, parent?.clientWidth || 0);
+  
       left =
         parent.clientWidth * normalisedPos -
-        ref.current!.clientWidth * normalisedPos;
-
-      const arrowLeft = ref.current!.clientWidth * normalisedPos;
-
+        (ref.current?.clientWidth || 0) * normalisedPos;
+  
+      const arrowLeft = ref.current?.clientWidth || 0;
+  
       setPosition({ top: `${top}px`, left: `${left}px` });
       setArrowPosition(`${arrowLeft}px 0px`);
-
+  
       // Focus on the first element when opened
       const focusableElements = getFocusableElements();
       if (focusableElements && focusableElements.length > 0) {
         focusableElements[0]?.focus();
       }
     }
-  }, [open]);
+  }, [open, parent, triggerButton]); 
+  
 
   // Method to get focusable elements inside the component
   const getFocusableElements = (): NodeListOf<HTMLElement> | null => {

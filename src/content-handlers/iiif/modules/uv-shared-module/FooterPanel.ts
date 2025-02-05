@@ -140,12 +140,12 @@ export class FooterPanel<
       );
     });
 
-    this.$downloadButton.onPressed(() => {
-      this.extensionHost.publish(
-        IIIFEvents.SHOW_DOWNLOAD_DIALOGUE,
-        this.$downloadButton
-      );
-    });
+    // this.$downloadButton.onPressed(() => {
+    //   this.extensionHost.publish(
+    //     IIIFEvents.SHOW_DOWNLOAD_DIALOGUE,
+    //     this.$downloadButton
+    //   );
+    // });
 
     this.$moreInfoButton.onPressed(() => {
       this.extensionHost.publish(

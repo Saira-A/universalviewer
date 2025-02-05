@@ -490,7 +490,7 @@ export default class OpenSeadragonExtension extends BaseExtension<Config> {
       (triggerButton) => {
         const state = this.store.getState();
         if (state !== null) {
-          state.openDownloadDialogue(triggerButton[0]);
+          state.openDownloadDialogue(triggerButton);
         }
       }
     );
