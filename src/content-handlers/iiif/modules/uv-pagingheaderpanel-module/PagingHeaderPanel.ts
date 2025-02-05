@@ -465,7 +465,9 @@ export class PagingHeaderPanel extends HeaderPanel<
     );
 
     this.rightOptionsRoot.render(
-      createElement(PagingHeaderPanelRightOptions, { extensionHost: this.extensionHost })
+      createElement(PagingHeaderPanelRightOptions, {
+        extensionHost: this.extensionHost,
+      })
     );
   }
 
