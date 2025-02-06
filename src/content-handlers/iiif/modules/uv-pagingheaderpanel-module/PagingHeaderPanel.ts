@@ -461,7 +461,15 @@ export class PagingHeaderPanel extends HeaderPanel<
 
     //render react components in left and right roots
     this.leftOptionsRoot.render(
-      createElement(PagingHeaderPanelLeftOptions, {})
+      createElement(PagingHeaderPanelLeftOptions, {
+        helper: this.extension.helper,
+        onClick: (index: number) => {
+          this.extensionHost.publish(
+            OpenSeadragonExtensionEvents.IMAGE_SEARCH,
+            index
+          );
+        },
+      })
     );
 
     this.rightOptionsRoot.render(
