@@ -150,7 +150,11 @@ export class PDFHeaderPanel extends HeaderPanel<
     //render PDF options react components in roots
     this.leftOptionsRoot.render(createElement(PDFHeaderPanelLeftOptions, {}));
 
-    this.rightOptionsRoot.render(createElement(PDFHeaderPanelRightOptions, { extensionHost: this.extensionHost }));
+    this.rightOptionsRoot.render(
+      createElement(PDFHeaderPanelRightOptions, {
+        extensionHost: this.extensionHost,
+      })
+    );
   }
 
   render(): void {

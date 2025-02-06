@@ -27,7 +27,6 @@ const PDFHeaderPanelRightOptions: React.FC<Props> = ({ extensionHost }) => {
       >
         <Download />
       </Button>
-
     </div>
   );
 };
