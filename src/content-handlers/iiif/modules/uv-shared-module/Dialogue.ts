@@ -111,7 +111,7 @@ export class Dialogue<
       const d: number = this.$element.outerHeight(true);
       const e: number = a - b - d;
 
-      top = e + verticalPadding;
+      top = e + verticalPadding + window.innerHeight * 0.25;
 
       const f: number = (<JQueryCoordinates>this.$triggerButton.offset()).left;
       const g: number = (<JQueryCoordinates>this.extension.$element.offset())
