@@ -4,6 +4,9 @@ import { PDFExtensionEvents } from "../../extensions/uv-pdf-extension/Events";
 import { Config } from "../../extensions/uv-pdf-extension/config/Config";
 import { HeaderPanel } from "../uv-shared-module/HeaderPanel";
 import { Strings } from "@edsilv/utils";
+import { createElement } from "react";
+import PDFHeaderPanelLeftOptions from "./PDFHeaderPanelLeftOptions";
+import PDFHeaderPanelRightOptions from "./PDFHeaderPanelRightOptions";
 
 export class PDFHeaderPanel extends HeaderPanel<
   Config["modules"]["pdfHeaderPanel"]
@@ -143,6 +146,11 @@ export class PDFHeaderPanel extends HeaderPanel<
     this.onAccessibleClick(this.$searchButton, () => {
       this.search(this.$searchText.val());
     });
+
+    //render PDF options react components in roots
+    this.leftOptionsRoot.render(createElement(PDFHeaderPanelLeftOptions, {}));
+
+    this.rightOptionsRoot.render(createElement(PDFHeaderPanelRightOptions, {}));
   }
 
   render(): void {
@@ -183,6 +191,9 @@ export class PDFHeaderPanel extends HeaderPanel<
       this.$nextButton.enable();
       this.$nextButton.removeAttr("disabled");
     }
+
+    //hide center options until functionality is moved to react component
+    this.$centerOptions.hide();
   }
 
   search(value: string): void {

@@ -10,6 +10,9 @@ import { ViewingDirection } from "@iiif/vocabulary/dist-commonjs/";
 import { Bools, Strings } from "@edsilv/utils";
 import { Canvas, LanguageMap, ManifestType } from "manifesto.js";
 import { Config } from "../../extensions/uv-openseadragon-extension/config/Config";
+import { createElement } from "react";
+import PagingHeaderPanelLeftOptions from "./PagingHeaderPanelLeftOptions";
+import PagingHeaderPanelRightOptions from "./PagingHeaderPanelRightOptions";
 
 export class PagingHeaderPanel extends HeaderPanel<
   Config["modules"]["pagingHeaderPanel"]
@@ -455,6 +458,15 @@ export class PagingHeaderPanel extends HeaderPanel<
     if (!Bools.getBool(this.options.pagingToggleEnabled, true)) {
       this.$pagingToggleButtons.hide();
     }
+
+    //render react components in left and right roots
+    this.leftOptionsRoot.render(
+      createElement(PagingHeaderPanelLeftOptions, {})
+    );
+
+    this.rightOptionsRoot.render(
+      createElement(PagingHeaderPanelRightOptions, {})
+    );
   }
 
   openGallery(): void {
