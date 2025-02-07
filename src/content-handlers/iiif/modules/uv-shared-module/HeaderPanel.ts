@@ -13,7 +13,6 @@ import { Root, createRoot } from "react-dom/client";
 import { createElement } from "react";
 import HeaderPanelRightOptions from "./HeaderPanelRightOptions";
 
-
 export class HeaderPanel<
   T extends BaseConfig["modules"]["headerPanel"]
 > extends BaseView<T> {
@@ -233,11 +232,7 @@ export class HeaderPanel<
       }
     }
 
-    this.rightOptionsRoot.render(
-      createElement(HeaderPanelRightOptions, {}
-      )
-    )
-  
+    this.rightOptionsRoot.render(createElement(HeaderPanelRightOptions, {}));
 
     // hide toggle buttons below minimum width
     if (this.extension.isMobileMetric()) {
