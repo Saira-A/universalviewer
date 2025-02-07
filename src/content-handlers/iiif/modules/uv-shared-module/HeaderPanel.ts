@@ -10,6 +10,9 @@ import { Bools } from "@edsilv/utils";
 import { isVisible } from "../../../../Utils";
 import { BaseConfig } from "../../BaseConfig";
 import { Root, createRoot } from "react-dom/client";
+import { createElement } from "react";
+import HeaderPanelRightOptions from "./HeaderPanelRightOptions";
+
 
 export class HeaderPanel<
   T extends BaseConfig["modules"]["headerPanel"]
@@ -229,6 +232,12 @@ export class HeaderPanel<
         $message.text(this.information.message);
       }
     }
+
+    this.rightOptionsRoot.render(
+      createElement(HeaderPanelRightOptions, {}
+      )
+    )
+  
 
     // hide toggle buttons below minimum width
     if (this.extension.isMobileMetric()) {
