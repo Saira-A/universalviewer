@@ -487,10 +487,17 @@ export default class OpenSeadragonExtension extends BaseExtension<Config> {
 
     this.extensionHost.subscribe(
       IIIFEvents.SHOW_DOWNLOAD_DIALOGUE,
-      (triggerButton) => {
+      (triggerButton: HTMLElement | HTMLElement[]) => {
         const state = this.store.getState();
         if (state !== null) {
-          state.openDownloadDialogue(triggerButton[0]);
+          // footer button
+          if (Array.isArray(triggerButton)) {
+            state.openDownloadDialogue(triggerButton[0]);
+          }
+          // header button
+          else if (triggerButton instanceof HTMLElement) {
+            state.openDownloadDialogue(triggerButton);
+          }
         }
       }
     );

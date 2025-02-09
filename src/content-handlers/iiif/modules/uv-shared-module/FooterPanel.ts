@@ -140,10 +140,10 @@ export class FooterPanel<
       );
     });
 
-    this.$downloadButton.onPressed(() => {
+    this.$downloadButton.on("click", () => {
       this.extensionHost.publish(
         IIIFEvents.SHOW_DOWNLOAD_DIALOGUE,
-        this.$downloadButton
+        [this.$downloadButton[0]] 
       );
     });
 

@@ -234,10 +234,10 @@ export class HeaderPanel<
     }
 
     this.rightOptionsRoot.render(
-      createElement(HeaderPanelRightOptions, {}
-      )
-    )
-  
+      createElement(HeaderPanelRightOptions, {
+        extensionHost: this.extensionHost,
+      })
+    );
 
     // hide toggle buttons below minimum width
     if (this.extension.isMobileMetric()) {
