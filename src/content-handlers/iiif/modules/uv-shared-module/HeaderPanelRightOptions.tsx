@@ -10,9 +10,11 @@ interface Props {
 
 const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost }) => {
   const handleDownloadClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    extensionHost.publish(IIIFEvents.SHOW_DOWNLOAD_DIALOGUE, event.currentTarget);
-  };    
-  
+    extensionHost.publish(
+      IIIFEvents.SHOW_DOWNLOAD_DIALOGUE,
+      event.currentTarget
+    );
+  };
 
   return (
     <div className="headerOptions">

@@ -13,7 +13,6 @@ import { Root, createRoot } from "react-dom/client";
 import { createElement } from "react";
 import HeaderPanelRightOptions from "./HeaderPanelRightOptions";
 
-
 export class HeaderPanel<
   T extends BaseConfig["modules"]["headerPanel"]
 > extends BaseView<T> {
