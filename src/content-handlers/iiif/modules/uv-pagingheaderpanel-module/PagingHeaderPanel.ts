@@ -461,14 +461,6 @@ export class PagingHeaderPanel extends HeaderPanel<
       this.$pagingToggleButtons.hide();
     }
 
-    this.renderLeftOptions();
-
-    this.rightOptionsRoot.render(
-      createElement(PagingHeaderPanelRightOptions, {})
-    );
-  }
-
-  renderLeftOptions(): void {
     this.leftOptionsRoot.render(
       createElement(PagingHeaderPanelLeftOptions, {
         helper: this.extension.helper,
@@ -481,7 +473,14 @@ export class PagingHeaderPanel extends HeaderPanel<
         },
       })
     );
+  
+
+    this.rightOptionsRoot.render(
+      createElement(PagingHeaderPanelRightOptions, {})
+    );
   }
+
+ 
 
   openGallery(): void {
     this.$oneUpButton.removeClass("on");
