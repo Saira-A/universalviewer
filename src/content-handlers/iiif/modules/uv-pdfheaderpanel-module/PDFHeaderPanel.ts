@@ -8,7 +8,6 @@ import PDFHeaderPanelRightOptions from "./PDFHeaderPanelRightOptions";
 export class PDFHeaderPanel extends HeaderPanel<
   Config["modules"]["pdfHeaderPanel"]
 > {
-  
   private _pdfDoc: any = null;
 
   constructor($element: JQuery) {
@@ -38,7 +37,6 @@ export class PDFHeaderPanel extends HeaderPanel<
   }
 
   render(): void {
-
     //render PDF options react components in roots
     this.leftOptionsRoot.render(
       createElement(PDFHeaderPanelLeftOptions, {
@@ -68,7 +66,6 @@ export class PDFHeaderPanel extends HeaderPanel<
 
     this.extensionHost.publish(PDFExtensionEvents.SEARCH, index);
   }
-
 
   resize(): void {
     super.resize();

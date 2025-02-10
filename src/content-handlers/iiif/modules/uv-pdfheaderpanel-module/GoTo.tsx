@@ -13,15 +13,15 @@ interface Props {
 
 function Icon() {
   return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 30 30"
       width="30"
       height="30"
       fill="white"
     >
-      <path d="M2 2.5L15 15L2 27.5V2.5Z"/>
-      <path d="M15 2.5L28 15L15 27.5V2.5Z"/>
+      <path d="M2 2.5L15 15L2 27.5V2.5Z" />
+      <path d="M15 2.5L28 15L15 27.5V2.5Z" />
     </svg>
   );
 }
@@ -34,16 +34,15 @@ const GoTo: React.FC<Props> = ({ numPages, onClick }) => {
 
   const pageRange = Array.from({ length: numPages }, (_, i) => i + 1);
 
-  const filteredItems = pageRange.filter((item) =>
-    (item).toString().includes(searchTerm)
-  ).map(String);
+  const filteredItems = pageRange
+    .filter((item) => item.toString().includes(searchTerm))
+    .map(String);
 
   const handleSelect = (value: string) => {
     onClick(value);
     setOpen(false);
     setSearchTerm("");
   };
-
 
   useEffect(() => {
     if (open && inputRef.current) {
@@ -66,7 +65,7 @@ const GoTo: React.FC<Props> = ({ numPages, onClick }) => {
         align="start"
         sideOffset={0}
         className="w-[90px] p-0 text-xs bg-white"
-          >
+      >
         <input
           ref={inputRef}
           type="text"
@@ -74,7 +73,7 @@ const GoTo: React.FC<Props> = ({ numPages, onClick }) => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') {
+            if (e.key === "Enter") {
               // Pass the input value (searchTerm) to the onClick function
               handleSelect(searchTerm);
             }
@@ -82,7 +81,10 @@ const GoTo: React.FC<Props> = ({ numPages, onClick }) => {
           className="w-full h-[22px] px-2 py-1 text-background focus:outline-none"
         />
         <div className="py-2">
-          <div className="tailwind-scroll max-h-[230px] overflow-y-auto" ref={dropdownRef}>
+          <div
+            className="tailwind-scroll max-h-[230px] overflow-y-auto"
+            ref={dropdownRef}
+          >
             {filteredItems.map((item) => (
               <div
                 key={item}
