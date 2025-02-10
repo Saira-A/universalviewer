@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-// import GoTo from "./GoTo";
-import GoTo from "./GoTo2";
+import GoTo from "./GoTo";
 
-const PagingHeaderPanelLeftOptions = ({ helper, onClick }) => {
+const PagingHeaderPanelLeftOptions = ({ helper, pageMode, onClick }) => {
 
   const [canvasItems, setCanvasItems] = useState([]);
 
@@ -17,9 +16,8 @@ const PagingHeaderPanelLeftOptions = ({ helper, onClick }) => {
 
 
   return (
-    <div className="flex h-full">
-      <div className="w-[30px] h-full flex items-center justify-center">S</div>
-      <GoTo canvasItems={canvasItems} onClick={onClick}/>
+    <div className="flex h-full gap-0 ml-[8px]">
+      <GoTo canvasItems={canvasItems} pageMode={pageMode} onClick={onClick}/>
     </div>
   )
 };

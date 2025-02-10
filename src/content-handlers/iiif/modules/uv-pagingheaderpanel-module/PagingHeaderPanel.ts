@@ -434,6 +434,8 @@ export class PagingHeaderPanel extends HeaderPanel<
       this.$helpButton.hide();
     }
 
+
+
     // todo: discuss on community call
     // Get visible element in centerOptions with greatest tabIndex
     // var $elementWithGreatestTabIndex: JQuery = this.$centerOptions.getVisibleElementWithGreatestTabIndex();
@@ -459,10 +461,18 @@ export class PagingHeaderPanel extends HeaderPanel<
       this.$pagingToggleButtons.hide();
     }
 
-    //render react components in left and right roots
+    this.renderLeftOptions();
+
+    this.rightOptionsRoot.render(
+      createElement(PagingHeaderPanelRightOptions, {})
+    );
+  }
+
+  renderLeftOptions(): void {
     this.leftOptionsRoot.render(
       createElement(PagingHeaderPanelLeftOptions, {
         helper: this.extension.helper,
+        pageMode: this.isPageModeEnabled(),
         onClick: (index: number) => {
           this.extensionHost.publish(
             OpenSeadragonExtensionEvents.IMAGE_SEARCH,
@@ -470,10 +480,6 @@ export class PagingHeaderPanel extends HeaderPanel<
           );
         },
       })
-    );
-
-    this.rightOptionsRoot.render(
-      createElement(PagingHeaderPanelRightOptions, {})
     );
   }
 

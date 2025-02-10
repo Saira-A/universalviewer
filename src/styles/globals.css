@@ -3,8 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-  /* I've switched the shadcn default root styles for the shadcn dark mode styles as they're closer to UV.
-  But these should eventually be adjusted to be closer to current UV style*/
   :root {
     --background: 0 0% 0%;
     --foreground: 0 0% 100%;
@@ -24,7 +22,7 @@
     --secondary-foreground: 210 40% 98%;
     --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
-    --ring: 216 34% 17%;
+    --ring: 188 69% 47%;
   }
 }
 
@@ -34,15 +32,11 @@
 }
 
 .tailwind-scroll::-webkit-scrollbar-track {
-  background: #888;
+  background: 0 0% 13%;
   border-radius: 0px;
 }
 
 .tailwind-scroll::-webkit-scrollbar-thumb {
-  background: #000;
+  background: #565656;
   border-radius: 0px;
-}
-
-.tailwind-scroll::-webkit-scrollbar-thumb:hover {
-  background: #555;
 }
