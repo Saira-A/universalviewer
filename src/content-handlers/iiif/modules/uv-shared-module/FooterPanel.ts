@@ -95,7 +95,7 @@ export class FooterPanel<
         <i class="uv-icon uv-icon-download" aria-hidden="true"></i>
         <span class="sr-only">${this.content.download}</span>
       </button>
-    `);    
+    `);
     this.$options.prepend(this.$downloadButton);
 
     this.$moreInfoButton = $(`
