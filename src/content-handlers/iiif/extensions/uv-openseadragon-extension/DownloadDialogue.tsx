@@ -79,7 +79,11 @@ const DownloadDialogue = ({
   triggerButton: HTMLElement;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ top: "0px", left: "0px", right: "auto" });
+  const [position, setPosition] = useState({
+    top: "0px",
+    left: "0px",
+    right: "auto",
+  });
   const [arrowPosition, _setArrowPosition] = useState("0px 0px");
   const [selectedPage, setSelectedPage] = useState<"left" | "right">("left");
   const hasNormalDimensions: boolean = rotation % 180 == 0;
@@ -91,23 +95,20 @@ const DownloadDialogue = ({
 
       let top, left, right;
 
-      
-      const isOldButton = triggerButton.id === "download-btn"; 
+      const isOldButton = triggerButton.id === "download-btn";
 
       if (isOldButton) {
-        
-        top = buttonRect.top - parentRect.top - ref.current!.clientHeight; 
-        left = buttonRect.left - parentRect.left; 
-        right = "auto"; 
+        top = buttonRect.top - parentRect.top - ref.current!.clientHeight;
+        left = buttonRect.left - parentRect.left;
+        right = "auto";
       } else {
-
-        top = buttonRect.bottom - parentRect.top; 
-        left = "auto"; 
+        top = buttonRect.bottom - parentRect.top;
+        left = "auto";
 
         const availableSpace = parent.clientWidth - buttonRect.right;
 
         const dialogueWidth = ref.current!.clientWidth;
-        right = Math.min(availableSpace, dialogueWidth); 
+        right = Math.min(availableSpace, dialogueWidth);
       }
 
       setPosition({ top: `${top}px`, left: left, right: `${right}px` });
@@ -118,7 +119,7 @@ const DownloadDialogue = ({
       }
 
       if (!isOldButton) {
-        const arrowElement = ref.current?.querySelector('.bottom');
+        const arrowElement = ref.current?.querySelector(".bottom");
         if (arrowElement) {
           arrowElement.remove();
         }
