@@ -21,10 +21,7 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost }) => {
   };
 
   const handleEmbedClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    extensionHost.publish(
-      IIIFEvents.SHOW_EMBED_DIALOGUE,
-      event.currentTarget
-    );
+    extensionHost.publish(IIIFEvents.SHOW_EMBED_DIALOGUE, event.currentTarget);
   };
 
   return (
