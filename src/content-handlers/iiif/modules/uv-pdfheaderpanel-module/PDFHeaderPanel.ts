@@ -6,7 +6,7 @@ import { HeaderPanel } from "../uv-shared-module/HeaderPanel";
 import { Strings } from "@edsilv/utils";
 import { createElement } from "react";
 import PDFHeaderPanelLeftOptions from "./PDFHeaderPanelLeftOptions";
-import PDFHeaderPanelRightOptions from "./PDFHeaderPanelRightOptions";
+// import PDFHeaderPanelRightOptions from "./PDFHeaderPanelRightOptions";
 
 export class PDFHeaderPanel extends HeaderPanel<
   Config["modules"]["pdfHeaderPanel"]
@@ -150,7 +150,7 @@ export class PDFHeaderPanel extends HeaderPanel<
     //render PDF options react components in roots
     this.leftOptionsRoot.render(createElement(PDFHeaderPanelLeftOptions, {}));
 
-    this.rightOptionsRoot.render(createElement(PDFHeaderPanelRightOptions, {}));
+    // this.rightOptionsRoot.render(createElement(PDFHeaderPanelRightOptions, {}));
   }
 
   render(): void {
