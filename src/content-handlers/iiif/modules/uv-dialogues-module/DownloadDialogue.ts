@@ -44,21 +44,24 @@ export class DownloadDialogue extends Dialogue<
     this.openCommand = IIIFEvents.SHOW_DOWNLOAD_DIALOGUE;
     this.closeCommand = IIIFEvents.HIDE_DOWNLOAD_DIALOGUE;
 
-    let lastButton: HTMLElement;
-    this.extensionHost.subscribe(
-      this.openCommand,
-      (triggerButton: HTMLElement) => {
-        lastButton = triggerButton;
-        this.open(triggerButton);
-      }
-    );
+    let lastButton: HTMLElement | null = null; 
 
-    this.extensionHost.subscribe(this.closeCommand, () => {
-      if (lastButton) {
-        lastButton.focus();
-      }
-      this.close();
-    });
+this.extensionHost.subscribe(
+  this.openCommand,
+  (triggerButton: HTMLElement) => {
+    lastButton = triggerButton; 
+    this.open(triggerButton);
+  }
+);
+
+this.extensionHost.subscribe(this.closeCommand, () => {
+  if (lastButton instanceof HTMLElement) {
+    lastButton.focus(); 
+  } else {
+    console.warn("lastButton is not a valid HTMLElement:", lastButton);
+  }
+  this.close
+});
 
     // create ui.
     this.$title = $(

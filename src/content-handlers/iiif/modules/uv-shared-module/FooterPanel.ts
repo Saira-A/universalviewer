@@ -91,11 +91,11 @@ export class FooterPanel<
     this.$options.append(this.$embedButton);
 
     this.$downloadButton = $(`
-          <button class="download btn imageBtn" title="${this.content.download}" id="download-btn">
-            <i class="uv-icon uv-icon-download" aria-hidden="true"></i>
-            <span class="sr-only">${this.content.download}</span>
-          </button>
-        `);
+      <button class="download btn imageBtn" title="${this.content.download}" id="download-btn" data-panel="footer">
+        <i class="uv-icon uv-icon-download" aria-hidden="true"></i>
+        <span class="sr-only">${this.content.download}</span>
+      </button>
+    `);    
     this.$options.prepend(this.$downloadButton);
 
     this.$moreInfoButton = $(`

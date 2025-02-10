@@ -16,7 +16,7 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost }) => {
 
   return (
     <div className="headerOptions">
-      <Button variant="outline" size="icon" onClick={handleDownloadClick}>
+      <Button variant="outline" className="text-white" size="icon" onClick={handleDownloadClick} data-panel="header">
         <Download />
       </Button>
     </div>
