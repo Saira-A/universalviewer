@@ -8,6 +8,7 @@ export class PDFHeaderPanel extends HeaderPanel<
   Config["modules"]["pdfHeaderPanel"]
 > {
   
+  
   private _pdfDoc: any = null;
 
   constructor($element: JQuery) {
@@ -46,6 +47,16 @@ export class PDFHeaderPanel extends HeaderPanel<
         },
       })
     );
+
+    //render PDF options react components in roots
+    this.leftOptionsRoot.render(
+      createElement(PDFHeaderPanelLeftOptions, {
+        numPages: this._pdfDoc.numPages,
+        onClick: (value: string) => {
+          this.search(value);
+        },
+      })
+    );
   }
 
   search(value: string): void {
@@ -54,6 +65,7 @@ export class PDFHeaderPanel extends HeaderPanel<
       return;
     }
 
+    let index: number = parseInt(value, 10);
     let index: number = parseInt(value, 10);
 
     if (isNaN(index)) {
@@ -66,6 +78,7 @@ export class PDFHeaderPanel extends HeaderPanel<
 
     this.extensionHost.publish(PDFExtensionEvents.SEARCH, index);
   }
+
 
 
   resize(): void {

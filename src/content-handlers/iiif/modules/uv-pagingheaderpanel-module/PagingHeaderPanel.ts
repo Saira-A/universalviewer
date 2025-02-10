@@ -472,6 +472,7 @@ export class PagingHeaderPanel extends HeaderPanel<
         },
       })
     );
+  
 
   }
 
