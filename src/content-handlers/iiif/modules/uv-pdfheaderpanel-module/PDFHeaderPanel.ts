@@ -3,7 +3,6 @@ import { Config } from "../../extensions/uv-pdf-extension/config/Config";
 import { HeaderPanel } from "../uv-shared-module/HeaderPanel";
 import { createElement } from "react";
 import PDFHeaderPanelLeftOptions from "./PDFHeaderPanelLeftOptions";
-// import PDFHeaderPanelRightOptions from "./PDFHeaderPanelRightOptions";
 
 export class PDFHeaderPanel extends HeaderPanel<
   Config["modules"]["pdfHeaderPanel"]
@@ -34,7 +33,6 @@ export class PDFHeaderPanel extends HeaderPanel<
       }
     );
 
-    this.rightOptionsRoot.render(createElement(PDFHeaderPanelRightOptions, {}));
   }
 
   render(): void {

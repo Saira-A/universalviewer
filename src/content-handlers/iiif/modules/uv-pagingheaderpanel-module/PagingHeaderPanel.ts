@@ -12,7 +12,6 @@ import { Canvas, LanguageMap, ManifestType } from "manifesto.js";
 import { Config } from "../../extensions/uv-openseadragon-extension/config/Config";
 import { createElement } from "react";
 import PagingHeaderPanelLeftOptions from "./PagingHeaderPanelLeftOptions";
-// import PagingHeaderPanelRightOptions from "./PagingHeaderPanelRightOptions";
 
 export class PagingHeaderPanel extends HeaderPanel<
   Config["modules"]["pagingHeaderPanel"]
@@ -473,11 +472,7 @@ export class PagingHeaderPanel extends HeaderPanel<
         },
       })
     );
-  
 
-    this.rightOptionsRoot.render(
-      createElement(PagingHeaderPanelRightOptions, {})
-    );
   }
 
  
