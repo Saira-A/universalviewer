@@ -29,7 +29,6 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost }) => {
     extensionHost.publish(OpenSeadragonExtensionEvents.PRINT);
   };
 
-
   return (
     <div className="headerOptions">
       <Button
