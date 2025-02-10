@@ -1,5 +1,5 @@
 import React from "react";
-import { Download, Share2Icon } from "lucide-react";
+import { Download, Share2Icon, Code } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { IIIFEvents } from "../../IIIFEvents";
 import { IIIFExtensionHost } from "../../IIIFExtensionHost";
@@ -23,6 +23,13 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost }) => {
     );
   };
 
+  const handleEmbedClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    extensionHost.publish(
+      IIIFEvents.SHOW_EMBED_DIALOGUE,
+      event.currentTarget
+    );
+  };
+
   return (
     <div className="headerOptions">
       <Button
@@ -42,6 +49,15 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost }) => {
         data-panel="header"
       >
         <Share2Icon />
+      </Button>
+      <Button
+        variant="outline"
+        className="text-white"
+        size="icon"
+        onClick={handleEmbedClick}
+        data-panel="header"
+      >
+        <Code />
       </Button>
     </div>
   );

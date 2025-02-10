@@ -118,15 +118,15 @@
     },
     "footerPanel": {
       "options": {
-        "bookmarkEnabled": false,
+        "bookmarkEnabled": true,
         "downloadEnabled": true,
-        "embedEnabled": false,
-        "feedbackEnabled": false,
+        "embedEnabled": true,
+        "feedbackEnabled": true,
         "fullscreenEnabled": true,
         "minimiseButtons": true,
         "moreInfoEnabled": true,
-        "openEnabled": false,
-        "printEnabled": false,
+        "openEnabled": true,
+        "printEnabled": true,
         "shareEnabled": true
       },
       "content": {
