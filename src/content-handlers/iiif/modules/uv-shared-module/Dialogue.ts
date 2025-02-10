@@ -106,12 +106,24 @@ export class Dialogue<
       const horizontalPadding: number = 2;
 
       const a: number = (<any>this.$triggerButton.offset()).top;
-      const b: number = (<JQueryCoordinates>this.extension.$element.offset())
-        .top;
-      const d: number = this.$element.outerHeight(true);
-      const e: number = a - b - d;
-
-      top = e + verticalPadding;
+      if (this.$triggerButton.data('panel') === 'header') {
+        top = a + this.$triggerButton.outerHeight(true) + verticalPadding;
+  
+        // remove .bottom arrow for header 
+        if (this.$bottom.length && !this.$bottom.hasClass('header-removed')) {
+          this.$bottom.remove();
+          this.$bottom.addClass('header-removed');  
+        }
+      } else {
+        top = a - this.$element.outerHeight(true) - verticalPadding;
+  
+        // Ensure .bottom is restored for footer, if it was previously removed for header
+        if (this.$bottom.hasClass('header-removed')) {
+          this.$bottom = $('<div class="bottom"></div>');  
+          this.$element.append(this.$bottom);  
+          this.$bottom.removeClass('header-removed');  
+        }
+      }
 
       const f: number = (<JQueryCoordinates>this.$triggerButton.offset()).left;
       const g: number = (<JQueryCoordinates>this.extension.$element.offset())
@@ -127,14 +139,18 @@ export class Dialogue<
         ) + horizontalPadding;
       arrowLeft = Math.floor(this.$element.width() * normalisedPos);
     }
-
-    this.$bottom.css("backgroundPosition", arrowLeft + "px 0px");
+    if (this.$bottom.length && !this.$bottom.hasClass('header-removed')) {
+      this.$bottom.css("backgroundPosition", arrowLeft + "px 0px");
+    }
 
     this.$element.css({
       top: top,
       left: left,
     });
-  }
+    this.$buttons.css({
+      bottom: "10px",
+    });
+}
 
   open(triggerButton?: HTMLElement): void {
     this.$element.attr("aria-hidden", "false");
