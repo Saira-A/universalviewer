@@ -106,22 +106,22 @@ export class Dialogue<
       const horizontalPadding: number = 2;
 
       const a: number = (<any>this.$triggerButton.offset()).top;
-      if (this.$triggerButton.data('panel') === 'header') {
+      if (this.$triggerButton.data("panel") === "header") {
         top = a + this.$triggerButton.outerHeight(true) + verticalPadding;
-  
-        // remove .bottom arrow for header 
-        if (this.$bottom.length && !this.$bottom.hasClass('header-removed')) {
+
+        // remove .bottom arrow for header
+        if (this.$bottom.length && !this.$bottom.hasClass("header-removed")) {
           this.$bottom.remove();
-          this.$bottom.addClass('header-removed');  
+          this.$bottom.addClass("header-removed");
         }
       } else {
         top = a - this.$element.outerHeight(true) - verticalPadding;
-  
+
         // Ensure .bottom is restored for footer, if it was previously removed for header
-        if (this.$bottom.hasClass('header-removed')) {
-          this.$bottom = $('<div class="bottom"></div>');  
-          this.$element.append(this.$bottom);  
-          this.$bottom.removeClass('header-removed');  
+        if (this.$bottom.hasClass("header-removed")) {
+          this.$bottom = $('<div class="bottom"></div>');
+          this.$element.append(this.$bottom);
+          this.$bottom.removeClass("header-removed");
         }
       }
 
@@ -139,7 +139,7 @@ export class Dialogue<
         ) + horizontalPadding;
       arrowLeft = Math.floor(this.$element.width() * normalisedPos);
     }
-    if (this.$bottom.length && !this.$bottom.hasClass('header-removed')) {
+    if (this.$bottom.length && !this.$bottom.hasClass("header-removed")) {
       this.$bottom.css("backgroundPosition", arrowLeft + "px 0px");
     }
 
@@ -150,7 +150,7 @@ export class Dialogue<
     this.$buttons.css({
       bottom: "10px",
     });
-}
+  }
 
   open(triggerButton?: HTMLElement): void {
     this.$element.attr("aria-hidden", "false");

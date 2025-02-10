@@ -17,10 +17,7 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost }) => {
   };
 
   const handleShareClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    extensionHost.publish(
-      IIIFEvents.SHOW_SHARE_DIALOGUE,
-      event.currentTarget
-    );
+    extensionHost.publish(IIIFEvents.SHOW_SHARE_DIALOGUE, event.currentTarget);
   };
 
   const handleEmbedClick = (event: React.MouseEvent<HTMLButtonElement>) => {
