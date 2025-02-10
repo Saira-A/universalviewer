@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import GoTo from "./GoTo";
-import React, { useEffect, useState } from "react";
-import GoTo from "./GoTo";
 
 const PagingHeaderPanelLeftOptions = ({ helper, pageMode, onClick }) => {
   const [canvasItems, setCanvasItems] = useState([]);

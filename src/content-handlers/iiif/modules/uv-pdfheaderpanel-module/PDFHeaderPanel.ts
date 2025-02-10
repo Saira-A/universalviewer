@@ -66,7 +66,6 @@ export class PDFHeaderPanel extends HeaderPanel<
     }
 
     let index: number = parseInt(value, 10);
-    let index: number = parseInt(value, 10);
 
     if (isNaN(index)) {
       this.extension.showMessage(
