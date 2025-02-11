@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Download, Share2Icon, Code, Printer, MaximizeIcon, MinimizeIcon, SettingsIcon } from "lucide-react";
+import {
+  Download,
+  Share2Icon,
+  Code,
+  Printer,
+  MaximizeIcon,
+  MinimizeIcon,
+  SettingsIcon,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { IIIFEvents } from "../../IIIFEvents";
 import { Events } from "../../../../Events";
@@ -49,7 +57,10 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost }) => {
   };
 
   const handleSettingsClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    extensionHost.publish(IIIFEvents.SHOW_SETTINGS_DIALOGUE, event.currentTarget);
+    extensionHost.publish(
+      IIIFEvents.SHOW_SETTINGS_DIALOGUE,
+      event.currentTarget
+    );
   };
 
   return (
