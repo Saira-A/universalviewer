@@ -79,7 +79,11 @@ const DownloadDialogue = ({
   triggerButton: HTMLElement;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({top: "0px", left: "0px", right: "auto"});
+  const [position, setPosition] = useState({
+    top: "0px",
+    left: "0px",
+    right: "auto",
+  });
   const [arrowPosition, _setArrowPosition] = useState("0px 0px");
   const [selectedPage, setSelectedPage] = useState<"left" | "right">("left");
   const hasNormalDimensions: boolean = rotation % 180 == 0;
