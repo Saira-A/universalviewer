@@ -301,6 +301,7 @@
         "modeOptionsEnabled": true
       },
       "content": {
+        "enterKeyword": "$enterKeyword",
         "close": "$close",
         "emptyValue": "$emptyValue",
         "first": "$first",
@@ -325,6 +326,7 @@
         "previousImage": "$previousImage",
         "previousPage": "$previousPage",
         "settings": "$settings",
+        "searchWithin": "$searchWithinItem",
         "twoUp": "$twoPageView"
       }
     },

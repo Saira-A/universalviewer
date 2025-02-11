@@ -5,55 +5,84 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-
-interface CanvasItem {
-  label: string | null;
-  index: number;
-}
+import { OpenSeadragonExtensionEvents } from "../../extensions/uv-openseadragon-extension/Events";
+import { IIIFExtensionHost } from "../../IIIFExtensionHost";
+import OpenSeadragonExtension from "../../extensions/uv-openseadragon-extension/Extension";
 
 interface Props {
-  canvasItems: CanvasItem[];
-  pageMode: boolean;
-  onClick: (index: number) => void;
+  extensionHost: IIIFExtensionHost;
+  extension: OpenSeadragonExtension;
+  content: any;
 }
 
 function Icon() {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 30 30"
       width="30"
       height="30"
-      fill="white"
+      viewBox="0 0 30 30"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
     >
-      <path d="M2 2.5L15 15L2 27.5V2.5Z" />
-      <path d="M15 2.5L28 15L15 27.5V2.5Z" />
+      <circle cx="13" cy="13" r="8" stroke="white" stroke-width="4" />
+      <line
+        x1="20"
+        y1="20"
+        x2="27"
+        y2="27"
+        stroke="white"
+        stroke-width="5"
+        stroke-linecap="straight"
+      />
     </svg>
   );
 }
 
-const GoTo: React.FC<Props> = ({ canvasItems, pageMode, onClick }) => {
+const Search: React.FC<Props> = ({ extensionHost, extension, content }) => {
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [suggestions, setSuggestions] = useState<string[]>([]);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef(null);
   const suggestionsRef = useRef<HTMLUListElement>(null);
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
-  const filteredItems = canvasItems.filter((item) => {
-    if (pageMode) {
-      return (
-        item.label?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false
-      );
+  const search = (terms: string): void => {
+    extensionHost.publish(OpenSeadragonExtensionEvents.SEARCH, terms);
+  };
+
+  const fetchSuggestions = async (term: string) => {
+    const autocompleteService = extension.getAutoCompleteUri();
+    if (!autocompleteService) return;
+
+    try {
+      const response = await fetch(autocompleteService.replace("{0}", term));
+      const results = await response.json();
+      const matches = results.terms.map((result: any) => result.match);
+      setSuggestions(matches);
+    } catch (error) {
+      console.error("Error fetching suggestions:", error);
+      setSuggestions([]);
     }
-    return String(item.index + 1).includes(searchTerm);
-  });
+  };
 
-  const handleCanvasSelect = (index: number) => {
-    onClick(index);
-    setOpen(false);
-    setSearchTerm("");
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
     setHighlightedIndex(-1);
+
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+
+    if (value.length >= 2) {
+      debounceTimer.current = setTimeout(() => {
+        fetchSuggestions(value);
+      }, 300);
+    } else {
+      setSuggestions([]);
+    }
   };
 
   useEffect(() => {
@@ -70,12 +99,12 @@ const GoTo: React.FC<Props> = ({ canvasItems, pageMode, onClick }) => {
   }, [highlightedIndex]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (filteredItems.length > 0) {
+    if (suggestions.length > 0) {
       switch (e.key) {
         case "ArrowDown":
           e.preventDefault();
           setHighlightedIndex((prev) =>
-            prev < filteredItems.length - 1 ? prev + 1 : prev
+            prev < suggestions.length - 1 ? prev + 1 : prev
           );
           break;
         case "ArrowUp":
@@ -83,36 +112,45 @@ const GoTo: React.FC<Props> = ({ canvasItems, pageMode, onClick }) => {
           setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : 0));
           break;
         case "Tab":
-          e.preventDefault();
-          if (e.shiftKey) {
-            setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : 0));
-          } else {
-            setHighlightedIndex((prev) =>
-              prev < filteredItems.length - 1 ? prev + 1 : prev
+        e.preventDefault();
+        if (e.shiftKey) {
+            setHighlightedIndex(prev => prev > 0 ? prev - 1 : 0);
+        } else {
+            setHighlightedIndex(prev => 
+            prev < suggestions.length - 1 ? prev + 1 : prev
             );
-          }
-          break;
+        }
+        break;
         case "Enter":
           e.preventDefault();
           if (highlightedIndex >= 0) {
-            handleCanvasSelect(filteredItems[highlightedIndex].index);
+            const selectedTerm = suggestions[highlightedIndex];
+            go(selectedTerm);
           } else if (searchTerm) {
-            const index = parseInt(searchTerm, 10) - 1;
-            if (!isNaN(index) && canvasItems.some((item) => item.index === index)) {
-              handleCanvasSelect(index);
-            }
+            go(searchTerm);
           }
           break;
         case "Escape":
-          setHighlightedIndex(-1);
+          setSuggestions([]);
           break;
       }
     } else if (e.key === "Enter" && searchTerm) {
-      const index = parseInt(searchTerm, 10) - 1;
-      if (!isNaN(index) && canvasItems.some((item) => item.index === index)) {
-        handleCanvasSelect(index);
-      }
+      go(searchTerm);
     }
+  };
+
+  const go = (term) => {
+    setOpen(false);
+    setSuggestions([]);
+    setSearchTerm("");
+    search(term);
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    search(suggestion);
+    setOpen(false);
+    setSearchTerm("");
+    setSuggestions([]);
   };
 
   useEffect(() => {
@@ -120,11 +158,6 @@ const GoTo: React.FC<Props> = ({ canvasItems, pageMode, onClick }) => {
       inputRef.current.focus();
     }
   }, [open]);
-
-  // Reset highlighted index when search term changes
-  useEffect(() => {
-    setHighlightedIndex(-1);
-  }, [searchTerm]);
 
   return (
     <div ref={containerRef}>
@@ -147,39 +180,40 @@ const GoTo: React.FC<Props> = ({ canvasItems, pageMode, onClick }) => {
           <input
             ref={inputRef}
             type="text"
-            size={8}
-            placeholder={pageMode ? "Go to page..." : "Go to image..."}
+            placeholder={content.enterKeyword}
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             className="h-[22px] px-2 py-1 text-background focus:outline-none"
             role="combobox"
-            aria-expanded={filteredItems.length > 0}
-            aria-controls="goto-suggestions"
+            aria-expanded={suggestions.length > 0}
+            aria-controls="search-suggestions"
             aria-activedescendant={
-              highlightedIndex >= 0 ? `suggestion-${highlightedIndex}` : undefined
+              highlightedIndex >= 0
+                ? `suggestion-${highlightedIndex}`
+                : undefined
             }
           />
           <div className="tailwind-scroll max-h-[230px] overflow-y-auto">
-            {filteredItems.length > 0 && (
+            {suggestions.length > 0 && (
               <ul
                 ref={suggestionsRef}
-                id="goto-suggestions"
+                id="search-suggestions"
                 role="listbox"
                 className="py-1"
               >
-                {filteredItems.map((item, index) => (
+                {suggestions.map((suggestion, index) => (
                   <li
-                    key={item.index}
+                    key={suggestion}
                     id={`suggestion-${index}`}
                     role="option"
                     aria-selected={index === highlightedIndex}
-                    onClick={() => handleCanvasSelect(item.index)}
+                    onClick={() => handleSuggestionClick(suggestion)}
                     className={`h-[22px] px-2 py-1 text-black hover:bg-gray-100 hover:text-background cursor-pointer ${
                       index === highlightedIndex ? "bg-gray-100" : ""
                     }`}
                   >
-                    {pageMode ? item.label : item.index + 1}
+                    {suggestion}
                   </li>
                 ))}
               </ul>
@@ -191,4 +225,4 @@ const GoTo: React.FC<Props> = ({ canvasItems, pageMode, onClick }) => {
   );
 };
 
-export default GoTo;
+export default Search;

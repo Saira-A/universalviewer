@@ -67,6 +67,7 @@ type PagingHeaderPanelOptions = HeaderPanelOptions & {
 
 type PagingHeaderPanelContent = HeaderPanelContent & {
   emptyValue: string;
+  enterKeyword: string;
   first: string;
   firstImage: string;
   firstPage: string;
@@ -88,6 +89,7 @@ type PagingHeaderPanelContent = HeaderPanelContent & {
   previous: string;
   previousImage: string;
   previousPage: string;
+  searchWithin: string;
   twoUp: string;
 };
 

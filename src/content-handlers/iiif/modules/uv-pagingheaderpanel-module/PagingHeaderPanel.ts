@@ -462,7 +462,9 @@ export class PagingHeaderPanel extends HeaderPanel<
 
     this.leftOptionsRoot.render(
       createElement(PagingHeaderPanelLeftOptions, {
-        helper: this.extension.helper,
+        extensionHost: this.extensionHost,
+        extension: this.extension,
+        content: this.content,
         pageMode: this.isPageModeEnabled(),
         onClick: (index: number) => {
           this.extensionHost.publish(
