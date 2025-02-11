@@ -1,7 +1,8 @@
-import React from "react";
-import { Download, Share2Icon, Code, Printer } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Download, Share2Icon, Code, Printer, MaximizeIcon, MinimizeIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { IIIFEvents } from "../../IIIFEvents";
+import { Events } from "../../../../Events";
 import { IIIFExtensionHost } from "../../IIIFExtensionHost";
 import { OpenSeadragonExtensionEvents } from "../../extensions/uv-openseadragon-extension/Events";
 
@@ -10,6 +11,24 @@ interface Props {
 }
 
 const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost }) => {
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
+  const handleFullScreenClick = () => {
+    extensionHost.publish(Events.TOGGLE_FULLSCREEN);
+  };
+
+  useEffect(() => {
+    const handleToggleFullScreen = () => setIsFullScreen((prev) => !prev);
+    const handleExitFullScreen = () => setIsFullScreen(false);
+
+    extensionHost.subscribe(Events.TOGGLE_FULLSCREEN, handleToggleFullScreen);
+    extensionHost.subscribe(Events.EXIT_FULLSCREEN, handleExitFullScreen);
+
+    return () => {
+      setIsFullScreen(false);
+    };
+  }, [extensionHost]);
+
   const handleDownloadClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     extensionHost.publish(
       IIIFEvents.SHOW_DOWNLOAD_DIALOGUE,
@@ -66,6 +85,11 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost }) => {
         data-panel="header"
       >
         <Printer />
+      </Button>
+      <Button variant="outline" 
+              className="text-white" 
+              size="icon" 
+              onClick={handleFullScreenClick}>{isFullScreen ? <MinimizeIcon /> : <MaximizeIcon />}
       </Button>
     </div>
   );
