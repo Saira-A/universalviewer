@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Download, Share2Icon, Code, Printer, MaximizeIcon, MinimizeIcon } from "lucide-react";
+import {
+  Download,
+  Share2Icon,
+  Code,
+  Printer,
+  MaximizeIcon,
+  MinimizeIcon,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { IIIFEvents } from "../../IIIFEvents";
 import { Events } from "../../../../Events";
@@ -86,10 +93,13 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost }) => {
       >
         <Printer />
       </Button>
-      <Button variant="outline" 
-              className="text-white" 
-              size="icon" 
-              onClick={handleFullScreenClick}>{isFullScreen ? <MinimizeIcon /> : <MaximizeIcon />}
+      <Button
+        variant="outline"
+        className="text-white"
+        size="icon"
+        onClick={handleFullScreenClick}
+      >
+        {isFullScreen ? <MinimizeIcon /> : <MaximizeIcon />}
       </Button>
     </div>
   );
