@@ -90,10 +90,22 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost }) => {
       >
         <Printer />
       </Button>
-      <Button variant="outline" 
-              className="text-white" 
-              size="icon" 
-              onClick={handleFullScreenClick}>{isFullScreen ? <MinimizeIcon /> : <MaximizeIcon />}
+      <Button
+        variant="outline"
+        className="text-white"
+        size="icon"
+        onClick={handleFullScreenClick}
+      >
+        {isFullScreen ? <MinimizeIcon /> : <MaximizeIcon />}
+      </Button>
+      <Button
+        variant="outline"
+        className="text-white"
+        size="icon"
+        onClick={handleSettingsClick}
+        data-panel="header"
+      >
+        <SettingsIcon />
       </Button>
       <Button
         variant="outline"
