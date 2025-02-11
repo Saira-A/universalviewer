@@ -107,15 +107,6 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost }) => {
       >
         <SettingsIcon />
       </Button>
-      <Button
-        variant="outline"
-        className="text-white"
-        size="icon"
-        onClick={handleSettingsClick}
-        data-panel="header"
-      >
-        <SettingsIcon />
-      </Button>
     </div>
   );
 };
