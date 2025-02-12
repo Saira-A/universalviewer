@@ -9,7 +9,7 @@ import {
   SettingsIcon,
   Grid2X2Icon,
   BookMarkedIcon,
-  MailIcon
+  MailIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { IIIFEvents } from "../../IIIFEvents";
@@ -74,17 +74,11 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost }) => {
   };
 
   const handleFeedbackClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    extensionHost.publish(
-      IIIFEvents.FEEDBACK,
-      event.currentTarget
-    );
+    extensionHost.publish(IIIFEvents.FEEDBACK, event.currentTarget);
   };
 
   const handleBookmarkClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    extensionHost.publish(
-      IIIFEvents.BOOKMARK,
-      event.currentTarget
-    );
+    extensionHost.publish(IIIFEvents.BOOKMARK, event.currentTarget);
   };
 
   return (
