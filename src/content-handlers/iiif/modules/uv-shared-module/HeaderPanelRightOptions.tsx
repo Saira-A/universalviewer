@@ -7,6 +7,7 @@ import {
   MaximizeIcon,
   MinimizeIcon,
   SettingsIcon,
+  Grid2X2Icon
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { IIIFEvents } from "../../IIIFEvents";
@@ -59,6 +60,13 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost }) => {
   const handleSettingsClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     extensionHost.publish(
       IIIFEvents.SHOW_SETTINGS_DIALOGUE,
+      event.currentTarget
+    );
+  };
+
+  const handleGalleryClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    extensionHost.publish(
+      IIIFEvents.TOGGLE_EXPAND_LEFT_PANEL,
       event.currentTarget
     );
   };
@@ -117,6 +125,15 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost }) => {
         data-panel="header"
       >
         <SettingsIcon />
+      </Button>
+      <Button
+        variant="outline"
+        className="text-white"
+        size="icon"
+        onClick={handleGalleryClick}
+        data-panel="header"
+      >
+        <Grid2X2Icon />
       </Button>
     </div>
   );
