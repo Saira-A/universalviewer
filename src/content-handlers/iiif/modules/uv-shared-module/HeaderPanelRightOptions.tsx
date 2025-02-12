@@ -7,7 +7,7 @@ import {
   MaximizeIcon,
   MinimizeIcon,
   SettingsIcon,
-  Grid2X2Icon
+  Grid2X2Icon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { IIIFEvents } from "../../IIIFEvents";
