@@ -7,7 +7,9 @@ import {
   MaximizeIcon,
   MinimizeIcon,
   SettingsIcon,
-  Grid2X2Icon
+  Grid2X2Icon,
+  BookMarkedIcon,
+  MailIcon
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { IIIFEvents } from "../../IIIFEvents";
@@ -71,6 +73,20 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost }) => {
     );
   };
 
+  const handleFeedbackClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    extensionHost.publish(
+      IIIFEvents.FEEDBACK,
+      event.currentTarget
+    );
+  };
+
+  const handleBookmarkClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    extensionHost.publish(
+      IIIFEvents.BOOKMARK,
+      event.currentTarget
+    );
+  };
+
   return (
     <div className="headerOptions">
       <Button
@@ -113,9 +129,28 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost }) => {
         variant="outline"
         className="text-white"
         size="icon"
-        onClick={handleFullScreenClick}
+        onClick={handleBookmarkClick}
+        data-panel="header"
       >
-        {isFullScreen ? <MinimizeIcon /> : <MaximizeIcon />}
+        <BookMarkedIcon />
+      </Button>
+      <Button
+        variant="outline"
+        className="text-white"
+        size="icon"
+        onClick={handleFeedbackClick}
+        data-panel="header"
+      >
+        <MailIcon />
+      </Button>
+      <Button
+        variant="outline"
+        className="text-white"
+        size="icon"
+        onClick={handleGalleryClick}
+        data-panel="header"
+      >
+        <Grid2X2Icon />
       </Button>
       <Button
         variant="outline"
@@ -130,10 +165,9 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost }) => {
         variant="outline"
         className="text-white"
         size="icon"
-        onClick={handleGalleryClick}
-        data-panel="header"
+        onClick={handleFullScreenClick}
       >
-        <Grid2X2Icon />
+        {isFullScreen ? <MinimizeIcon /> : <MaximizeIcon />}
       </Button>
     </div>
   );
