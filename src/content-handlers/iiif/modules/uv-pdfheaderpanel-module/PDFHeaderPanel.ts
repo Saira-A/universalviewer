@@ -48,7 +48,6 @@ export class PDFHeaderPanel extends HeaderPanel<
       })
     );
 
-    //render PDF options react components in roots
     this.leftOptionsRoot.render(
       createElement(PDFHeaderPanelLeftOptions, {
         numPages: this._pdfDoc.numPages,
