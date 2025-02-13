@@ -37,7 +37,7 @@ const PagingHeaderPanelLeftOptions: React.FC<Props> = ({ extensionHost, extensio
         <Search extensionHost={extensionHost} extension={extension as OpenSeadragonExtension} content={content}/>
       )}
       {canvasItems.length > 1 && (
-        <GoTo canvasItems={canvasItems} pageMode={pageMode} onClick={onClick} />
+        <GoTo canvasItems={canvasItems} pageMode={pageMode} onClick={onClick} content={content}/>
       )}
     </div>
   );

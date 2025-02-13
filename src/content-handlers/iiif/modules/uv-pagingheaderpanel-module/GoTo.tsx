@@ -15,6 +15,7 @@ interface Props {
   canvasItems: CanvasItem[];
   pageMode: boolean;
   onClick: (index: number) => void;
+  content: any;
 }
 
 function Icon() {
@@ -32,7 +33,7 @@ function Icon() {
   );
 }
 
-const GoTo: React.FC<Props> = ({ canvasItems, pageMode, onClick }) => {
+const GoTo: React.FC<Props> = ({ canvasItems, pageMode, onClick, content }) => {
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
@@ -130,6 +131,7 @@ const GoTo: React.FC<Props> = ({ canvasItems, pageMode, onClick }) => {
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
+            title={content.go}
             variant="default"
             className="w-[30px] h-[30px] justify-center p-0 focus:outline-none focus:ring-0 focus:border-white focus:border-[1px] focus:rounded-none"
           >

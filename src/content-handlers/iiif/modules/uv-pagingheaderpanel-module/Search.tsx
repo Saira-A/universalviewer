@@ -164,6 +164,7 @@ const Search: React.FC<Props> = ({ extensionHost, extension, content }) => {
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
+            title={content.searchWithin}
             variant="default"
             className="w-[30px] h-[30px] justify-center p-0 focus:outline-none focus:ring-0 focus:border-white focus:border-[1px] focus:rounded-none"
           >

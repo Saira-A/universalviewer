@@ -176,14 +176,6 @@ export class PagingHeaderPanel extends HeaderPanel<
       this.extensionHost.publish(IIIFEvents.TOGGLE_EXPAND_LEFT_PANEL);
     });
 
-
-    // check if the book has more than one page, otherwise hide prev/next options.
-    if (this.extension.helper.getTotalCanvases() === 1) {
-      this.$centerOptions.hide();
-    }
-
-    // ui event handlers.
-
     // If page mode is disabled, we don't need to show radio buttons since
     // there is only one option:
     if (!this.config.options.pageModeEnabled) {
@@ -210,7 +202,6 @@ export class PagingHeaderPanel extends HeaderPanel<
       });
     }
 
-
     if (this.options.modeOptionsEnabled === false) {
       this.$modeOptions.hide();
       this.$centerOptions.addClass("modeOptionsDisabled");
@@ -219,8 +210,6 @@ export class PagingHeaderPanel extends HeaderPanel<
     if (this.options.helpEnabled === false) {
       this.$helpButton.hide();
     }
-
-
 
     // todo: discuss on community call
     // Get visible element in centerOptions with greatest tabIndex
