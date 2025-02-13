@@ -121,7 +121,6 @@ const GoTo: React.FC<Props> = ({ canvasItems, pageMode, onClick }) => {
     }
   }, [open]);
 
-  // Reset highlighted index when search term changes
   useEffect(() => {
     setHighlightedIndex(-1);
   }, [searchTerm]);

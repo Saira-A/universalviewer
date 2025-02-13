@@ -1,13 +1,11 @@
 const $ = require("jquery");
-import { AutoComplete } from "../uv-shared-module/AutoComplete";
 import { IIIFEvents } from "../../IIIFEvents";
 import { OpenSeadragonExtensionEvents } from "../../extensions/uv-openseadragon-extension/Events";
 import { HeaderPanel } from "../uv-shared-module/HeaderPanel";
 import OpenSeadragonExtension from "../../extensions/uv-openseadragon-extension/Extension";
 import { Mode } from "../../extensions/uv-openseadragon-extension/Mode";
 import { sanitize } from "../../../../Utils";
-import { ViewingDirection } from "@iiif/vocabulary/dist-commonjs/";
-import { Bools, Strings } from "@edsilv/utils";
+import { Bools } from "@edsilv/utils";
 import { Canvas, LanguageMap, ManifestType } from "manifesto.js";
 import { Config } from "../../extensions/uv-openseadragon-extension/config/Config";
 import { createElement } from "react";
@@ -16,33 +14,17 @@ import PagingHeaderPanelLeftOptions from "./PagingHeaderPanelLeftOptions";
 export class PagingHeaderPanel extends HeaderPanel<
   Config["modules"]["pagingHeaderPanel"]
 > {
-  $autoCompleteBox: JQuery;
-  $firstButton: JQuery;
   $galleryButton: JQuery;
   $imageModeLabel: JQuery;
   $imageModeOption: JQuery;
   $imageSelectionBox: JQuery;
-  $lastButton: JQuery;
   $modeOptions: JQuery;
-  $nextButton: JQuery;
-  $nextOptions: JQuery;
   $oneUpButton: JQuery;
   $pageModeLabel: JQuery;
   $pageModeOption: JQuery;
   $pagingToggleButtons: JQuery;
-  $prevButton: JQuery;
-  $prevOptions: JQuery;
-  $search: JQuery;
-  $searchButton: JQuery;
-  $searchText: JQuery;
   $selectionBoxOptions: JQuery;
-  $total: JQuery;
   $twoUpButton: JQuery;
-
-  firstButtonEnabled: boolean = false;
-  lastButtonEnabled: boolean = false;
-  nextButtonEnabled: boolean = false;
-  prevButtonEnabled: boolean = false;
 
   constructor($element: JQuery) {
     super($element);
@@ -53,20 +35,8 @@ export class PagingHeaderPanel extends HeaderPanel<
 
     super.create();
 
-    this.extensionHost.subscribe(
-      IIIFEvents.CANVAS_INDEX_CHANGE,
-      (canvasIndex: number) => {
-        this.canvasIndexChanged(canvasIndex);
-      }
-    );
-
     this.extensionHost.subscribe(IIIFEvents.SETTINGS_CHANGE, () => {
-      this.modeChanged();
       this.updatePagingToggle();
-    });
-
-    this.extensionHost.subscribe(IIIFEvents.CANVAS_INDEX_CHANGE_FAILED, () => {
-      this.setSearchFieldValue(this.extension.helper.canvasIndex);
     });
 
     this.extensionHost.subscribe(IIIFEvents.LEFTPANEL_EXPAND_FULL_START, () => {
@@ -79,25 +49,6 @@ export class PagingHeaderPanel extends HeaderPanel<
         this.closeGallery();
       }
     );
-
-    this.$prevOptions = $('<div class="prevOptions"></div>');
-    this.$centerOptions.append(this.$prevOptions);
-
-    this.$firstButton = $(`
-          <button class="btn imageBtn first" tabindex="0" title="${this.content.first}">
-            <i class="uv-icon-first" aria-hidden="true"></i>
-            <span class="sr-only">${this.content.first}</span>
-          </button>
-        `);
-    this.$prevOptions.append(this.$firstButton);
-
-    this.$prevButton = $(`
-          <button class="btn imageBtn prev" tabindex="0" title="${this.content.previous}">
-            <i class="uv-icon-prev" aria-hidden="true"></i>
-            <span class="sr-only">${this.content.previous}</span>
-          </button>
-        `);
-    this.$prevOptions.append(this.$prevButton);
 
     this.$modeOptions = $('<div class="mode"></div>');
     this.$centerOptions.append(this.$modeOptions);
@@ -118,64 +69,7 @@ export class PagingHeaderPanel extends HeaderPanel<
     );
     this.$modeOptions.append(this.$pageModeOption);
 
-    this.$search = $('<div class="search"></div>');
-    this.$centerOptions.append(this.$search);
-
-    this.$searchText = $(
-      '<input class="searchText" maxlength="50" type="text" tabindex="0" aria-label="' +
-        this.content.pageSearchLabel +
-        '"/>'
-    );
-    this.$search.append(this.$searchText);
-
-    if (Bools.getBool(this.options.autoCompleteBoxEnabled, true)) {
-      this.$searchText.hide();
-      this.$autoCompleteBox = $(
-        '<input class="autocompleteText" type="text" maxlength="100" aria-label="' +
-          this.content.pageSearchLabel +
-          '"/>'
-      );
-      this.$search.append(this.$autoCompleteBox);
-
-      new AutoComplete(
-        this.$autoCompleteBox,
-        (term: string, cb: (results: string[]) => void) => {
-          const results: string[] = [];
-          const canvases: Canvas[] = this.extension.helper.getCanvases();
-
-          // if in page mode, get canvases by label.
-          if (this.isPageModeEnabled()) {
-            for (let i = 0; i < canvases.length; i++) {
-              const canvas: Canvas = canvases[i];
-              const label: string | null = LanguageMap.getValue(
-                canvas.getLabel()
-              );
-              if (label && label.startsWith(term)) {
-                results.push(label);
-              }
-            }
-          } else {
-            // get canvas by index
-            for (let i = 0; i < canvases.length; i++) {
-              const canvas: Canvas = canvases[i];
-              if (canvas.index.toString().startsWith(term)) {
-                results.push(canvas.index.toString());
-              }
-            }
-          }
-          cb(results);
-        },
-        (results: any) => {
-          return results;
-        },
-        (terms: string) => {
-          this.search(terms);
-        },
-        300,
-        0,
-        Bools.getBool(this.options.autocompleteAllowWords, false)
-      );
-    } else if (Bools.getBool(this.options.imageSelectionBoxEnabled, true)) {
+    if (Bools.getBool(this.options.imageSelectionBoxEnabled, true)) {
       this.$selectionBoxOptions = $(
         '<div class="image-selectionbox-options"></div>'
       );
@@ -213,33 +107,6 @@ export class PagingHeaderPanel extends HeaderPanel<
         );
       });
     }
-
-    this.$total = $('<span class="total"></span>');
-    this.$search.append(this.$total);
-
-    this.$searchButton = $(
-      `<button class="go btn btn-primary" tabindex="0">${this.content.go}</button>`
-    );
-    this.$search.append(this.$searchButton);
-
-    this.$nextOptions = $('<div class="nextOptions"></div>');
-    this.$centerOptions.append(this.$nextOptions);
-
-    this.$nextButton = $(`
-          <button class="btn imageBtn next" tabindex="0" title="${this.content.next}">
-            <i class="uv-icon-next" aria-hidden="true"></i>
-            <span class="sr-only">${this.content.next}</span>
-          </button>
-        `);
-    this.$nextOptions.append(this.$nextButton);
-
-    this.$lastButton = $(`
-          <button class="btn imageBtn last" tabindex="0" title="${this.content.last}">
-            <i class="uv-icon-last" aria-hidden="true"></i>
-            <span class="sr-only">${this.content.last}</span>
-          </button>
-        `);
-    this.$nextOptions.append(this.$lastButton);
 
     if (this.isPageModeEnabled()) {
       this.$pageModeOption.attr("checked", "checked");
@@ -309,12 +176,6 @@ export class PagingHeaderPanel extends HeaderPanel<
       this.extensionHost.publish(IIIFEvents.TOGGLE_EXPAND_LEFT_PANEL);
     });
 
-    this.setNavigationTitles();
-    this.setTotal();
-
-    let viewingDirection: ViewingDirection =
-      this.extension.helper.getViewingDirection() ||
-      ViewingDirection.LEFT_TO_RIGHT;
 
     // check if the book has more than one page, otherwise hide prev/next options.
     if (this.extension.helper.getTotalCanvases() === 1) {
@@ -322,61 +183,11 @@ export class PagingHeaderPanel extends HeaderPanel<
     }
 
     // ui event handlers.
-    this.$firstButton.onPressed(() => {
-      switch (viewingDirection.toString()) {
-        case ViewingDirection.LEFT_TO_RIGHT:
-        case ViewingDirection.TOP_TO_BOTTOM:
-        case ViewingDirection.BOTTOM_TO_TOP:
-          this.extensionHost.publish(IIIFEvents.FIRST);
-          break;
-        case ViewingDirection.RIGHT_TO_LEFT:
-          this.extensionHost.publish(IIIFEvents.LAST);
-          break;
-      }
-    });
-
-    this.$prevButton.onPressed(() => {
-      switch (viewingDirection.toString()) {
-        case ViewingDirection.LEFT_TO_RIGHT:
-        case ViewingDirection.BOTTOM_TO_TOP:
-        case ViewingDirection.TOP_TO_BOTTOM:
-          this.extensionHost.publish(IIIFEvents.PREV);
-          break;
-        case ViewingDirection.RIGHT_TO_LEFT:
-          this.extensionHost.publish(IIIFEvents.NEXT);
-          break;
-      }
-    });
-
-    this.$nextButton.onPressed(() => {
-      switch (viewingDirection.toString()) {
-        case ViewingDirection.LEFT_TO_RIGHT:
-        case ViewingDirection.BOTTOM_TO_TOP:
-        case ViewingDirection.TOP_TO_BOTTOM:
-          this.extensionHost.publish(IIIFEvents.NEXT);
-          break;
-        case ViewingDirection.RIGHT_TO_LEFT:
-          this.extensionHost.publish(IIIFEvents.PREV);
-          break;
-      }
-    });
-
-    this.$lastButton.onPressed(() => {
-      switch (viewingDirection.toString()) {
-        case ViewingDirection.LEFT_TO_RIGHT:
-        case ViewingDirection.TOP_TO_BOTTOM:
-        case ViewingDirection.BOTTOM_TO_TOP:
-          this.extensionHost.publish(IIIFEvents.LAST);
-          break;
-        case ViewingDirection.RIGHT_TO_LEFT:
-          this.extensionHost.publish(IIIFEvents.FIRST);
-          break;
-      }
-    });
 
     // If page mode is disabled, we don't need to show radio buttons since
     // there is only one option:
     if (!this.config.options.pageModeEnabled) {
+      this.$imageModeLabel.hide();
       this.$imageModeOption.hide();
       this.$pageModeLabel.hide();
       this.$pageModeOption.hide();
@@ -399,34 +210,10 @@ export class PagingHeaderPanel extends HeaderPanel<
       });
     }
 
-    this.$searchText.onEnter(() => {
-      this.$searchText.blur();
-      this.search(this.$searchText.val());
-    });
-
-    this.$searchText.click(function () {
-      $(this).select();
-    });
-
-    this.onAccessibleClick(this.$searchButton, () => {
-      if (this.options.autoCompleteBoxEnabled) {
-        this.search(this.$autoCompleteBox.val());
-      } else {
-        this.search(this.$searchText.val());
-      }
-    });
 
     if (this.options.modeOptionsEnabled === false) {
       this.$modeOptions.hide();
       this.$centerOptions.addClass("modeOptionsDisabled");
-    }
-
-    // Search is shown as default
-    if (
-      this.options.imageSelectionBoxEnabled === true &&
-      this.options.autoCompleteBoxEnabled !== true
-    ) {
-      this.$search.hide();
     }
 
     if (this.options.helpEnabled === false) {
@@ -474,11 +261,7 @@ export class PagingHeaderPanel extends HeaderPanel<
         },
       })
     );
-  
-
   }
-
- 
 
   openGallery(): void {
     this.$oneUpButton.removeClass("on");
@@ -497,50 +280,6 @@ export class PagingHeaderPanel extends HeaderPanel<
       (<OpenSeadragonExtension>this.extension).getMode().toString() ===
         Mode.page.toString()
     );
-  }
-
-  setNavigationTitles(): void {
-    if (this.isPageModeEnabled()) {
-      if (this.extension.helper.isRightToLeft()) {
-        this.$firstButton.prop("title", this.content.lastPage);
-        this.$firstButton.find("span").text(this.content.lastPage);
-        this.$prevButton.prop("title", this.content.nextPage);
-        this.$prevButton.find("span").text(this.content.nextPage);
-        this.$nextButton.prop("title", this.content.previousPage);
-        this.$nextButton.find("span").text(this.content.previousPage);
-        this.$lastButton.prop("title", this.content.firstPage);
-        this.$lastButton.find("span").text(this.content.firstPage);
-      } else {
-        this.$firstButton.prop("title", this.content.firstPage);
-        this.$firstButton.find("span").text(this.content.firstPage);
-        this.$prevButton.prop("title", this.content.previousPage);
-        this.$prevButton.find("span").text(this.content.previousPage);
-        this.$nextButton.prop("title", this.content.nextPage);
-        this.$nextButton.find("span").text(this.content.nextPage);
-        this.$lastButton.prop("title", this.content.lastPage);
-        this.$lastButton.find("span").text(this.content.lastPage);
-      }
-    } else {
-      if (this.extension.helper.isRightToLeft()) {
-        this.$firstButton.prop("title", this.content.lastImage);
-        this.$firstButton.find("span").text(this.content.lastPage);
-        this.$prevButton.prop("title", this.content.nextImage);
-        this.$prevButton.find("span").text(this.content.nextImage);
-        this.$nextButton.prop("title", this.content.previousImage);
-        this.$nextButton.find("span").text(this.content.previousImage);
-        this.$lastButton.prop("title", this.content.firstImage);
-        this.$lastButton.find("span").text(this.content.firstImage);
-      } else {
-        this.$firstButton.prop("title", this.content.firstImage);
-        this.$firstButton.find("span").text(this.content.firstImage);
-        this.$prevButton.prop("title", this.content.previousImage);
-        this.$prevButton.find("span").text(this.content.previousImage);
-        this.$nextButton.prop("title", this.content.nextImage);
-        this.$nextButton.find("span").text(this.content.nextImage);
-        this.$lastButton.prop("title", this.content.lastImage);
-        this.$lastButton.find("span").text(this.content.lastImage);
-      }
-    }
   }
 
   updatePagingToggle(): void {
@@ -576,200 +315,6 @@ export class PagingHeaderPanel extends HeaderPanel<
       Bools.getBool(this.options.galleryButtonEnabled, true) &&
       this.extension.isLeftPanelEnabled()
     );
-  }
-
-  setTotal(): void {
-    const of: string = this.content.of;
-
-    if (this.isPageModeEnabled()) {
-      this.$total.html(
-        Strings.format(of, this.extension.helper.getLastCanvasLabel(true))
-      );
-    } else {
-      this.$total.html(
-        Strings.format(of, this.extension.helper.getTotalCanvases().toString())
-      );
-    }
-  }
-
-  setSearchFieldValue(index: number): void {
-    const canvas: Canvas = this.extension.helper.getCanvasByIndex(index);
-    let value: string | null = null;
-
-    if (this.isPageModeEnabled()) {
-      const orderLabel: string = <string>(
-        LanguageMap.getValue(canvas.getLabel())
-      );
-
-      if (orderLabel === "-") {
-        value = "";
-      } else {
-        value = orderLabel;
-      }
-    } else {
-      index += 1;
-      value = index.toString();
-    }
-
-    if (this.options.autoCompleteBoxEnabled) {
-      this.$autoCompleteBox.val(value);
-    } else {
-      this.$searchText.val(value);
-    }
-  }
-
-  search(value: string): void {
-    if (!value) {
-      this.extension.showMessage(this.content.emptyValue);
-      this.extensionHost.publish(IIIFEvents.CANVAS_INDEX_CHANGE_FAILED);
-
-      return;
-    }
-
-    if (this.isPageModeEnabled()) {
-      this.extensionHost.publish(
-        OpenSeadragonExtensionEvents.PAGE_SEARCH,
-        value
-      );
-    } else {
-      let index: number;
-
-      if (this.options.autoCompleteBoxEnabled) {
-        index = parseInt(this.$autoCompleteBox.val(), 10);
-      } else {
-        index = parseInt(this.$searchText.val(), 10);
-      }
-
-      index -= 1;
-
-      if (isNaN(index)) {
-        this.extension.showMessage(
-          this.extension.data.config!.modules.genericDialogue.content
-            .invalidNumber
-        );
-        this.extensionHost.publish(IIIFEvents.CANVAS_INDEX_CHANGE_FAILED);
-        return;
-      }
-
-      const asset: Canvas = this.extension.helper.getCanvasByIndex(index);
-
-      if (!asset) {
-        this.extension.showMessage(
-          this.extension.data.config!.modules.genericDialogue.content
-            .pageNotFound
-        );
-        this.extensionHost.publish(IIIFEvents.CANVAS_INDEX_CHANGE_FAILED);
-        return;
-      }
-
-      this.extensionHost.publish(
-        OpenSeadragonExtensionEvents.IMAGE_SEARCH,
-        index
-      );
-    }
-  }
-
-  canvasIndexChanged(index: any): void {
-    this.setSearchFieldValue(index);
-
-    if (
-      this.options.imageSelectionBoxEnabled === true &&
-      this.options.autoCompleteBoxEnabled !== true
-    ) {
-      this.$imageSelectionBox.val(index);
-    }
-
-    const viewingDirection: ViewingDirection =
-      this.extension.helper.getViewingDirection() ||
-      ViewingDirection.LEFT_TO_RIGHT;
-
-    if (viewingDirection === ViewingDirection.RIGHT_TO_LEFT) {
-      if (this.extension.helper.isFirstCanvas()) {
-        this.disableLastButton();
-        this.disableNextButton();
-      } else {
-        this.enableLastButton();
-        this.enableNextButton();
-      }
-
-      if (this.extension.helper.isLastCanvas()) {
-        this.disableFirstButton();
-        this.disablePrevButton();
-      } else {
-        this.enableFirstButton();
-        this.enablePrevButton();
-      }
-    } else {
-      if (this.extension.helper.isFirstCanvas()) {
-        this.disableFirstButton();
-        this.disablePrevButton();
-      } else {
-        this.enableFirstButton();
-        this.enablePrevButton();
-      }
-
-      if (this.extension.helper.isLastCanvas()) {
-        this.disableLastButton();
-        this.disableNextButton();
-      } else {
-        this.enableLastButton();
-        this.enableNextButton();
-      }
-    }
-  }
-
-  disableFirstButton(): void {
-    this.firstButtonEnabled = false;
-    this.$firstButton.disable();
-    this.$firstButton.attr("disabled", "disabled");
-  }
-
-  enableFirstButton(): void {
-    this.firstButtonEnabled = true;
-    this.$firstButton.enable();
-    this.$firstButton.removeAttr("disabled");
-  }
-
-  disableLastButton(): void {
-    this.lastButtonEnabled = false;
-    this.$lastButton.disable();
-    this.$lastButton.attr("disabled", "disabled");
-  }
-
-  enableLastButton(): void {
-    this.lastButtonEnabled = true;
-    this.$lastButton.enable();
-    this.$lastButton.removeAttr("disabled");
-  }
-
-  disablePrevButton(): void {
-    this.prevButtonEnabled = false;
-    this.$prevButton.disable();
-    this.$prevButton.attr("disabled", "disabled");
-  }
-
-  enablePrevButton(): void {
-    this.prevButtonEnabled = true;
-    this.$prevButton.enable();
-    this.$prevButton.removeAttr("disabled");
-  }
-
-  disableNextButton(): void {
-    this.nextButtonEnabled = false;
-    this.$nextButton.disable();
-    this.$nextButton.attr("disabled", "disabled");
-  }
-
-  enableNextButton(): void {
-    this.nextButtonEnabled = true;
-    this.$nextButton.enable();
-    this.$nextButton.removeAttr("disabled");
-  }
-
-  modeChanged(): void {
-    this.setSearchFieldValue(this.extension.helper.canvasIndex);
-    this.setNavigationTitles();
-    this.setTotal();
   }
 
   resize(): void {

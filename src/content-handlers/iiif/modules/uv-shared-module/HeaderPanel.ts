@@ -58,8 +58,6 @@ export class HeaderPanel<
 
     this.$centerOptions = $('<div class="centerOptions"></div>');
     this.$options.append(this.$centerOptions);
-    //hide for now until all center options functions are transferred to left options container
-    this.$centerOptions.hide();
 
     this.$rightOptions = $('<div class="rightOptions"></div>');
     this.$options.append(this.$rightOptions);
