@@ -24,6 +24,10 @@ import "@openseadragon-imaging/openseadragon-viewerinputhook";
 import { MediaType } from "@iiif/vocabulary/dist-commonjs";
 import { Events } from "../../../../Events";
 import { Config } from "../../extensions/uv-openseadragon-extension/config/Config";
+import { createRoot, Root } from 'react-dom/client';  
+import React from 'react';
+import PageToggle from './PageToggle'
+
 
 export class OpenSeadragonCenterPanel extends CenterPanel<
   Config["modules"]["openSeadragonCenterPanel"]
@@ -52,18 +56,27 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
   $goHomeButton: JQuery;
   $navigator: JQuery;
   $nextButton: JQuery;
+  $oneUpButton: JQuery;
   $prevButton: JQuery;
   $rotateButton: JQuery;
   $spinner: JQuery;
+  $twoUpButton: JQuery;
   $viewer: JQuery;
   $viewportNavButtonsContainer: JQuery;
   $viewportNavButtons: JQuery;
   $zoomInButton: JQuery;
   $zoomOutButton: JQuery;
   $adjustImageButton: JQuery;
+  $toggleContainer: JQuery; 
+  toggleRoot: Root;
 
   constructor($element: JQuery) {
     super($element);
+  }
+
+  updateSettings(settings: ISettings): void {
+    this.extension.updateSettings(settings);
+    this.extensionHost.publish(IIIFEvents.UPDATE_SETTINGS, settings);
   }
 
   create(): void {
@@ -74,6 +87,8 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
     this.viewerId = "osd" + new Date().getTime();
     this.$viewer = $('<div id="' + this.viewerId + '" class="viewer"></div>');
     this.$content.prepend(this.$viewer);
+
+    this.createButtons();
 
     this.extensionHost.subscribe(IIIFEvents.ANNOTATIONS, (args: any) => {
       this.overlayAnnotations();
@@ -170,6 +185,46 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
         });
       }
     );
+  }
+
+  createButtons(): void {
+    const isPaged = this.extension.helper.isPaged(); 
+    this.$toggleContainer = $('<div class="osd-toggle-container"></div>');
+    this.$viewer.append(this.$toggleContainer);
+
+    this.toggleRoot = createRoot(this.$toggleContainer[0]);
+
+    this.toggleRoot.render(
+      React.createElement(PageToggle, {
+        onOneUpClick: () => {
+          const enabled = false;
+          this.updateSettings({ pagingEnabled: enabled });
+          this.extensionHost.publish(OpenSeadragonExtensionEvents.PAGING_TOGGLED, enabled);
+        },
+        onTwoUpClick: () => {
+          const enabled = true;
+          this.updateSettings({ pagingEnabled: enabled });
+          this.extensionHost.publish(OpenSeadragonExtensionEvents.PAGING_TOGGLED, enabled);
+        },
+        isPaged, 
+      })
+    );
+
+    this.updateLayout();
+  }
+
+  updateLayout(): void {
+    this.$viewer.find(".osd-toggle-container").css({
+      position: "absolute",
+      bottom: "10px",  
+      left: "7%",  
+      transform: "translateX(-50%)",  
+      zIndex: 10, 
+    });
+
+    this.$viewer.find(".osd-image").css({
+      paddingBottom: "40px", 
+    });
   }
 
   whenCreated(cb: () => void): void {
