@@ -236,16 +236,16 @@ export class HeaderPanel<
       createElement(HeaderPanelRightOptions, {
         extensionHost: this.extensionHost,
         configOptions: {
-          downloadEnabled: true,   
-          shareEnabled: true,     
-          embedEnabled: false,     
-          printEnabled: false,     
-          bookmarkEnabled: false,  
-          feedbackEnabled: false,  
-          fullscreenEnabled: true, 
-          galleryEnabled: true,   
-          settingsEnabled: true,  
-        }
+          downloadEnabled: true,
+          shareEnabled: true,
+          embedEnabled: false,
+          printEnabled: false,
+          bookmarkEnabled: false,
+          feedbackEnabled: false,
+          fullscreenEnabled: true,
+          galleryEnabled: true,
+          settingsEnabled: true,
+        },
       })
     );
 

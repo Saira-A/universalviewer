@@ -31,10 +31,13 @@ interface ConfigOptions {
 
 interface Props {
   extensionHost: IIIFExtensionHost;
-  configOptions: ConfigOptions; 
+  configOptions: ConfigOptions;
 }
 
-const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost, configOptions }) => {
+const HeaderPanelRightOptions: React.FC<Props> = ({
+  extensionHost,
+  configOptions,
+}) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   const handleFullScreenClick = () => {
@@ -54,7 +57,10 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost, configOptions
   }, [extensionHost]);
 
   const handleDownloadClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    extensionHost.publish(IIIFEvents.SHOW_DOWNLOAD_DIALOGUE, event.currentTarget);
+    extensionHost.publish(
+      IIIFEvents.SHOW_DOWNLOAD_DIALOGUE,
+      event.currentTarget
+    );
   };
 
   const handleShareClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -70,11 +76,17 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost, configOptions
   };
 
   const handleSettingsClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    extensionHost.publish(IIIFEvents.SHOW_SETTINGS_DIALOGUE, event.currentTarget);
+    extensionHost.publish(
+      IIIFEvents.SHOW_SETTINGS_DIALOGUE,
+      event.currentTarget
+    );
   };
 
   const handleGalleryClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    extensionHost.publish(IIIFEvents.TOGGLE_EXPAND_LEFT_PANEL, event.currentTarget);
+    extensionHost.publish(
+      IIIFEvents.TOGGLE_EXPAND_LEFT_PANEL,
+      event.currentTarget
+    );
   };
 
   const handleFeedbackClick = (event: React.MouseEvent<HTMLButtonElement>) => {
