@@ -91,16 +91,16 @@
     },
     "footerPanel": {
       "options": {
-        "bookmarkEnabled": true,
-        "downloadEnabled": true,
-        "embedEnabled": true,
-        "feedbackEnabled": true,
-        "fullscreenEnabled": true,
-        "minimiseButtons": true,
-        "moreInfoEnabled": true,
-        "openEnabled": true,
-        "printEnabled": true,
-        "shareEnabled": true
+        "bookmarkEnabled": false,
+        "downloadEnabled": false,
+        "embedEnabled": false,
+        "feedbackEnabled": false,
+        "fullscreenEnabled": false,
+        "minimiseButtons": false,
+        "moreInfoEnabled": false,
+        "openEnabled": false,
+        "printEnabled": false,
+        "shareEnabled": false
       },
       "content": {
         "bookmark": "Add to bookmarks",
