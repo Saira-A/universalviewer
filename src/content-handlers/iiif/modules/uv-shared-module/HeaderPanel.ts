@@ -231,7 +231,7 @@ export class HeaderPanel<
     } else {
       this.$helpButton.hide();
     }
-    
+
     // hide toggle buttons below minimum width
     if (this.extension.isMobileMetric()) {
       if (this.localeToggleIsVisible()) this.$localeToggleButton.hide();
