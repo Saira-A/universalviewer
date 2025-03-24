@@ -380,7 +380,7 @@ export class FooterPanel extends BaseFooterPanel<
 
     if (this.terms === "" || this.terms === this.content.enterKeyword) {
       this.extension.showMessage(
-        this.extension.data.config!.modules.genericDialogue.content.emptyValue,
+        this.extension.data.config!.modules.genericDialogue.content.emptyValue
       );
 
       return;
@@ -791,6 +791,5 @@ export class FooterPanel extends BaseFooterPanel<
     this.$searchPagerControls.css({
       left: center - this.$searchPagerControls.width() / 2,
     });
-
   }
 }

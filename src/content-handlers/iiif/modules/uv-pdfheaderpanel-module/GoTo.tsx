@@ -84,7 +84,7 @@ const GoTo: React.FC<Props> = ({ numPages, onClick }) => {
             className="h-[22px] px-2 py-1 text-background focus:outline-none"
           />
           <div className="py-1">
-          <div
+            <div
               className="tailwind-scroll max-h-[230px] overflow-y-auto"
               ref={dropdownRef}
             >

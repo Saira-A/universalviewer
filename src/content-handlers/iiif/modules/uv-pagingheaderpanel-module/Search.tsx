@@ -112,15 +112,15 @@ const Search: React.FC<Props> = ({ extensionHost, extension, content }) => {
           setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : 0));
           break;
         case "Tab":
-        e.preventDefault();
-        if (e.shiftKey) {
-            setHighlightedIndex(prev => prev > 0 ? prev - 1 : 0);
-        } else {
-            setHighlightedIndex(prev => 
-            prev < suggestions.length - 1 ? prev + 1 : prev
+          e.preventDefault();
+          if (e.shiftKey) {
+            setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : 0));
+          } else {
+            setHighlightedIndex((prev) =>
+              prev < suggestions.length - 1 ? prev + 1 : prev
             );
-        }
-        break;
+          }
+          break;
         case "Enter":
           e.preventDefault();
           if (highlightedIndex >= 0) {

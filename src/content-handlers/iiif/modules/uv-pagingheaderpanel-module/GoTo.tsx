@@ -99,7 +99,10 @@ const GoTo: React.FC<Props> = ({ canvasItems, pageMode, onClick, content }) => {
             handleCanvasSelect(filteredItems[highlightedIndex].index);
           } else if (searchTerm) {
             const index = parseInt(searchTerm, 10) - 1;
-            if (!isNaN(index) && canvasItems.some((item) => item.index === index)) {
+            if (
+              !isNaN(index) &&
+              canvasItems.some((item) => item.index === index)
+            ) {
               handleCanvasSelect(index);
             }
           }
@@ -158,7 +161,9 @@ const GoTo: React.FC<Props> = ({ canvasItems, pageMode, onClick, content }) => {
             aria-expanded={filteredItems.length > 0}
             aria-controls="goto-suggestions"
             aria-activedescendant={
-              highlightedIndex >= 0 ? `suggestion-${highlightedIndex}` : undefined
+              highlightedIndex >= 0
+                ? `suggestion-${highlightedIndex}`
+                : undefined
             }
           />
           <div className="tailwind-scroll max-h-[230px] overflow-y-auto">
