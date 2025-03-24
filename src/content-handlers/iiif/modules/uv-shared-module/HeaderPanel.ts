@@ -232,7 +232,22 @@ export class HeaderPanel<
       }
     }
 
-    this.rightOptionsRoot.render(createElement(HeaderPanelRightOptions, {}));
+    this.rightOptionsRoot.render(
+      createElement(HeaderPanelRightOptions, {
+        extensionHost: this.extensionHost,
+        configOptions: {
+          downloadEnabled: true,
+          shareEnabled: true,
+          embedEnabled: false,
+          printEnabled: false,
+          bookmarkEnabled: false,
+          feedbackEnabled: false,
+          fullscreenEnabled: true,
+          galleryEnabled: true,
+          settingsEnabled: true,
+        },
+      })
+    );
 
     // hide toggle buttons below minimum width
     if (this.extension.isMobileMetric()) {

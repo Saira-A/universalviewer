@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import cx from "classnames";
-import { Files, Maths, Strings } from "@edsilv/utils";
+import { Files, Strings } from "@edsilv/utils";
 import {
   Canvas,
   Size,
@@ -79,44 +79,43 @@ const DownloadDialogue = ({
   triggerButton: HTMLElement;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ top: "0px", left: "0px" });
-  const [arrowPosition, setArrowPosition] = useState("0px 0px");
+  const [position, setPosition] = useState({
+    top: "0px",
+    left: "0px",
+    right: "auto",
+  });
+  const [arrowPosition, _setArrowPosition] = useState("0px 0px");
   const [selectedPage, setSelectedPage] = useState<"left" | "right">("left");
   const hasNormalDimensions: boolean = rotation % 180 == 0;
 
   useEffect(() => {
-    if (open) {
-      const top: number =
-        parent.clientHeight -
-        ref.current!.clientHeight -
-        triggerButton.clientHeight;
+    if (open && triggerButton instanceof HTMLElement) {
+      const buttonRect = triggerButton.getBoundingClientRect();
+      const parentRect = parent.getBoundingClientRect();
 
-      let left: number =
-        triggerButton.getBoundingClientRect().left -
-        parent.getBoundingClientRect().left;
+      let top, left, right;
 
-      const normalisedPos: number = Maths.normalise(
-        left,
-        0,
-        parent.clientWidth
-      );
+      top = buttonRect.bottom - parentRect.top;
+      left = "auto";
 
-      left =
-        parent.clientWidth * normalisedPos -
-        ref.current!.clientWidth * normalisedPos;
+      const availableSpace = parent.clientWidth - buttonRect.right;
 
-      const arrowLeft = ref.current!.clientWidth * normalisedPos;
+      const dialogueWidth = ref.current!.clientWidth;
+      right = Math.min(availableSpace, dialogueWidth);
 
-      setPosition({ top: `${top}px`, left: `${left}px` });
-      setArrowPosition(`${arrowLeft}px 0px`);
+      setPosition({ top: `${top}px`, left: left, right: `${right}px` });
 
-      // Focus on the first element when opened
       const focusableElements = getFocusableElements();
-      if (focusableElements && focusableElements.length > 0) {
-        focusableElements[0]?.focus();
+      if (focusableElements?.length) {
+        focusableElements[0].focus();
+      }
+
+      const arrowElement = ref.current?.querySelector(".bottom");
+      if (arrowElement) {
+        arrowElement.remove();
       }
     }
-  }, [open]);
+  }, [open, triggerButton]);
 
   // Method to get focusable elements inside the component
   const getFocusableElements = (): NodeListOf<HTMLElement> | null => {
