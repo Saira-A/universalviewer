@@ -113,7 +113,7 @@
   "$print": "Print",
   "$resultFoundFor": "result found for",
   "$resultsFoundFor": "results found for",
-  "$searchWithinItem": "Search within this item:",
+  "$searchWithinItem": "Search within this item",
   "$locale": "Locale",
   "$navigatorEnabled": "Navigator Enabled",
   "$clickToZoomEnabled": "Mouse Click To Zoom",

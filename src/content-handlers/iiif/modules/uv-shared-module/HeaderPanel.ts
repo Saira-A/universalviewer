@@ -58,8 +58,6 @@ export class HeaderPanel<
 
     this.$centerOptions = $('<div class="centerOptions"></div>');
     this.$options.append(this.$centerOptions);
-    //hide for now until all center options functions are transferred to left options container
-    this.$centerOptions.hide();
 
     this.$rightOptions = $('<div class="rightOptions"></div>');
     this.$options.append(this.$rightOptions);
@@ -232,7 +230,22 @@ export class HeaderPanel<
       }
     }
 
-    this.rightOptionsRoot.render(createElement(HeaderPanelRightOptions, {}));
+    this.rightOptionsRoot.render(
+      createElement(HeaderPanelRightOptions, {
+        extensionHost: this.extensionHost,
+        configOptions: {
+          downloadEnabled: true,
+          shareEnabled: true,
+          embedEnabled: false,
+          printEnabled: false,
+          bookmarkEnabled: false,
+          feedbackEnabled: false,
+          fullscreenEnabled: true,
+          galleryEnabled: true,
+          settingsEnabled: true,
+        },
+      })
+    );
 
     // hide toggle buttons below minimum width
     if (this.extension.isMobileMetric()) {

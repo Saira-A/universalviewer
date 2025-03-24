@@ -168,15 +168,15 @@
     "footerPanel": {
       "options": {
         "bookmarkEnabled": false,
-        "downloadEnabled": true,
+        "downloadEnabled": false,
         "embedEnabled": false,
         "feedbackEnabled": false,
-        "fullscreenEnabled": true,
-        "minimiseButtons": true,
-        "moreInfoEnabled": true,
+        "fullscreenEnabled": false,
+        "minimiseButtons": false,
+        "moreInfoEnabled": false,
         "openEnabled": false,
         "printEnabled": false,
-        "shareEnabled": true
+        "shareEnabled": false
       },
       "content": {
         "bookmark": "$add_to_bookmarks",
@@ -301,6 +301,7 @@
         "modeOptionsEnabled": true
       },
       "content": {
+        "enterKeyword": "$enterKeyword",
         "close": "$close",
         "emptyValue": "$emptyValue",
         "first": "$first",
@@ -325,6 +326,7 @@
         "previousImage": "$previousImage",
         "previousPage": "$previousPage",
         "settings": "$settings",
+        "searchWithin": "$searchWithinItem",
         "twoUp": "$twoPageView"
       }
     },
@@ -388,18 +390,18 @@
         "elideDetailsTermsCount": 20,
         "elideResultsTermsCount": 10,
         "forceImageMode": false,
-        "pageModeEnabled": true,
-        "positionMarkerEnabled": true,
+        "pageModeEnabled": false,
+        "positionMarkerEnabled": false,
         "bookmarkEnabled": false,
-        "downloadEnabled": true,
+        "downloadEnabled": false,
         "embedEnabled": false,
         "feedbackEnabled": false,
-        "fullscreenEnabled": true,
-        "minimiseButtons": true,
-        "moreInfoEnabled": true,
+        "fullscreenEnabled": false,
+        "minimiseButtons": false,
+        "moreInfoEnabled": false,
         "openEnabled": false,
         "printEnabled": false,
-        "shareEnabled": true
+        "shareEnabled": false
       },
       "content": {
         "clearSearch": "$clearSearch",

@@ -113,7 +113,7 @@
   "$print": "Skriv ut",
   "$resultFoundFor": "träff hittades för",
   "$resultsFoundFor": "träffar hittades fö",
-  "$searchWithinItem": "Sök inom detta objekt:",
+  "$searchWithinItem": "Sök inom detta objekt",
   "$locale": "Språk",
   "$navigatorEnabled": "Visa minivy",
   "$clickToZoomEnabled": "Zooma med musklick",
