@@ -113,7 +113,7 @@
   "$print": "Drukuj",
   "$resultFoundFor": "wynik dla",
   "$resultsFoundFor": "wyniki/wyników dla",
-  "$searchWithinItem": "Wyszukaj w tym obiekcie:",
+  "$searchWithinItem": "Wyszukaj w tym obiekcie",
   "$locale": "Język",
   "$navigatorEnabled": "Włączona nawigacja",
   "$clickToZoomEnabled": "Przybliżenie przez kliknięcie myszą",
