@@ -272,11 +272,11 @@ export class PagingHeaderPanel extends HeaderPanel<
 
     this.rightOptionsRoot.render(
       createElement(PagingHeaderPanelRightOptions, {})
-    )
+    );
 
     this.leftOptionsRoot.render(
       createElement(PagingHeaderPanelLeftOptions, {})
-    )
+    );
 
     this.$oneUpButton = $(`
           <button class="btn imageBtn one-up" title="${this.content.oneUp}">
