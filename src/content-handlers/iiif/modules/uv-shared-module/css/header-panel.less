@@ -16,12 +16,30 @@
             height: 80px;
         }
 
+        .header-button {
+            width: 30px;
+            height: 30px;
+            transition: background-color 100ms ease;
+            cursor: pointer;
+          }
+          
+          
+          .header-button:hover {
+            background-color: @gray;
+          }
+          
+
         .options {
-            height: 40px;
+            padding-left: 8px;
+            padding-right: 8px;
+            height: 30px;
             background-color: @panel-dark-bg;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
 
             .centerOptions {
-                position: absolute;
+                text-align: center;
             }
 
             .rightOptions {
