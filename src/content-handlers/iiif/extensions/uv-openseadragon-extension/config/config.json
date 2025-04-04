@@ -383,7 +383,9 @@
         "rotateRight": "$rotateRight",
         "zoomIn": "$zoomIn",
         "zoomOut": "$zoomOut",
-        "adjustImage": "$adjustImage"
+        "adjustImage": "$adjustImage",
+        "oneUp": "$singlePageView",
+        "twoUp": "$doublePageView"
       }
     },
     "searchFooterPanel": {
