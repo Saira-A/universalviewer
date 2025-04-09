@@ -51,14 +51,14 @@ export class HeaderPanel<
 
     this.$leftOptions = $('<div class="leftOptions"></div>');
     this.$options.append(this.$leftOptions);
-    this.leftOptionsRoot = createRoot(this.$leftOptions[0]) 
+    this.leftOptionsRoot = createRoot(this.$leftOptions[0]);
 
     this.$centerOptions = $('<div class="centerOptions"></div>');
     this.$options.append(this.$centerOptions);
 
     this.$rightOptions = $('<div class="rightOptions"></div>');
     this.$options.append(this.$rightOptions);
-    this.rightOptionsRoot = createRoot(this.$rightOptions[0])    
+    this.rightOptionsRoot = createRoot(this.$rightOptions[0]);
 
     //temporarily hide center options while transferring functionality to left options
     this.$centerOptions.hide();

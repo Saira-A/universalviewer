@@ -270,6 +270,10 @@ export class PagingHeaderPanel extends HeaderPanel<
     this.$pagingToggleButtons = $('<div class="pagingToggleButtons"></div>');
     this.$rightOptions.prepend(this.$pagingToggleButtons);
 
+    this.rightOptionsRoot.render(
+      createElement(PagingHeaderPanelRightOptions, {})
+    );
+
     this.leftOptionsRoot.render(
       createElement(
         'div', 
