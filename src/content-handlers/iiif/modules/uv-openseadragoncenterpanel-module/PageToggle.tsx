@@ -7,9 +7,13 @@ interface PageToggleProps {
   onGalleryClick: () => void;
 }
 
-const PageToggle: React.FC<PageToggleProps> = ({ onOneUpClick, onTwoUpClick, onGalleryClick, isPaged }) => {
+const PageToggle: React.FC<PageToggleProps> = ({
+  onOneUpClick,
+  onTwoUpClick,
+  onGalleryClick,
+  isPaged,
+}) => {
   if (!isPaged) return null;
-
 
   return (
     <div className="osd-controls" style={{ marginLeft: "30px" }}>
@@ -23,7 +27,6 @@ const PageToggle: React.FC<PageToggleProps> = ({ onOneUpClick, onTwoUpClick, onG
       <button className="btn imageBtn gallery" onClick={onGalleryClick}>
         <i className="uv-icon-gallery" aria-hidden="true"></i>
       </button>
-
     </div>
   );
 };

@@ -9,7 +9,7 @@ interface HeaderButtonProps {
 const HeaderButton: React.FC<HeaderButtonProps> = ({
   onClick,
   title,
-  children
+  children,
 }) => {
   return (
     <button

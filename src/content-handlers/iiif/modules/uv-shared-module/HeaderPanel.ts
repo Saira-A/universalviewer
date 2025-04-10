@@ -73,8 +73,8 @@ export class HeaderPanel<
             <i class="uv-icon-settings" aria-hidden="true"></i>
           </button>
         `);
-   // this.$settingsButton.attr("title", this.content.settings);
-   //  this.$rightOptions.append(this.$settingsButton);
+    // this.$settingsButton.attr("title", this.content.settings);
+    //  this.$rightOptions.append(this.$settingsButton);
 
     this.$helpButton = $(`
       <a class="btn imageBtn help" tabindex="0" title="${this.content.help}" role="button">
@@ -120,8 +120,8 @@ export class HeaderPanel<
     this.rightOptionsRoot.render(
       createElement(HeaderPanelRightOptions, {
         extensionHost: this.extensionHost,
-        options: this.options,   
-        content: this.content    
+        options: this.options,
+        content: this.content,
       })
     );
 

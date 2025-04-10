@@ -24,9 +24,9 @@ import "@openseadragon-imaging/openseadragon-viewerinputhook";
 import { MediaType } from "@iiif/vocabulary/dist-commonjs";
 import { Events } from "../../../../Events";
 import { Config } from "../../extensions/uv-openseadragon-extension/config/Config";
-import { createRoot, Root } from 'react-dom/client';  
-import React from 'react';
-import PageToggle from './PageToggle';
+import { createRoot, Root } from "react-dom/client";
+import React from "react";
+import PageToggle from "./PageToggle";
 
 export class OpenSeadragonCenterPanel extends CenterPanel<
   Config["modules"]["openSeadragonCenterPanel"]
@@ -66,8 +66,8 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
   $zoomInButton: JQuery;
   $zoomOutButton: JQuery;
   $adjustImageButton: JQuery;
-  $toggleContainer: JQuery; 
-  toggleRoot: Root;  
+  $toggleContainer: JQuery;
+  toggleRoot: Root;
 
   constructor($element: JQuery) {
     super($element);
@@ -186,7 +186,7 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
   }
 
   createButtons(): void {
-    const isPaged = this.extension.helper.isPaged(); 
+    const isPaged = this.extension.helper.isPaged();
     this.$toggleContainer = $('<div class="osd-toggle-container"></div>');
     this.$viewer.append(this.$toggleContainer);
 
@@ -197,69 +197,70 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
         onOneUpClick: () => {
           const enabled = false;
           this.updateSettings({ pagingEnabled: enabled });
-          this.extensionHost.publish(OpenSeadragonExtensionEvents.PAGING_TOGGLED, enabled);
+          this.extensionHost.publish(
+            OpenSeadragonExtensionEvents.PAGING_TOGGLED,
+            enabled
+          );
         },
         onTwoUpClick: () => {
           const enabled = true;
           this.updateSettings({ pagingEnabled: enabled });
-          this.extensionHost.publish(OpenSeadragonExtensionEvents.PAGING_TOGGLED, enabled);
+          this.extensionHost.publish(
+            OpenSeadragonExtensionEvents.PAGING_TOGGLED,
+            enabled
+          );
         },
         onGalleryClick: () => {
           this.extensionHost.publish(IIIFEvents.TOGGLE_EXPAND_LEFT_PANEL);
         },
-        isPaged, 
+        isPaged,
       })
     );
-    
+
     this.updateLayout();
 
-this.$toggleContainer.show();
+    this.$toggleContainer.show();
 
+    let inactivityTimer: number;
 
-let inactivityTimer: number;
-
-const startInactivityTimer = () => {
-    clearTimeout(inactivityTimer);
-    inactivityTimer = window.setTimeout(() => {
+    const startInactivityTimer = () => {
+      clearTimeout(inactivityTimer);
+      inactivityTimer = window.setTimeout(() => {
         this.$toggleContainer.fadeOut(200);
-    }, 1800);
-};
+      }, 1800);
+    };
 
-setTimeout(() => {
-    this.$toggleContainer.fadeOut(400);
-}, 400);
+    setTimeout(() => {
+      this.$toggleContainer.fadeOut(400);
+    }, 400);
 
+    this.$viewer.on("mouseenter", () => {
+      this.$toggleContainer.stop(true, true).fadeIn(400);
+      startInactivityTimer();
+    });
 
-this.$viewer.on("mouseenter", () => {
-    this.$toggleContainer.stop(true, true).fadeIn(400);
-    startInactivityTimer(); 
-});
+    this.$viewer.on("mouseleave", () => {
+      clearTimeout(inactivityTimer);
+      this.$toggleContainer.fadeOut(400);
+    });
 
-
-this.$viewer.on("mouseleave", () => {
-    clearTimeout(inactivityTimer);
-    this.$toggleContainer.fadeOut(400);
-});
-
-
-this.$viewer.on("mousemove", () => {
-    this.$toggleContainer.stop(true, true).fadeIn(400);
-    startInactivityTimer();
-});
-
-}
+    this.$viewer.on("mousemove", () => {
+      this.$toggleContainer.stop(true, true).fadeIn(400);
+      startInactivityTimer();
+    });
+  }
 
   updateLayout(): void {
     this.$viewer.find(".osd-toggle-container").css({
       position: "absolute",
-      bottom: "10px",  
-      left: "7%",  
-      transform: "translateX(-50%)",  
-      zIndex: 10, 
+      bottom: "10px",
+      left: "7%",
+      transform: "translateX(-50%)",
+      zIndex: 10,
     });
 
     this.$viewer.find(".osd-image").css({
-      paddingBottom: "40px", 
+      paddingBottom: "40px",
     });
   }
 

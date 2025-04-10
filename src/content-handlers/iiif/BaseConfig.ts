@@ -406,7 +406,6 @@ type GenericDialogue = ModuleConfig & {
   content: GenericDialogueContent;
 };
 
-
 type MoreInfoRightPanelOptions = DialogueOptions &
   ExpandPanelOptions & {
     /** Order in which canvases are displayed */

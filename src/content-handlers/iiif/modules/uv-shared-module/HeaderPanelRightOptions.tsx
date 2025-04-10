@@ -12,7 +12,11 @@ interface Props {
   content: HeaderPanelContent;
 }
 
-const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost, options, content }) => {
+const HeaderPanelRightOptions: React.FC<Props> = ({
+  extensionHost,
+  options,
+  content,
+}) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   const handleFullScreenClick = () => {
@@ -46,7 +50,10 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost, options, cont
       {options.downloadEnabled && (
         <HeaderButton
           onClick={(event) =>
-            extensionHost.publish(IIIFEvents.SHOW_DOWNLOAD_DIALOGUE, event.currentTarget)
+            extensionHost.publish(
+              IIIFEvents.SHOW_DOWNLOAD_DIALOGUE,
+              event.currentTarget
+            )
           }
           title={content.download || "Download"}
         >
@@ -58,7 +65,10 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost, options, cont
       {options.shareEnabled && (
         <HeaderButton
           onClick={(event) =>
-            extensionHost.publish(IIIFEvents.SHOW_SHARE_DIALOGUE, event.currentTarget)
+            extensionHost.publish(
+              IIIFEvents.SHOW_SHARE_DIALOGUE,
+              event.currentTarget
+            )
           }
           title={content.share}
         >
@@ -81,9 +91,7 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost, options, cont
 
       {options.bookmarkEnabled && (
         <HeaderButton
-          onClick={() =>
-            extensionHost.publish(IIIFEvents.BOOKMARK)
-          }
+          onClick={() => extensionHost.publish(IIIFEvents.BOOKMARK)}
           title={content.bookmark}
         >
           <i className="uv-icon uv-icon-bookmark" aria-hidden="true"></i>
@@ -93,9 +101,7 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost, options, cont
 
       {options.feedbackEnabled && (
         <HeaderButton
-          onClick={() =>
-            extensionHost.publish(IIIFEvents.FEEDBACK)
-          }
+          onClick={() => extensionHost.publish(IIIFEvents.FEEDBACK)}
           title={content.feedback}
         >
           <i className="uv-icon uv-icon-feedback" aria-hidden="true"></i>
@@ -106,7 +112,10 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost, options, cont
       {options.settingsButtonEnabled && (
         <HeaderButton
           onClick={(event) =>
-            extensionHost.publish(IIIFEvents.SHOW_SETTINGS_DIALOGUE, event.currentTarget)
+            extensionHost.publish(
+              IIIFEvents.SHOW_SETTINGS_DIALOGUE,
+              event.currentTarget
+            )
           }
           title={content.settings}
         >
@@ -126,7 +135,10 @@ const HeaderPanelRightOptions: React.FC<Props> = ({ extensionHost, options, cont
             }`}
             aria-hidden="true"
           ></i>
-          <span className="sr-only"> isFullScreen ? content.exitFullScreen : content.fullScreen </span>
+          <span className="sr-only">
+            {" "}
+            isFullScreen ? content.exitFullScreen : content.fullScreen{" "}
+          </span>
         </HeaderButton>
       )}
     </>
