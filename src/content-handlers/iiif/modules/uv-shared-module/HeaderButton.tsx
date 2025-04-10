@@ -2,21 +2,21 @@ import React from "react";
 
 interface HeaderButtonProps {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  label: string;
+  title: string;
   children: React.ReactNode;
 }
 
 const HeaderButton: React.FC<HeaderButtonProps> = ({
   onClick,
-  label,
-  children,
+  title,
+  children
 }) => {
   return (
     <button
       className="header-button"
       type="button"
       onClick={onClick}
-      aria-label={label}
+      title={title}
     >
       {children}
     </button>
