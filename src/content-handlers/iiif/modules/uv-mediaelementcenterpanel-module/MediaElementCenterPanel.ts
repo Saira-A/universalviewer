@@ -325,6 +325,7 @@ export class MediaElementCenterPanel extends CenterPanel<
         stretching: "responsive",
         defaultAudioHeight: "auto",
         showPosterWhenPaused: true,
+        hideVolumeOnTouchDevices: false,
         showPosterWhenEnded: true,
         success: function (mediaElement: any, originalNode: any) {
           mediaElement.addEventListener("play", () => {
