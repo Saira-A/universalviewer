@@ -5,7 +5,16 @@ import { Events } from "../../../../Events";
 import { IIIFExtensionHost } from "../../IIIFExtensionHost";
 import { OpenSeadragonExtensionEvents } from "../../extensions/uv-openseadragon-extension/Events";
 import { HeaderPanelContent, HeaderPanelOptions } from "../../BaseConfig";
-import { Download, Share, Print, Mail, Bookmark, FullScreen, ExitFullScreen, Settings} from "../../../../icons/icons"
+import {
+  Download,
+  Share,
+  Print,
+  Mail,
+  Bookmark,
+  FullScreen,
+  ExitFullScreen,
+  Settings,
+} from "../../../../icons/icons";
 
 interface Props {
   extensionHost: IIIFExtensionHost;
@@ -134,19 +143,19 @@ const HeaderPanelRightOptions: React.FC<Props> = ({
 
       {options.fullscreenEnabled && (
         <HeaderButton
-        onClick={handleFullScreenClick}
-        title={isFullScreen ? content.exitFullScreen : content.fullScreen}
-        label={""}
-      >
-        {isFullScreen ? (
-          <ExitFullScreen aria-hidden="true" />
-        ) : (
-          <FullScreen aria-hidden="true" />
-        )}
-        <span className="sr-only">
-          {isFullScreen ? content.exitFullScreen : content.fullScreen}
-        </span>
-      </HeaderButton>      
+          onClick={handleFullScreenClick}
+          title={isFullScreen ? content.exitFullScreen : content.fullScreen}
+          label={""}
+        >
+          {isFullScreen ? (
+            <ExitFullScreen aria-hidden="true" />
+          ) : (
+            <FullScreen aria-hidden="true" />
+          )}
+          <span className="sr-only">
+            {isFullScreen ? content.exitFullScreen : content.fullScreen}
+          </span>
+        </HeaderButton>
       )}
     </>
   );
