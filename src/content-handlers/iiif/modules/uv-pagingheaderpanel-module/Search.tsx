@@ -126,7 +126,7 @@ export const Search: React.FC<SearchProps> = ({
         searchDropdownRef.current &&
         !searchDropdownRef.current.contains(event.target) &&
         !event.target.closest('.header-search-button') &&
-        !event.target.closest('.search-dropdown') // Add this to be extra sure
+        !event.target.closest('.dropdown-portal')
       ) {
 
         setIsSearchVisible(false);
@@ -242,7 +242,7 @@ export const Search: React.FC<SearchProps> = ({
   
   useEffect(() => {
     // Position the autocomplete dropdown relative to the input field
-    const input = document.querySelector('#text-search');
+    const input = document.querySelector('.search-dropdown');
     const portal = document.querySelector('#text-dropdown-portal');
     
     if (showAutoComplete && input && portal) {

@@ -1,59 +1,37 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Canvas } from "manifesto.js";
-import { ViewingDirection } from "@iiif/vocabulary/dist-commonjs/";
-import { Strings } from "@edsilv/utils";
 import HeaderButton from "../uv-shared-module/HeaderButton";
+import { IIIFExtensionHost } from "../../IIIFExtensionHost";
 import { IIIFEvents } from "../../IIIFEvents";
-import { Goto, FirstPage, LastPage } from "../../../../icons/icons";
-
-//Notes
-// This rewrites some of the original logic in the PagingHeaderPanel 'search' function for navigating to new pages:
-// that function uses the OpenSeadragonExtensionEvents.PAGE_SEARCH event to navigate to new pages by page label if pagingMode is enabled.
-// However, that functionality had no way of handling items where there were multiple identical page labels (e.g. first few pages of Wunder Der Verebung).
-// There is a hack that just ignored the duplicate '-' labels in the previous component.
-// I've duplicated most of the functionality of the original autocomplete/paging navigation here, except defaulting to page labels (as discussed with Scott Jenson et al.)
-// and made it so that the underlying logic always relies on the canvas index (i.e. the unique value) for navigating, which explains why some of this code seems complicated - not unneccessarily so!
-// The component currently uses a Canvas[] as its data source and calls the various methods on this as needed. I think all that's needed here is the index and the label
-// so it would be better to load this upfront as a memoized array of labels and grab the label/index from that
-
-// a lot of the bulky code here is to do with keyboard navigation: lots of the natural browser nav is overridden to make the UI work properly
-
+import { Goto as GoToIcon } from "../../../../icons/icons"
 
 interface GoToProps {
-  helper: any;
-  extensionHost: any;
-  content: any;
-  options: any;
-}
+    helper: any;
+    extensionHost: IIIFExtensionHost;
+    content: any;
+    options: any;
+  }
 
 export const GoTo: React.FC<GoToProps> = ({
-  helper,
-  extensionHost,
-  content,
-  options,
+    helper,
+    extensionHost,
+    content,
+    options,
 }) => {
-  const [searchValue, setSearchValue] = useState<string>("");
-  const [autoCompleteOptions, setAutoCompleteOptions] = useState<Canvas[]>([]);
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const [showAutoComplete, setShowAutoComplete] = useState<boolean>(false);
-  const [maxWidth, setMaxWidth] = useState(0);
-  const [isPagerVisible, setIsPagerVisible] = useState(false);
-  const [lastValidValue, setLastValidValue] = useState<string>("");
+  const [autoCompleteWidth, setAutoCompleteWidth] = useState(0)
+  const [autoCompleteOptions, setAutoCompleteOptions] = useState<Canvas[]>([]);
   const [focusedOptionIndex, setFocusedOptionIndex] = useState<number>(-1);
-  // const [firstButtonEnabled, setFirstButtonEnabled] = useState<boolean>(true);
-  // const [prevButtonEnabled, setPrevButtonEnabled] = useState<boolean>(true);
-  // const [nextButtonEnabled, setNextButtonEnabled] = useState<boolean>(true);
-  // const [lastButtonEnabled, setLastButtonEnabled] = useState<boolean>(true);
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
+  const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLUListElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const searchDropdownRef = useRef<HTMLDivElement>(null);
 
-  // const viewingDirection = helper.getViewingDirection() || ViewingDirection.LEFT_TO_RIGHT;
   const pageModeEnabled = Boolean(options.pageModeEnabled);
-
   const allCanvases: Canvas[] = helper.getCanvases();
-
-  //for development only, toggle this to show the full << < > >> buttons (could change to config setting)
-  const showFullControls = false;
 
   const getInputWidth = () => {
     // Default minimum width
@@ -82,15 +60,94 @@ export const GoTo: React.FC<GoToProps> = ({
     return `${clampedLength}ch`;
   };
 
+    useEffect(() => {
+      if (focusedOptionIndex >= 0 && dropdownRef.current) {
+        const focusedOption = document.getElementById(
+          `option-${focusedOptionIndex}`
+        );
+        if (focusedOption) {
+          focusedOption.scrollIntoView({
+            behavior: "instant",
+            block: "nearest",
+          });
+        }
+      }
+    }, [focusedOptionIndex]);
+
+  useEffect(() => {
+    if (isSearchVisible && inputRef.current) {
+      updateSearchFieldValue();
+      const element = document.querySelector('.search-dropdown');
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        console.log('Width:', rect.width);
+        setAutoCompleteWidth(rect.width);
+      }
+    }
+  }, [isSearchVisible]);
+
+  const updateSearchFieldValue = () => {
+    const canvas = helper.getCurrentCanvas();
+    let value: string;
+    if (pageModeEnabled) {
+      value = canvas.getLabel().getValue();
+    } else {
+      value = String(canvas.getIndex() + 1);
+    }
+    setSearchTerm(value);
+  };
+
+    extensionHost.subscribe(
+      IIIFEvents.CANVAS_INDEX_CHANGE,
+      (canvasIndex: number) => {
+        updateSearchFieldValue();
+        // setButtonStates();
+      }
+    );
+
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      setSearchTerm(value);
+      setFocusedOptionIndex(-1);
+  
+      if (options.autoCompleteBoxEnabled) {
+        let results: Canvas[] = [];
+  
+        if (pageModeEnabled) {
+          results = allCanvases.filter((canvas) => {
+            const label = canvas.getLabel().getValue()?.toLowerCase();
+            return label?.includes(value);
+          });
+        } else {
+          results = allCanvases.filter((canvas, index) =>
+            String(index).startsWith(value)
+          );
+        }
+  
+        setAutoCompleteOptions(results);
+        setShowAutoComplete(results.length > 0 && value.length > 0);
+      }
+    };
+
+
+
+  const handleInputBlur = () => {
+    // Add a small delay before hiding autocomplete to allow click events to register
+    setTimeout(() => {
+      setAutoCompleteOptions([]);
+      setShowAutoComplete(false);
+    }, 150);
+  }
+
   useEffect(() => {
     if (focusedOptionIndex >= 0 && dropdownRef.current) {
-      const focusedOption = document.getElementById(
-        `option-${focusedOptionIndex}`
-      );
-      if (focusedOption) {
-        focusedOption.scrollIntoView({
-          behavior: "instant",
-          block: "nearest",
+      const suggestionItems = dropdownRef.current.querySelectorAll("li");
+      const highlightedItem = suggestionItems[focusedOptionIndex];
+      if (highlightedItem) {
+        highlightedItem.scrollIntoView({
+            behavior: "instant",
+            block: "nearest",
         });
       }
     }
@@ -114,363 +171,238 @@ export const GoTo: React.FC<GoToProps> = ({
     };
   }, [showAutoComplete]);
 
+  // Close dropdown when clicking outside
   useEffect(() => {
-    if (isPagerVisible && containerRef.current) {
-      setMaxWidth(containerRef.current.scrollWidth);
-      updateSearchFieldValue();
-    }
-  }, [isPagerVisible]);
+    const handleClickOutside = (event) => {
+      // Check if click is outside both the search dropdown and the search button
+      if (
+        isSearchVisible &&
+        searchDropdownRef.current &&
+        !searchDropdownRef.current.contains(event.target) &&
+        !event.target.closest('.header-search-button') &&
+        !event.target.closest('.dropdown-portal')
+      ) {
 
-  // useEffect(() => {
-  //   setButtonStates();
-  // }, []);
-
-  const togglePager = () => {
-    setIsPagerVisible(!isPagerVisible);
-  };
-
-  extensionHost.subscribe(
-    IIIFEvents.CANVAS_INDEX_CHANGE,
-    (canvasIndex: number) => {
-      updateSearchFieldValue();
-      // setButtonStates();
-    }
-  );
-
-  const updateSearchFieldValue = () => {
-    const canvas = helper.getCurrentCanvas();
-    let value: string;
-    if (pageModeEnabled) {
-      value = canvas.getLabel().getValue();
-    } else {
-      value = String(canvas.getIndex() + 1);
-    }
-    setSearchValue(value);
-    setLastValidValue(value);
-  };
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchValue(value);
-    setFocusedOptionIndex(-1);
-
-    if (options.autoCompleteBoxEnabled) {
-      let results: Canvas[] = [];
-
-      if (pageModeEnabled) {
-        results = allCanvases.filter((canvas) => {
-          const label = canvas.getLabel().getValue()?.toLowerCase();
-          return label?.includes(value);
-        });
-      } else {
-        results = allCanvases.filter((canvas, index) =>
-          String(index).startsWith(value)
-        );
+        setIsSearchVisible(false);
+        setShowAutoComplete(false);
       }
+    };
+  
+    // Also handle escape key globally
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isSearchVisible) {
+        setIsSearchVisible(false);
+        setShowAutoComplete(false);
+      }
+    };
+  
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('pointerdown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+  
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isSearchVisible]);
 
-      setAutoCompleteOptions(results);
-      setShowAutoComplete(results.length > 0 && value.length > 0);
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (autoCompleteOptions.length > 0) {
+      switch (e.key) {
+        case "ArrowDown":
+          e.preventDefault();
+          setFocusedOptionIndex((prev) =>
+            prev < autoCompleteOptions.length - 1 ? prev + 1 : prev
+          );
+          break;
+        case "ArrowUp":
+          e.preventDefault();
+          setFocusedOptionIndex((prev) => (prev > 0 ? prev - 1 : 0));
+          break;
+        case "Tab":
+          e.preventDefault();
+          if (e.shiftKey) {
+              setFocusedOptionIndex(prev => prev > 0 ? prev - 1 : 0);
+          } else {
+              setFocusedOptionIndex(prev => 
+              prev < autoCompleteOptions.length - 1 ? prev + 1 : prev
+              );
+          }
+          break;
+        case "Enter":
+          e.preventDefault();
+          if (focusedOptionIndex >= 0) {
+            // If an option is focused, use it
+            const selectedTerm = autoCompleteOptions[focusedOptionIndex];
+            go(selectedTerm);
+          } else {
+            // Otherwise use the current search term
+            if (pageModeEnabled) {
+                const target = allCanvases.find(
+                  (canvas) => canvas.getLabel().getValue() === searchTerm
+                );
+                if (target) {
+                  go(target);
+                }
+              } else {
+                const target = allCanvases.find(
+                  (canvas) => String(canvas.index) === searchTerm
+                );
+                if (target) {
+                  go(target);
+                }
+              }
+          }
+          break;
+        case "Escape":
+          setAutoCompleteOptions([]);
+          setShowAutoComplete(false);
+          setIsSearchVisible(false);
+          break;
+      }
+    } else if (e.key === "Enter" && searchTerm.trim()) {
+        if (pageModeEnabled) {
+            const target = allCanvases.find(
+              (canvas) => canvas.getLabel().getValue() === searchTerm
+            );
+            if (target) {
+              go(target);
+            }
+          } else {
+            const target = allCanvases.find(
+              (canvas) => String(canvas.index) === searchTerm
+            );
+            if (target) {
+              go(target);
+            }
+          }
+    } else if (e.key === "Escape") {
+      setIsSearchVisible(false);
     }
+  };
+
+  const go = (selection: Canvas) => {
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+      debounceTimer.current = null;
+    }
+    
+    extensionHost.publish(IIIFEvents.CANVAS_INDEX_CHANGE, selection.index);
+    
+    setSearchTerm("");
+    setIsSearchVisible(false);
+    setAutoCompleteOptions([]);
+    setShowAutoComplete(false);
   };
 
   const handleAutoCompleteSelect = (selection: Canvas) => {
-    setShowAutoComplete(false);
     go(selection);
-    updateSearchFieldValue();
   };
 
-  // const setButtonStates = () => {
-  //   if (viewingDirection === ViewingDirection.RIGHT_TO_LEFT) {
-  //     setFirstButtonEnabled(!helper.isLastCanvas());
-  //     setPrevButtonEnabled(!helper.isLastCanvas());
-  //     setNextButtonEnabled(!helper.isFirstCanvas());
-  //     setLastButtonEnabled(!helper.isFirstCanvas());
-  //   } else {
-  //     setFirstButtonEnabled(!helper.isFirstCanvas());
-  //     setPrevButtonEnabled(!helper.isFirstCanvas());
-  //     setNextButtonEnabled(!helper.isLastCanvas());
-  //     setLastButtonEnabled(!helper.isLastCanvas());
-  //   }
-  // };
-
   const handleInputFocus = () => {
-    setSearchValue("");
+    setSearchTerm("");
     setFocusedOptionIndex(-1);
     setAutoCompleteOptions(allCanvases);
     setShowAutoComplete(true);
   };
 
-  const handleInputBlur = () => {
+  const toggleSearch = () => {
     setShowAutoComplete(false);
-    setSearchValue(lastValidValue);
-  };
-
-  const go = (selection: Canvas) => {
-    extensionHost.publish(IIIFEvents.CANVAS_INDEX_CHANGE, selection.index);
-  };
-
-  const getNavigationTitle = (type: "first" | "prev" | "next" | "last") => {
-    if (pageModeEnabled) {
-      if (helper.isRightToLeft()) {
-        const titles = {
-          first: content.lastPage,
-          prev: content.nextPage,
-          next: content.previousPage,
-          last: content.firstPage,
-        };
-        return titles[type];
-      } else {
-        const titles = {
-          first: content.firstPage,
-          prev: content.previousPage,
-          next: content.nextPage,
-          last: content.lastPage,
-        };
-        return titles[type];
-      }
-    } else {
-      if (helper.isRightToLeft()) {
-        const titles = {
-          first: content.lastImage,
-          prev: content.nextImage,
-          next: content.previousImage,
-          last: content.firstImage,
-        };
-        return titles[type];
-      } else {
-        const titles = {
-          first: content.firstImage,
-          prev: content.previousImage,
-          next: content.nextImage,
-          last: content.lastImage,
-        };
-        return titles[type];
-      }
-    }
-  };
-
-  const handleNavigation = (action: "first" | "prev" | "next" | "last") => {
-    const viewingDirection =
-      helper.getViewingDirection() || ViewingDirection.LEFT_TO_RIGHT;
-
-    if (viewingDirection === ViewingDirection.RIGHT_TO_LEFT) {
-      switch (action) {
-        case "first":
-          extensionHost.publish(IIIFEvents.LAST);
-          break;
-        case "prev":
-          extensionHost.publish(IIIFEvents.NEXT);
-          break;
-        case "next":
-          extensionHost.publish(IIIFEvents.PREV);
-          break;
-        case "last":
-          extensionHost.publish(IIIFEvents.FIRST);
-          break;
-      }
-    } else {
-      switch (action) {
-        case "first":
-          extensionHost.publish(IIIFEvents.FIRST);
-          break;
-        case "prev":
-          extensionHost.publish(IIIFEvents.PREV);
-          break;
-        case "next":
-          extensionHost.publish(IIIFEvents.NEXT);
-          break;
-        case "last":
-          extensionHost.publish(IIIFEvents.LAST);
-          break;
-      }
-    }
-  };
-
-  const getTotalLabel = () => {
-    if (pageModeEnabled) {
-      return Strings.format(content.of, helper.getLastCanvasLabel(true));
-    } else {
-      return Strings.format(content.of, helper.getTotalCanvases().toString());
-    }
-  };
-
-  // // move this to conditional rendering in the parent component.
-  // if (helper.getTotalCanvases() <= 1) {
-  //   return null;
-  // }
-
-  //keyboard navigation
-  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-
-      if (
-        showAutoComplete &&
-        focusedOptionIndex >= 0 &&
-        focusedOptionIndex < autoCompleteOptions.length
-      ) {
-        handleAutoCompleteSelect(autoCompleteOptions[focusedOptionIndex]);
-      } else {
-        if (pageModeEnabled) {
-          const target = allCanvases.find(
-            (canvas) => canvas.getLabel().getValue() === searchValue
-          );
-          if (target) {
-            go(target);
-          }
-        } else {
-          const target = allCanvases.find(
-            (canvas) => String(canvas.index) === searchValue
-          );
-          if (target) {
-            go(target);
-          }
-        }
-      }
-      return;
-    }
-
-    if (!showAutoComplete) return;
-
-    switch (e.key) {
-      case "ArrowDown":
-        e.preventDefault();
-        setFocusedOptionIndex((prev) =>
-          prev < autoCompleteOptions.length - 1 ? prev + 1 : prev
-        );
-        break;
-      case "ArrowUp":
-        e.preventDefault();
-        setFocusedOptionIndex((prev) => (prev > 0 ? prev - 1 : 0));
-        break;
-      case "Escape":
-        setShowAutoComplete(false);
-        setFocusedOptionIndex(-1);
-        handleInputBlur();
-        break;
-      default:
-        break;
+    setIsSearchVisible(!isSearchVisible);
+    if (!isSearchVisible) {
+      setSearchTerm("");
     }
   };
 
   function positionDropdown(triggerElement, dropdownElement) {
     if (!triggerElement || !dropdownElement) return;
-
+  
     const rect = triggerElement.getBoundingClientRect();
     dropdownElement.style.top = `${rect.bottom}px`;
     dropdownElement.style.left = `${rect.left}px`;
+    // Ensure the dropdown stays within the viewport
+    const viewportWidth = window.innerWidth;
+    const dropdownWidth = dropdownElement.offsetWidth;
+    if (rect.left + dropdownWidth > viewportWidth) {
+      dropdownElement.style.left = `${viewportWidth - dropdownWidth - 10}px`;
+    }
   }
-
+  
   useEffect(() => {
-    const input = document.querySelector(".search-input");
-    const portal = document.querySelector(".dropdown-portal");
-    positionDropdown(input, portal);
-  }, [showAutoComplete]);
+    // Position the autocomplete dropdown relative to the input field
+    const input = document.querySelector('.search-dropdown');
+    const portal = document.querySelector('#text-dropdown-portal');
+    
+    if (showAutoComplete && input && portal) {
+      positionDropdown(input, portal);
+    }
+    
+  }, [isSearchVisible, showAutoComplete]);
+
+  const handleGoButtonClick = () => {}
 
   return (
-    <>
-      <HeaderButton
-        onClick={togglePager}
-        title={isPagerVisible ? content.go : content.go}
-        label={isPagerVisible ? content.go : content.go}
-      >
-        <Goto />
-      </HeaderButton>
-      <div
-        //   remember to fix the 'ahidden' thing
-        className={`slide-out-container ${
-          isPagerVisible ? "avisible" : "ahidden"
-        }`}
-        ref={containerRef}
-        style={{
-          maxWidth: isPagerVisible ? `${maxWidth}px` : "0",
-          opacity: isPagerVisible ? 1 : 0,
-        }}
-      >
-        <div
-          className="paging-back-buttons"
-          style={{ display: showFullControls ? "block" : "none" }}
+    <div className="search-component">
+<HeaderButton
+  onClick={() => toggleSearch()}
+  title="Go to"
+  label="Go to"
+  className="header-search-button"
+>
+  <GoToIcon />
+</HeaderButton>
+      
+      {isSearchVisible && (
+        <div 
+          className="search-dropdown"
+          ref={searchDropdownRef}
+          
         >
-          <HeaderButton
-            onClick={() => handleNavigation("first")}
-            title={getNavigationTitle("first")}
-            label={getNavigationTitle("first")}
-            // disabled={!firstButtonEnabled}
-          >
-            <FirstPage />
-          </HeaderButton>
+              <input
+                type="text"
+                className="search-input"
+                id="text-search"
+                ref={inputRef}
+                placeholder={content.enterKeyword}
+                value={searchTerm}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
+                onFocus={handleInputFocus}
+                onBlur={handleInputBlur}
+                maxLength={30}
+                aria-label="Search text"
+                aria-expanded={showAutoComplete}
+                aria-autocomplete="list"
+                aria-controls={showAutoComplete ? "autocomplete-list" : undefined}
+                aria-activedescendant={
+                  focusedOptionIndex >= 0
+                    ? `option-${focusedOptionIndex}`
+                    : undefined
+                }
+                style={{ width: getInputWidth() }}
 
-          {/* <HeaderButton
-            onClick={() => handleNavigation("prev")}
-            title={getNavigationTitle("prev")}
-            label={getNavigationTitle("prev")}
-            // disabled={!prevButtonEnabled}
-          >
-            <PreviousPage />
-          </HeaderButton> */}
-        </div>
-
-        <div className="search-input-container">
-          <input
-            type="text"
-            className="search-input"
-            value={searchValue}
-            onChange={handleSearchChange}
-            onFocus={handleInputFocus}
-            onBlur={handleInputBlur}
-            onKeyDown={handleInputKeyDown}
-            aria-label={content.pageSearchLabel}
-            aria-expanded={showAutoComplete}
-            aria-autocomplete="list"
-            aria-controls="autocomplete-list"
-            aria-activedescendant={
-              focusedOptionIndex >= 0
-                ? `option-${focusedOptionIndex}`
-                : undefined
-            }
-            maxLength={30}
-            style={{ width: getInputWidth() }}
-          />
-
-          {!pageModeEnabled && (
-            <span className="total-label">{getTotalLabel()}</span>
-          )}
-        </div>
-        <div
-          className="paging-forward-buttons"
-          style={{ display: showFullControls ? "block" : "none" }}
-        >
-          {/* <HeaderButton
-            onClick={() => handleNavigation("next")}
-            title={getNavigationTitle("next")}
-            label={getNavigationTitle("next")}
-            // disabled={!nextButtonEnabled}
-          >
-            <NextPage />
-          </HeaderButton> */}
-
-          <HeaderButton
-            onClick={() => handleNavigation("last")}
-            title={getNavigationTitle("last")}
-            label={getNavigationTitle("last")}
-            // disabled={!lastButtonEnabled}
-          >
-            <LastPage />
-          </HeaderButton>
-        </div>
-      </div>
-
-      {/* the dropdown is rendered in a portal because 'hidden' needs to applied to the container above for animations to work nicely.  */}
-      <div className="dropdown-portal">
-        {showAutoComplete && options.autoCompleteBoxEnabled && (
-          <ul
-            id="autocomplete-list"
-            ref={dropdownRef}
-            className="autocomplete-dropdown"
-            style={{ width: getInputWidth() }}
-            role="listbox"
-          >
-            {autoCompleteOptions.map((option, index) => (
+              />
+                            <button 
+                className="search-go-button"
+                onClick={handleGoButtonClick}
+                aria-label="Search"
+              >
+                Go
+              </button>
+            </div>
+      )}
+      
+      {showAutoComplete && options.autoCompleteBoxEnabled && (
+        <div className="dropdown-portal" id="text-dropdown-portal">
+          {options.autoCompleteBoxEnabled && (
+            <ul
+              id="autocomplete-list"
+              ref={dropdownRef}
+              className="autocomplete-dropdown"
+              style={{ width: autoCompleteWidth}}
+              role="listbox"
+            >
+{autoCompleteOptions.map((option, index) => (
               <li
                 key={index}
                 id={`option-${index}`}
@@ -487,10 +419,11 @@ export const GoTo: React.FC<GoToProps> = ({
                   : String(option.index)}
               </li>
             ))}
-          </ul>
-        )}
-      </div>
-    </>
+            </ul>
+          )}
+        </div>
+      )}
+    </div>
   );
 };
 
