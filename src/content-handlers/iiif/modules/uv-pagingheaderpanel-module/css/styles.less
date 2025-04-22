@@ -3,113 +3,110 @@
 .uv {
 
     .headerPanel {
-
         .pagingHeaderPanelLeftOptions {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            height: 30px
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          height: 30px
         }
-
         color: @text-secondary-color;
 
-        .slide-out-container {
+        .search-component {
             height: 30px;
-            display: flex;
-            transition: 
-            max-width 0.1s cubic-bezier(0.4, 0, 0.6, 1), 
-            opacity 0.2s ease-out;
-            opacity: 0;
-            overflow: hidden;
-            position: relative;
-            align-items: center;
-          }
-          
-          .slide-out-container.avisible {
-            opacity: 1;
-          }
-          
-          /* Prevent content wrapping */
-          .slide-out-container > * {
-            white-space: nowrap;
-            align-items: center;
-          }
-
-        .pager .search-new {
-            display: flex;                /* Use flexbox to arrange elements in a row */
-            justify-content: space-between; /* Distribute space evenly between the elements */
-            align-items: center;          /* Vertically center the items */
-            height: 30px;                 /* Set the height of the parent container */
+        }
+        
+        .search-dropdown {
+          position: absolute;
+          background-color: white;
+          z-index: 1000;
+          animation: fadeIn 0.2s ease-out;
+          height: 30px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .pager {
+          display: flex; /* Use flexbox to arrange elements in a row */
+          justify-content: space-between; /* Distribute space evenly between the elements */
+          align-items: center; /* Vertically center the items */
+          height: 30px; /* Set the height of the parent container */
         }
         
         .search-form {
-            display: flex;
-            align-items: center;         /* Vertically center the form elements */
-            height: 100%;                 /* Ensure the form takes up the full height of the parent */
-            margin: 0;                   /* Remove any default margin from the form */
-            position: relative; /* To position the autocomplete dropdown relative to the form */
+          display: flex;
+          align-items: center; /* Vertically center the form elements */
+          height: 100%; /* Ensure the form takes up the full height of the parent */
+          position: relative; /* To position the autocomplete dropdown relative to the form */
+        }
+              
+        .search-input {
+          padding: 0 8px;
+          border: none;
+          outline: none;
+          z-index: 10; 
+          color: black;
+          background-color: white;
         }
         
-        .search-input-container {
-            display: flex;
-            align-items: center;
-            height: 100%; 
-            margin-right: 8px;
-            margin-left: 8px;
-            position: relative;
+        .search-go-button {
+          background-color: aqua;
+          color: white;
+          border: none;
+          cursor: pointer;
+          font-weight: bold;
+          outline: none;
         }
-
-        .search-input {
-            padding: 0 4px;
-            // border: 1px solid @gray;
-            border: none;
-            border-radius: 0;     
-            outline: none;        
-            z-index: 10; /* Ensures the input is above the dropdown */
-            text-align: right;
-            color: black;
-            background-color: white;
+        
+        .search-go-button:hover {
+          background-color: darken(aqua, 10%);
         }
-
-
+        
         .dropdown-portal {
-            position: fixed;
-            z-index: 1000;
-          }
-
-          .autocomplete-dropdown {
-            position: absolute;
-            color: black;
-            background-color: white;
-            border-radius: 0;
-            max-height: 150px;
-            overflow-y: auto;
-            z-index: 100;
-            margin-top: 0px;
-            padding: 0;
-            list-style: none;
-          }
-
-.autocomplete-dropdown li {
-    padding: 4px 7px; 
-    cursor: pointer;
-    overflow: hidden;
-}
-
-.autocomplete-dropdown li:hover {
-    background-color: @gray; 
-}
-
-.focused-option {
-    background-color: @gray; 
-}
+          position: fixed;
+          z-index: 1000;
+        }
+        
+        .autocomplete-dropdown {
+          position: absolute;
+          color: black;
+          background-color: white;
+          max-height: 150px;
+          overflow-y: auto;
+          z-index: 100;
+          margin-top: 0px;
+          padding: 0;
+          list-style: none;
+        }
+        
+        .autocomplete-dropdown li {
+          padding: 6px 8px;
+          cursor: pointer;
+          overflow: hidden;
+        }
+        
+        .autocomplete-dropdown li:hover {
+          background-color: @gray;
+        }
+        
+        .focused-option {
+          background-color: @gray;
+        }
+      }
+      
+      /* Make sure the header button is properly styled for the dropdown */
+      .header-search-button {
+        position: relative;
+      }
 
 .total-label {
     margin-left: 4px;
 }
-
-
-        }
 
         // button.btn.imageBtn {
         //     padding-left: 2px;

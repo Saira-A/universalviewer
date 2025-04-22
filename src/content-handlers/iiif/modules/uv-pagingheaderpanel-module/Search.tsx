@@ -13,13 +13,12 @@ interface SearchProps {
 }
 
 export const Search: React.FC<SearchProps> = ({
-    extension,
+  extension,
   extensionHost,
   content,
   options,
 }) => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
-  const [maxWidth, setMaxWidth] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [showAutoComplete, setShowAutoComplete] = useState<boolean>(false);
   
@@ -27,17 +26,16 @@ export const Search: React.FC<SearchProps> = ({
   const [focusedOptionIndex, setFocusedOptionIndex] = useState<number>(-1);
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
-  const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLUListElement>(null);
+  const searchDropdownRef = useRef<HTMLDivElement>(null);
   
   //dev only, set width
   const inputWidth = "20ch";
 
   useEffect(() => {
-    if (isSearchVisible && containerRef.current) {
-      setMaxWidth(containerRef.current.scrollWidth);
-      inputRef.current?.focus();
+    if (isSearchVisible && inputRef.current) {
+      inputRef.current.focus();
     }
   }, [isSearchVisible]);
 
@@ -119,6 +117,41 @@ export const Search: React.FC<SearchProps> = ({
     };
   }, [showAutoComplete]);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Check if click is outside both the search dropdown and the search button
+      if (
+        isSearchVisible &&
+        searchDropdownRef.current &&
+        !searchDropdownRef.current.contains(event.target) &&
+        !event.target.closest('.header-search-button') &&
+        !event.target.closest('.search-dropdown') // Add this to be extra sure
+      ) {
+
+        setIsSearchVisible(false);
+        setShowAutoComplete(false);
+      }
+    };
+  
+    // Also handle escape key globally
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isSearchVisible) {
+        setIsSearchVisible(false);
+        setShowAutoComplete(false);
+      }
+    };
+  
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('pointerdown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+  
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isSearchVisible]);
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (autoCompleteOptions.length > 0) {
       switch (e.key) {
@@ -156,12 +189,15 @@ export const Search: React.FC<SearchProps> = ({
         case "Escape":
           setAutoCompleteOptions([]);
           setShowAutoComplete(false);
+          setIsSearchVisible(false);
           break;
       }
     } else if (e.key === "Enter" && searchTerm.trim()) {
       // Handle Enter key when no autocomplete options are showing
       e.preventDefault();
       go(searchTerm);
+    } else if (e.key === "Escape") {
+      setIsSearchVisible(false);
     }
   };
 
@@ -173,7 +209,7 @@ export const Search: React.FC<SearchProps> = ({
     
     handleSearchSubmit(term);
     setSearchTerm("");
-    toggleSearch();
+    setIsSearchVisible(false);
     setAutoCompleteOptions([]);
     setShowAutoComplete(false);
   };
@@ -185,6 +221,9 @@ export const Search: React.FC<SearchProps> = ({
   const toggleSearch = () => {
     setShowAutoComplete(false);
     setIsSearchVisible(!isSearchVisible);
+    if (!isSearchVisible) {
+      setSearchTerm("");
+    }
   };
 
   function positionDropdown(triggerElement, dropdownElement) {
@@ -193,35 +232,41 @@ export const Search: React.FC<SearchProps> = ({
     const rect = triggerElement.getBoundingClientRect();
     dropdownElement.style.top = `${rect.bottom}px`;
     dropdownElement.style.left = `${rect.left}px`;
+    // Ensure the dropdown stays within the viewport
+    const viewportWidth = window.innerWidth;
+    const dropdownWidth = dropdownElement.offsetWidth;
+    if (rect.left + dropdownWidth > viewportWidth) {
+      dropdownElement.style.left = `${viewportWidth - dropdownWidth - 10}px`;
+    }
   }
   
   useEffect(() => {
+    // Position the autocomplete dropdown relative to the input field
     const input = document.querySelector('#text-search');
     const portal = document.querySelector('#text-dropdown-portal');
-    positionDropdown(input, portal);
-  }, [showAutoComplete]);
+    
+    if (showAutoComplete && input && portal) {
+      positionDropdown(input, portal);
+    }
+    
+  }, [isSearchVisible, showAutoComplete]);
 
   return (
-    <>
-      <HeaderButton
-        onClick={toggleSearch}
-        title="Search"
-        label="Search"
-      >
-        <SearchIcon />
-      </HeaderButton>
-      <div
-        className={`slide-out-container ${
-          isSearchVisible ? "avisible" : "ahidden"
-        }`}
-        ref={containerRef}
-        style={{
-          maxWidth: isSearchVisible ? `${maxWidth}px` : "0",
-          opacity: isSearchVisible ? 1 : 0,
-        }}
-      >
-        <div className="search-new">
-            <div className="search-input-container">
+    <div className="search-component">
+<HeaderButton
+  onClick={() => toggleSearch()}
+  title="Search"
+  label="Search"
+  className="header-search-button"
+>
+  <SearchIcon />
+</HeaderButton>
+      
+      {isSearchVisible && (
+        <div 
+          className="search-dropdown"
+          ref={searchDropdownRef}
+        >
               <input
                 type="text"
                 className="search-input"
@@ -245,39 +290,40 @@ export const Search: React.FC<SearchProps> = ({
                 }
               />
             </div>
-        </div>
-      </div>
+      )}
+      
       {showAutoComplete && options.autoCompleteBoxEnabled && (
-      <div className="dropdown-portal" id="text-dropdown-portal">
-            {options.autoCompleteBoxEnabled && (
-              <ul
-                id="autocomplete-list"
-                ref={dropdownRef}
-                className="autocomplete-dropdown"
-                style={{ width: inputWidth }}
-                role="listbox"
-              >
-                {autoCompleteOptions.map((option, index) => (
-                  <li
-                    key={index}
-                    id={`option-${index}`}
-                    role="option"
-                    aria-selected={focusedOptionIndex === index}
-                    className={
-                      focusedOptionIndex === index ? "focused-option" : ""
-                    }
-                    onMouseDown={() => {
-                      handleAutoCompleteSelect(option);
-                    }}
-                    onMouseEnter={() => setFocusedOptionIndex(index)}
-                  >
-                    {option}
-                  </li>
-                ))}
-              </ul>
-            )}
-      </div>)}
-    </>
+        <div className="dropdown-portal" id="text-dropdown-portal">
+          {options.autoCompleteBoxEnabled && (
+            <ul
+              id="autocomplete-list"
+              ref={dropdownRef}
+              className="autocomplete-dropdown"
+              style={{ width: inputWidth }}
+              role="listbox"
+            >
+              {autoCompleteOptions.map((option, index) => (
+                <li
+                  key={index}
+                  id={`option-${index}`}
+                  role="option"
+                  aria-selected={focusedOptionIndex === index}
+                  className={
+                    focusedOptionIndex === index ? "focused-option" : ""
+                  }
+                  onMouseDown={() => {
+                    handleAutoCompleteSelect(option);
+                  }}
+                  onMouseEnter={() => setFocusedOptionIndex(index)}
+                >
+                  {option}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+    </div>
   );
 };
 
