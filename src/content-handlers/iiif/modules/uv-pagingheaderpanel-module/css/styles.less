@@ -18,8 +18,8 @@
         .search-dropdown {
           position: absolute;
           background-color: white;
-          z-index: 1000;
-          animation: fadeIn 0.2s ease-out;
+          z-index: 100;
+          animation: fadeIn 0.1s ease-out;
           height: 30px;
           display: flex;
           align-items: center;
@@ -30,21 +30,11 @@
           from { opacity: 0; transform: translateY(-10px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        
-        .pager {
-          display: flex; /* Use flexbox to arrange elements in a row */
-          justify-content: space-between; /* Distribute space evenly between the elements */
-          align-items: center; /* Vertically center the items */
-          height: 30px; /* Set the height of the parent container */
-        }
-        
+
         .search-form {
-          display: flex;
-          align-items: center; /* Vertically center the form elements */
-          height: 100%; /* Ensure the form takes up the full height of the parent */
-          position: relative; /* To position the autocomplete dropdown relative to the form */
+          position: relative;
         }
-              
+
         .search-input {
           padding: 0 8px;
           border: none;
@@ -53,25 +43,27 @@
           color: black;
           background-color: white;
         }
+
+        .autocomplete-dropdown {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 100%;
+        }
         
         .search-go-button {
-            height: 30px;
-            width: 30px;
+          height: 30px;
+          width: 30px;
           border: none;
           cursor: pointer;
           font-weight: bold;
           outline: none;
-          background-color: aqua;
-          color: @gray-dark
+          background-color: #10819A;
+          color: white;
         }
         
         .search-go-button:hover {
-          background-color: darken(aqua, 10%);
-        }
-        
-        .dropdown-portal {
-          position: fixed;
-          z-index: 1000;
+          background-color: darken(#10819A, 10%);
         }
         
         .autocomplete-dropdown {
@@ -101,11 +93,6 @@
         }
       }
       
-      /* Make sure the header button is properly styled for the dropdown */
-      .header-search-button {
-        position: relative;
-      }
-
 .total-label {
     margin-left: 4px;
 }
