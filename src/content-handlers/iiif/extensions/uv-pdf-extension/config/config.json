@@ -137,8 +137,7 @@
       }
     },
     "headerPanel": {
-      "options": {
-      },
+      "options": {},
       "content": {
         "close": "$close",
         "settings": "$settings",

@@ -105,36 +105,44 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
     `);
     this.$pagingToggleButtons.append(this.$twoUpButton);
 
-    const hasPaging = (this.extension as OpenSeadragonExtension).helper.isPagingAvailable();
+    const hasPaging = (
+      this.extension as OpenSeadragonExtension
+    ).helper.isPagingAvailable();
     if (!hasPaging) {
       this.$oneUpButton.hide();
       this.$twoUpButton.hide();
     }
 
-      this.$oneUpButton.onPressed(() => {
-        const enabled: boolean = false;
-        this.updateSettings({ pagingEnabled: enabled });
-        this.extensionHost.publish(OpenSeadragonExtensionEvents.PAGING_TOGGLED, enabled);
-      });
-      
-      this.$twoUpButton.onPressed(() => {
-        const enabled: boolean = true;
-        this.updateSettings({ pagingEnabled: enabled });
-        this.extensionHost.publish(OpenSeadragonExtensionEvents.PAGING_TOGGLED, enabled);
-      });
-    
-      this.$galleryButton = $(`
+    this.$oneUpButton.onPressed(() => {
+      const enabled: boolean = false;
+      this.updateSettings({ pagingEnabled: enabled });
+      this.extensionHost.publish(
+        OpenSeadragonExtensionEvents.PAGING_TOGGLED,
+        enabled
+      );
+    });
+
+    this.$twoUpButton.onPressed(() => {
+      const enabled: boolean = true;
+      this.updateSettings({ pagingEnabled: enabled });
+      this.extensionHost.publish(
+        OpenSeadragonExtensionEvents.PAGING_TOGGLED,
+        enabled
+      );
+    });
+
+    this.$galleryButton = $(`
         <button class="btn imageBtn gallery" title="${this.content.gallery}" style="display: none;">
           <i class="uv-icon-gallery" aria-hidden="true"></i>
           <span class="sr-only">${this.content.gallery}</span>
         </button>
       `);
-      this.$pagingToggleButtons.append(this.$galleryButton);
-      
-      this.$galleryButton.onPressed(() => {
-        this.extensionHost.publish(IIIFEvents.TOGGLE_EXPAND_LEFT_PANEL);
-      });
-      
+    this.$pagingToggleButtons.append(this.$galleryButton);
+
+    this.$galleryButton.onPressed(() => {
+      this.extensionHost.publish(IIIFEvents.TOGGLE_EXPAND_LEFT_PANEL);
+    });
+
     this.extensionHost.subscribe(IIIFEvents.ANNOTATIONS, (args: any) => {
       this.overlayAnnotations();
     });
@@ -232,7 +240,7 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
       }
     );
   }
-  
+
   updateGalleryButton(): void {
     if (!this.galleryIsVisible()) {
       this.$galleryButton.hide();
@@ -240,7 +248,7 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
       this.$galleryButton.show();
     }
   }
-  
+
   galleryIsVisible(): boolean {
     return (
       Bools.getBool(this.options.galleryButtonEnabled, true) &&
