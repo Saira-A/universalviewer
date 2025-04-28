@@ -6,13 +6,15 @@ const PagingHeaderPanelLeftOptions = () => {
     <>
       <HeaderButton
         onClick={() => console.log("Left options button test")}
-        label="Test button"
+        title="Title"
+        label="Label"
       >
         T{/* icon goes here */}
       </HeaderButton>
       <HeaderButton
         onClick={() => console.log("Left options button test")}
-        label="Test button"
+        title="Title"
+        label="Label"
       >
         T{/* icon goes here */}
       </HeaderButton>
