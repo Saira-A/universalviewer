@@ -133,6 +133,7 @@ type OpenSeadragonCenterPanelOptions = CenterPanelOptions & {
   visibilityRatio: number;
   /** Whether to zoom in to first annotation on load */
   zoomToInitialAnnotation: boolean;
+  galleryButtonEnabled?: boolean;
 };
 
 type OpenSeadragonCenterPanelContent = CenterPanelContent & {
@@ -147,6 +148,7 @@ type OpenSeadragonCenterPanelContent = CenterPanelContent & {
   adjustImage: string;
   oneUp: string;
   twoUp: string;
+  gallery: string;
 };
 
 type OpenSeadragonCenterPanel = ModuleConfig & {
