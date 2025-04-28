@@ -599,7 +599,7 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
       this.config.options.controlsFadeAfterInactive
     );
 
-    const fadeDelay = 1500; 
+    const fadeDelay = 1500;
 
     let fadeButtonsTimeout: number | undefined;
 
@@ -622,7 +622,6 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
       }, fadeDelay);
     };
 
-
     this.$element.on("mousemove", () => {
       resetPagingFadeTimer();
     });
@@ -643,9 +642,8 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
       resetPagingFadeTimer();
     });
 
-
     showPagingButtons();
-    resetPagingFadeTimer()
+    resetPagingFadeTimer();
 
     this.viewer.addHandler("tile-drawn", () => {
       this.$spinner.hide();
