@@ -5,7 +5,7 @@ interface HeaderButtonProps {
   title: string;
   label: string;
   disabled?: boolean;
-  className?: string;  // New optional className prop
+  className?: string; // New optional className prop
   children: React.ReactNode;
 }
 
@@ -14,7 +14,7 @@ const HeaderButton: React.FC<HeaderButtonProps> = ({
   title,
   label,
   disabled = false,
-  className = "",  // Default to empty string
+  className = "", // Default to empty string
   children,
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
@@ -28,10 +28,10 @@ const HeaderButton: React.FC<HeaderButtonProps> = ({
   const buttonClasses = [
     "header-button",
     disabled ? "header-button--disabled" : "",
-    className,  // Append custom className
+    className, // Append custom className
   ]
-    .filter(Boolean)  // Remove empty strings
-    .join(" ");       // Combine into single string
+    .filter(Boolean) // Remove empty strings
+    .join(" "); // Combine into single string
 
   return (
     <div className="header-button-container">
@@ -48,10 +48,12 @@ const HeaderButton: React.FC<HeaderButtonProps> = ({
       >
         {children}
       </button>
-      
+
       {title && (
-        <div 
-          className={`tooltip ${showTooltip ? 'tooltip-visible' : 'tooltip-hidden'}`}
+        <div
+          className={`tooltip ${
+            showTooltip ? "tooltip-visible" : "tooltip-hidden"
+          }`}
           role="tooltip"
         >
           {title}

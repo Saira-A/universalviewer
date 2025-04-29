@@ -45,7 +45,6 @@ export const Contrast: React.FC<IconProps> = ({
     className={className}
     style={style}
     fill="none"
-
   >
     <g fill={fill}>
       <path
@@ -97,7 +96,6 @@ export const ExitFullScreen: React.FC<IconProps> = ({
     className={className}
     style={style}
     fill="none"
-
   >
     <g fill={fill}>
       <polygon points="22,17 19.3,17 17,17 17,18.6 17,22 19,22 19,19 22,19 	" />
@@ -123,11 +121,9 @@ export const FirstPage: React.FC<IconProps> = ({
     className={className}
     style={style}
     fill="none"
-
   >
     <g>
-      <path d="M19.5,8V22l-7-7L19.5,8z M10.5,22h2V8h-2V22z"
-      fill={fill}/>
+      <path d="M19.5,8V22l-7-7L19.5,8z M10.5,22h2V8h-2V22z" fill={fill} />
     </g>
   </svg>
 );
@@ -147,7 +143,6 @@ export const FullScreen: React.FC<IconProps> = ({
     className={className}
     style={style}
     fill="none"
-
   >
     <g fill={fill}>
       <polygon points="13,8 10.3,8 8,8 8,9.6 8,13 10,13 10,10 13,10 	" />
@@ -197,8 +192,10 @@ export const Gallery: React.FC<IconProps> = ({
     style={style}
     fill="none"
   >
-    <path d="M14,14H8V8h6V14z M22,8h-6v6h6V8z M14,16H8v6h6V16z M22,16h-6v6h6V16z"
-    fill={fill}/>
+    <path
+      d="M14,14H8V8h6V14z M22,8h-6v6h6V8z M14,16H8v6h6V16z M22,16h-6v6h6V16z"
+      fill={fill}
+    />
   </svg>
 );
 
@@ -218,8 +215,7 @@ export const LastPage: React.FC<IconProps> = ({
     style={style}
     fill="none"
   >
-    <path d="M17.5,15l-7,7V8L17.5,15z M19.5,8h-2v14h2V8z"
-    fill={fill}/>
+    <path d="M17.5,15l-7,7V8L17.5,15z M19.5,8h-2v14h2V8z" fill={fill} />
   </svg>
 );
 
@@ -238,10 +234,11 @@ export const Mail: React.FC<IconProps> = ({
     className={className}
     style={style}
     fill="none"
-
   >
-    <path d="M8,11v-1h14v1l-7,4.4L8,11z M15,16.6l-7-4.4V20h14v-7.8L15,16.6z"
-    fill={fill}/>
+    <path
+      d="M8,11v-1h14v1l-7,4.4L8,11z M15,16.6l-7-4.4V20h14v-7.8L15,16.6z"
+      fill={fill}
+    />
   </svg>
 );
 
@@ -261,8 +258,7 @@ export const NextPage: React.FC<IconProps> = ({
     style={style}
     fill="none"
   >
-    <polygon points="19,15 12,22 12,8 "
-    fill={fill}/>
+    <polygon points="19,15 12,22 12,8 " fill={fill} />
   </svg>
 );
 
@@ -304,8 +300,10 @@ export const OpenLeftPanel: React.FC<IconProps> = ({
     style={style}
     fill="none"
   >
-    <path d="M8,8v14h14V8H8z M9,21V9h3v12H9z M21,21h-8V9h8V21z M19,15l-3.1,3.1v-6.2L19,15z"
-    fill={fill}/>
+    <path
+      d="M8,8v14h14V8H8z M9,21V9h3v12H9z M21,21h-8V9h8V21z M19,15l-3.1,3.1v-6.2L19,15z"
+      fill={fill}
+    />
   </svg>
 );
 
@@ -325,8 +323,10 @@ export const OpenRightPanel: React.FC<IconProps> = ({
     style={style}
     fill="none"
   >
-    <path d="M8,8v14h14V8H8z M18,21V9h3v12H18z M9,9h8v12H9V9z M14.1,11.9v6.2L11,15L14.1,11.9z"
-    fill={fill}/>
+    <path
+      d="M8,8v14h14V8H8z M18,21V9h3v12H18z M9,9h8v12H9V9z M14.1,11.9v6.2L11,15L14.1,11.9z"
+      fill={fill}
+    />
   </svg>
 );
 
@@ -345,10 +345,8 @@ export const PreviousPage: React.FC<IconProps> = ({
     className={className}
     style={style}
     fill="none"
-
   >
-    <polygon points="11.5,15 18.5,22 18.5,8 "
-    fill={fill}/>
+    <polygon points="11.5,15 18.5,22 18.5,8 " fill={fill} />
   </svg>
 );
 
@@ -393,7 +391,6 @@ export const Rotate: React.FC<IconProps> = ({
     className={className}
     style={style}
     fill="none"
-
   >
     <g fill={fill}>
       <path
@@ -421,7 +418,6 @@ export const Search: React.FC<IconProps> = ({
     className={className}
     style={style}
     fill="none"
-
   >
     <path
       d="M22.3,20.2l-3.6-3.6c0.5-0.8,0.8-1.8,0.8-2.9c0-3.2-2.6-5.8-5.8-5.8S8,10.6,8,13.8
@@ -447,7 +443,6 @@ export const Settings: React.FC<IconProps> = ({
     className={className}
     style={style}
     fill="none"
-
   >
     <path
       d="M20.5,13.5c-0.1-0.5-0.3-1-0.6-1.4l1.1-1.6C20.5,10,20,9.4,19.4,8.9L17.9,10
@@ -455,7 +450,7 @@ export const Settings: React.FC<IconProps> = ({
 	c-0.3,0.4-0.4,0.9-0.6,1.4l-1.9,0.3c0,0.8,0,1.6,0,2.4l2,0.3c0.1,0.5,0.3,1,0.6,1.4l-1.2,1.6c0.6,0.6,1.1,1.1,1.7,1.7l1.6-1.2
 	c0.4,0.2,0.9,0.4,1.4,0.5l0.3,1.9c0.8,0,1.6,0,2.4,0l0.3-2c0.5-0.1,0.9-0.3,1.4-0.6l1.6,1.2c0.6-0.6,1.1-1.1,1.7-1.7L20,17.8
 	c0.2-0.4,0.4-0.9,0.5-1.4l1.9-0.3c0-0.8,0-1.6,0-2.4L20.5,13.5z M15,17.6c-3.3,0-3.3-5.2,0-5.2S18.3,17.6,15,17.6z"
-  fill={fill}
+      fill={fill}
     />
   </svg>
 );
@@ -475,14 +470,13 @@ export const Share: React.FC<IconProps> = ({
     className={className}
     style={style}
     fill="none"
-
   >
     <path
       d="M19.3,16.5c-0.8,0-1.4,0.3-1.9,0.8l-3.9-1.9c0-0.2,0.1-0.4,0.1-0.6c0,0,0-0.1,0-0.1l3.8-1.9
 	c0.5,0.5,1.2,0.8,1.9,0.8c1.5,0,2.8-1.2,2.8-2.8C22,9.2,20.8,8,19.3,8s-2.8,1.2-2.8,2.8c0,0,0,0.1,0,0.1l-3.8,1.9
 	c-0.5-0.5-1.2-0.8-1.9-0.8C9.2,12,8,13.2,8,14.8c0,1.5,1.2,2.8,2.8,2.8c0.6,0,1.1-0.2,1.6-0.5l4.2,2.1c0,0,0,0.1,0,0.1
 	c0,1.5,1.2,2.8,2.8,2.8s2.8-1.2,2.8-2.8C22,17.7,20.8,16.5,19.3,16.5z"
-  fill={fill}
+      fill={fill}
     />
   </svg>
 );
@@ -502,7 +496,6 @@ export const TwoUp: React.FC<IconProps> = ({
     className={className}
     style={style}
     fill="none"
-
   >
     <g fill={fill}>
       <g>
@@ -530,10 +523,11 @@ export const ZoomIn: React.FC<IconProps> = ({
     className={className}
     style={style}
     fill="none"
-
   >
-    <polygon points="22,14 16,14 16,8 14,8 14,14 8,14 8,16 14,16 14,22 16,22 16,16 22,16 "
-    fill={fill}/>
+    <polygon
+      points="22,14 16,14 16,8 14,8 14,14 8,14 8,16 14,16 14,22 16,22 16,16 22,16 "
+      fill={fill}
+    />
   </svg>
 );
 
@@ -552,8 +546,7 @@ export const ZoomOut: React.FC<IconProps> = ({
     className={className}
     style={style}
     fill="none"
-
   >
-    <rect x="8" y="14" width="14" height="2" fill={fill}/>
+    <rect x="8" y="14" width="14" height="2" fill={fill} />
   </svg>
 );

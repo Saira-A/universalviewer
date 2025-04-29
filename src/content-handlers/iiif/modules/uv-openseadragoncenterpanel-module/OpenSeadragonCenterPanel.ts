@@ -461,7 +461,7 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
     fill="currentColor"
   >
     <polygon points="22,14 16,14 16,8 14,8 14,14 8,14 8,16 14,16 14,22 16,22 16,16 22,16 " />
-  </svg>`)
+  </svg>`);
 
     this.onAccessibleClick(this.$zoomInButton, () => {
       this.zoomIn();
@@ -484,7 +484,7 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
 >
   <rect x="8" y="14" width="14" height="2" />
 </svg>
-`)
+`);
 
     this.onAccessibleClick(this.$zoomOutButton, () => {
       this.zoomOut();
@@ -526,7 +526,7 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
 		S16.7,22.5,15,22.5z"
       />
     </g>
-  </svg>`)
+  </svg>`);
 
     this.onAccessibleClick(this.$rotateButton, () => {
       this.rotateRight();
@@ -556,7 +556,7 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
 		C17,22.3,16,22.5,15,22.5z M15.8,20.9c1.5-0.2,2.7-0.8,3.7-2s1.5-2.4,1.5-4s-0.5-2.9-1.5-4s-2.3-1.8-3.7-2V20.9z"
       />
     </g>
-  </svg>`)
+  </svg>`);
       this.$adjustImageButton.insertAfter(this.$rotateButton);
 
       this.onAccessibleClick(this.$adjustImageButton, () => {
