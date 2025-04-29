@@ -322,8 +322,8 @@ export const GoTo: React.FC<GoToProps> = ({
         label="Go to"
         className="header-goto-button"
       >
-  <GoToIcon fill={isSearchVisible ? "#48c8dd" : "undefined"} />
-        </HeaderButton>
+        <GoToIcon fill={isSearchVisible ? "#48c8dd" : "undefined"} />
+      </HeaderButton>
 
       {isSearchVisible && (
         <div className="search-dropdown" ref={searchDropdownRef}>
