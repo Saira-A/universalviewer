@@ -5,7 +5,7 @@
     "bookmarkThumbHeight": 150,
     "bookmarkThumbWidth": 90,
     "dropEnabled": true,
-    "footerPanelEnabled": true,
+    "footerPanelEnabled": false,
     "headerPanelEnabled": true,
     "leftPanelEnabled": true,
     "limitLocales": false,
@@ -168,15 +168,15 @@
     "footerPanel": {
       "options": {
         "bookmarkEnabled": false,
-        "downloadEnabled": true,
+        "downloadEnabled": false,
         "embedEnabled": false,
         "feedbackEnabled": false,
-        "fullscreenEnabled": true,
-        "minimiseButtons": true,
-        "moreInfoEnabled": true,
+        "fullscreenEnabled": false,
+        "minimiseButtons": false,
+        "moreInfoEnabled": false,
         "openEnabled": false,
         "printEnabled": false,
-        "shareEnabled": true
+        "shareEnabled": false
       },
       "content": {
         "bookmark": "$add_to_bookmarks",
@@ -405,15 +405,15 @@
         "pageModeEnabled": true,
         "positionMarkerEnabled": true,
         "bookmarkEnabled": false,
-        "downloadEnabled": true,
+        "downloadEnabled": false,
         "embedEnabled": false,
         "feedbackEnabled": false,
-        "fullscreenEnabled": true,
-        "minimiseButtons": true,
-        "moreInfoEnabled": true,
+        "fullscreenEnabled": false,
+        "minimiseButtons": false,
+        "moreInfoEnabled": false,
         "openEnabled": false,
         "printEnabled": false,
-        "shareEnabled": true
+        "shareEnabled": false
       },
       "content": {
         "clearSearch": "$clearSearch",
