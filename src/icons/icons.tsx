@@ -182,7 +182,6 @@ export const Gallery: React.FC<IconProps> = ({
     xmlns="http://www.w3.org/2000/svg"
     className={className}
     style={style}
-    fill="currentColor"
   >
     <path d="M14,14H8V8h6V14z M22,8h-6v6h6V8z M14,16H8v6h6V16z M22,16h-6v6h6V16z" />
   </svg>
@@ -259,7 +258,6 @@ export const OneUp: React.FC<IconProps> = ({
     xmlns="http://www.w3.org/2000/svg"
     className={className}
     style={style}
-    fill="currentColor"
   >
     <g>
       <rect x="10" y="8" width="10" height="14" />
@@ -461,7 +459,6 @@ export const TwoUp: React.FC<IconProps> = ({
     xmlns="http://www.w3.org/2000/svg"
     className={className}
     style={style}
-    fill="currentColor"
   >
     <g>
       <g>
