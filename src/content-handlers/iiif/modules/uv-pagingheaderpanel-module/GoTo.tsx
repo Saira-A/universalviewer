@@ -18,7 +18,6 @@ import { Goto, FirstPage, LastPage } from "../../../../icons/icons";
 
 // a lot of the bulky code here is to do with keyboard navigation: lots of the natural browser nav is overridden to make the UI work properly
 
-
 interface GoToProps {
   helper: any;
   extensionHost: any;
@@ -107,10 +106,10 @@ export const GoTo: React.FC<GoToProps> = ({
       }
     };
 
-    window.addEventListener('scroll', handleScroll, true);
+    window.addEventListener("scroll", handleScroll, true);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll, true);
+      window.removeEventListener("scroll", handleScroll, true);
     };
   }, [showAutoComplete]);
 
