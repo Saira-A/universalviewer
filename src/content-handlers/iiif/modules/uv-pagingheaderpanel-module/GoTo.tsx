@@ -388,8 +388,9 @@ export const GoTo: React.FC<GoToProps> = ({
       >
         <div
           className="paging-back-buttons"
-          style={{ display: showFullControls ? "block" : "none", 
-          marginTop: "5px"
+          style={{
+            display: showFullControls ? "block" : "none",
+            marginTop: "5px",
           }}
         >
           <HeaderButton
@@ -441,9 +442,9 @@ export const GoTo: React.FC<GoToProps> = ({
           className="paging-forward-buttons"
           style={{
             display: showFullControls ? "block" : "none",
-            marginTop: "5px" 
+            marginTop: "5px",
           }}
->
+        >
           {/* <HeaderButton
             onClick={() => handleNavigation("next")}
             title={getNavigationTitle("next")}
