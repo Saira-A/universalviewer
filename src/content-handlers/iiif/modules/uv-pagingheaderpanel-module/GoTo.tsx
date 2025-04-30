@@ -52,7 +52,7 @@ export const GoTo: React.FC<GoToProps> = ({
   const allCanvases: Canvas[] = helper.getCanvases();
 
   //for development only, toggle this to show the full << < > >> buttons (could change to config setting)
-  const showFullControls = false;
+  const showFullControls = true;
 
   const getInputWidth = () => {
     // Default minimum width
@@ -388,7 +388,9 @@ export const GoTo: React.FC<GoToProps> = ({
       >
         <div
           className="paging-back-buttons"
-          style={{ display: showFullControls ? "block" : "none" }}
+          style={{ display: showFullControls ? "block" : "none", 
+          marginTop: "5px"
+          }}
         >
           <HeaderButton
             onClick={() => handleNavigation("first")}
@@ -437,8 +439,11 @@ export const GoTo: React.FC<GoToProps> = ({
         </div>
         <div
           className="paging-forward-buttons"
-          style={{ display: showFullControls ? "block" : "none" }}
-        >
+          style={{
+            display: showFullControls ? "block" : "none",
+            marginTop: "5px" 
+          }}
+>
           {/* <HeaderButton
             onClick={() => handleNavigation("next")}
             title={getNavigationTitle("next")}
