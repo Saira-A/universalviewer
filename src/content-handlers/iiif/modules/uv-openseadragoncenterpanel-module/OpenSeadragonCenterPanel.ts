@@ -102,24 +102,31 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
     const hasPaging = (
       this.extension as OpenSeadragonExtension
     ).helper.isPagingAvailable();
-    const isPagingEnabled = (this.extension as any).getSettings().pagingEnabled ?? false;
+    const isPagingEnabled =
+      (this.extension as any).getSettings().pagingEnabled ?? false;
     if (hasPaging) {
       this.togglePagingButtons(isPagingEnabled);
     } else {
       this.$oneUpButton.remove();
       this.$twoUpButton.remove();
-    }    
+    }
     this.togglePagingButtons(isPagingEnabled);
-  
+
     this.$oneUpButton.onPressed(() => {
       this.updateSettings({ pagingEnabled: false });
-      this.extensionHost.publish(OpenSeadragonExtensionEvents.PAGING_TOGGLED, false);
+      this.extensionHost.publish(
+        OpenSeadragonExtensionEvents.PAGING_TOGGLED,
+        false
+      );
       this.togglePagingButtons(false);
     });
 
     this.$twoUpButton.onPressed(() => {
       this.updateSettings({ pagingEnabled: true });
-      this.extensionHost.publish(OpenSeadragonExtensionEvents.PAGING_TOGGLED, true);
+      this.extensionHost.publish(
+        OpenSeadragonExtensionEvents.PAGING_TOGGLED,
+        true
+      );
       this.togglePagingButtons(true);
     });
 
@@ -134,7 +141,7 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
     this.$galleryButton.onPressed(() => {
       this.extensionHost.publish(IIIFEvents.TOGGLE_EXPAND_LEFT_PANEL);
     });
-    }
+  }
 
   private togglePagingButtons(pagingEnabled: boolean): void {
     if (pagingEnabled) {
@@ -144,7 +151,7 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
       this.$oneUpButton.hide();
       this.$twoUpButton.show();
     }
-    
+
     this.extensionHost.subscribe(IIIFEvents.ANNOTATIONS, (args: any) => {
       this.overlayAnnotations();
     });
