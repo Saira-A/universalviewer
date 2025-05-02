@@ -86,49 +86,41 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
     this.$content.prepend(this.$viewer);
     this.$pagingToggleButtons = $('<div class="pagingToggleButtons"></div>');
     this.$content.prepend(this.$pagingToggleButtons);
-    this.$pagingToggleButtons = $('<div class="pagingToggleButtons"></div>');
-    this.$content.prepend(this.$pagingToggleButtons);
-
     this.$oneUpButton = $(`
       <button class="btn imageBtn one-up" title="${this.content.oneUp}">
         <i class="uv-icon-one-up" aria-hidden="true"></i>
         <span class="sr-only">${this.content.oneUp}</span>
       </button>
     `);
-    this.$pagingToggleButtons.append(this.$oneUpButton);
-
     this.$twoUpButton = $(`
       <button class="btn imageBtn two-up" title="${this.content.twoUp}">
         <i class="uv-icon-two-up" aria-hidden="true"></i>
         <span class="sr-only">${this.content.twoUp}</span>
       </button>
     `);
-    this.$pagingToggleButtons.append(this.$twoUpButton);
-
+    this.$pagingToggleButtons.append(this.$oneUpButton, this.$twoUpButton);
     const hasPaging = (
       this.extension as OpenSeadragonExtension
     ).helper.isPagingAvailable();
-    if (!hasPaging) {
-      this.$oneUpButton.hide();
-      this.$twoUpButton.hide();
-    }
-
+    const isPagingEnabled = (this.extension as any).getSettings().pagingEnabled ?? false;
+    if (hasPaging) {
+      this.togglePagingButtons(isPagingEnabled);
+    } else {
+      this.$oneUpButton.remove();
+      this.$twoUpButton.remove();
+    }    
+    this.togglePagingButtons(isPagingEnabled);
+  
     this.$oneUpButton.onPressed(() => {
-      const enabled: boolean = false;
-      this.updateSettings({ pagingEnabled: enabled });
-      this.extensionHost.publish(
-        OpenSeadragonExtensionEvents.PAGING_TOGGLED,
-        enabled
-      );
+      this.updateSettings({ pagingEnabled: false });
+      this.extensionHost.publish(OpenSeadragonExtensionEvents.PAGING_TOGGLED, false);
+      this.togglePagingButtons(false);
     });
 
     this.$twoUpButton.onPressed(() => {
-      const enabled: boolean = true;
-      this.updateSettings({ pagingEnabled: enabled });
-      this.extensionHost.publish(
-        OpenSeadragonExtensionEvents.PAGING_TOGGLED,
-        enabled
-      );
+      this.updateSettings({ pagingEnabled: true });
+      this.extensionHost.publish(OpenSeadragonExtensionEvents.PAGING_TOGGLED, true);
+      this.togglePagingButtons(true);
     });
 
     this.$galleryButton = $(`
@@ -142,7 +134,17 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
     this.$galleryButton.onPressed(() => {
       this.extensionHost.publish(IIIFEvents.TOGGLE_EXPAND_LEFT_PANEL);
     });
+    }
 
+  private togglePagingButtons(pagingEnabled: boolean): void {
+    if (pagingEnabled) {
+      this.$oneUpButton.show();
+      this.$twoUpButton.hide();
+    } else {
+      this.$oneUpButton.hide();
+      this.$twoUpButton.show();
+    }
+    
     this.extensionHost.subscribe(IIIFEvents.ANNOTATIONS, (args: any) => {
       this.overlayAnnotations();
     });
