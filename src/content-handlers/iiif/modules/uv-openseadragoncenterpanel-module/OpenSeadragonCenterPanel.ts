@@ -172,7 +172,7 @@ export class OpenSeadragonCenterPanel extends CenterPanel<
         <span class="sr-only">${this.content.gallery}</span>
       </button>
     `);
-    this.$pagingToggleButtons.append(this.$galleryButton);    
+    this.$pagingToggleButtons.append(this.$galleryButton);
 
     this.$galleryButton.onPressed(() => {
       this.extensionHost.publish(IIIFEvents.TOGGLE_EXPAND_LEFT_PANEL);
