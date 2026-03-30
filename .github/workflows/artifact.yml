@@ -1,0 +1,39 @@
+name: UniversalViewer Artifact CI
+permissions:
+  contents: write
+  pull-requests: write
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+env:
+  PUBLISH_NAME: UniversalViewer
+  PUBLISH_DIR: dist
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4 
+        with:
+          name: ${{ env.PUBLISH_NAME }}-${{ github.ref_name }}
+          path: ${{ github.workspace }}/${{ env.PUBLISH_DIR }}
+          retention-days: 60
