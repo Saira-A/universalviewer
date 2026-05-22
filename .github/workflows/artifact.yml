@@ -1,0 +1,50 @@
+name: UniversalViewer Artifact CI
+permissions:
+  contents: write
+  pull-requests: write
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - rc2
+
+env:
+  PUBLISH_NAME: UniversalViewer
+  PUBLISH_DIR: dist
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      
+      - name: Setup safe-chain
+        run: |
+          npm i -g @aikidosec/safe-chain
+          safe-chain setup-ci
+          
+      # Generate short SHA for the current commit
+      - name: Get short SHA
+        id: get_short_sha
+        run: echo "git_short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4 
+        with:
+          # Artifact naming format: [PublishName]-[BranchName]-[ShortCommitSHA]
+          name: ${{ env.PUBLISH_NAME }}-${{ github.ref_name }}-${{ steps.get_short_sha.outputs.git_short_sha }}
+          path: ${{ github.workspace }}/${{ env.PUBLISH_DIR }}
+          retention-days: 60               # Retain artifacts for 60 days
